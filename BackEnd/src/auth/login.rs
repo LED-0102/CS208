@@ -1,0 +1,51 @@
+
+use serde_derive::{Deserialize, Serialize};
+use bcrypt::{ verify};
+use serde_json;
+#[derive(Deserialize)]
+pub struct Login {
+    pub username: String,
+    pub password: String
+}
+#[derive(Serialize)]
+pub struct LoginResponse {
+    pub token: String
+}
+
+use actix_web::{web, HttpResponse, error};
+use actix_web::cookie::{Cookie, SameSite};
+use crate::AppState;
+use crate::auth::jwt::{JwToken};
+use crate::db::structs::Users;
+
+pub async fn login (credentials: web::Json<Login>, state: web::Data<AppState>) -> HttpResponse {
+    let password = &credentials.password;
+    let mut todo: Vec<Users> = sqlx::query_as("SELECT password FROM users WHERE username = $1")
+        .bind(&credentials.username)
+        .fetch_all(&state.pool)
+        .await
+        .map_err(|e| error::ErrorBadRequest(e.to_string())).unwrap();
+    if todo.len() == 0 {
+        return HttpResponse::NotFound().await.unwrap();
+    } else if todo.len()>1 {
+        return HttpResponse::Conflict().await.unwrap();
+    }
+    let rows = todo.pop().unwrap();
+    match verify(password, &rows.password).unwrap() {
+        true =>{
+            let token = JwToken::new(credentials.username.clone(), &state.pool);
+            let raw_token = token.await.encode();
+            let response = LoginResponse{token: raw_token.clone()};
+            let body = serde_json::to_string(&response).unwrap();
+            println!("{body}");
+            let mut cookie = Cookie::new("jwt", raw_token);
+            cookie.set_http_only(true); // Set HttpOnly attribute
+            cookie.set_secure(true); // Set Secure attribute
+            cookie.set_same_site(SameSite::Strict);
+            HttpResponse::Ok().cookie(cookie).finish()
+        },
+        false => {
+            HttpResponse::Unauthorized().into()
+        }
+    }
+}
