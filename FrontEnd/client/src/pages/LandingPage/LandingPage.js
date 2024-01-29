@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
-import ModalComponent from "../../components/modal/signupmodal.js";
+import ModalComponentSign from "../../components/authmodal/signupmodal";
+import ModalComponentLogIn from "../../components/authmodal/loginmodal";
 
 
 export default function LandingPage(){
 return(
     <div>
-        <ModalComponent></ModalComponent>
+        <ModalComponentSign></ModalComponentSign>
+        <ModalComponentLogIn></ModalComponentLogIn>
     </div>
 );
 }

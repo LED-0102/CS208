@@ -24,7 +24,7 @@ import { LockIcon } from "../../images/LockIcon.jsx";
 import { UserNameIcon } from "../../images/UserName.jsx";
 
 
-export default function ModalComponent() {
+export default function ModalComponentSign() {
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
 
   return (
