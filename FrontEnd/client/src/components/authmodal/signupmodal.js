@@ -1,4 +1,5 @@
 import React from "react";
+import {useState} from "react";
 import {
     Navbar,
     NavbarBrand,
@@ -22,10 +23,35 @@ import {
 import { MailIcon } from "../../images/MailIcon.jsx";
 import { LockIcon } from "../../images/LockIcon.jsx";
 import { UserNameIcon } from "../../images/UserName.jsx";
+import axios from "axios";
 
-
+// -----------------------------------------------------------------------------
 export default function ModalComponentSign() {
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
+
+  const [post,setPost]=useState({
+    username:'',
+    email:'',
+    password:'',
+  
+  })
+
+  const handleInput=(event)=>{
+    setPost({...post,[event.target.name]: event.target.value})
+
+  }
+
+  const handleSubmit = async (event) => { 
+    event.preventDefault();
+    
+    try {
+      const response = await axios.post('https://jsonplaceholder.typicode.com/posts', post); 
+      // const response = await axios.post('http://localhost:8000/URL/auth/register', post); 
+      console.log(response);
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   return (
     <>
@@ -40,6 +66,7 @@ export default function ModalComponentSign() {
               {(onClose) => (
                 <>
                   <ModalHeader className="flex flex-col gap-1 text-2xl">Sign Up</ModalHeader>
+                  <form onSubmit={handleSubmit}>
                   <ModalBody>
                   
                     <Input
@@ -50,9 +77,10 @@ export default function ModalComponentSign() {
                       label="username"
                       placeholder="Enter your name"
                       variant="bordered"
-                    //   onChange={handleInput}
+                      onChange={handleInput}
                       name="username"
-                    //   value={info.email}
+                      id="username"
+                      value={post.username}
                       classNames={{
                         label: "text-lg",
                         input: [
@@ -74,9 +102,10 @@ export default function ModalComponentSign() {
                       label="email"
                       placeholder="Enter your email"
                       variant="bordered"
-                    //   onChange={handleInput}
+                      onChange={handleInput}
                       name="email"
-                    //   value={info.email}
+                      id="email"
+                      value={post.email}
                       classNames={{
                         label: "text-lg",
                         input: [
@@ -98,8 +127,9 @@ export default function ModalComponentSign() {
                       placeholder="Enter your password"
                       type="password"
                       name="password"
-                    //   value={info.password}
-                    //   onChange={(handleInput)}
+                      id="password"
+                      value={post.password}
+                      onChange={handleInput}
                       variant="bordered"
                       classNames={{
                         label: "text-lg",
@@ -132,11 +162,13 @@ export default function ModalComponentSign() {
                       Close
                     </Button>
                     <Button color="primary" onPress={onClose} 
+                    type="submit"
                     // onClick={handleloginsubmit} 
                     >
                       Sign in
                     </Button>
                   </ModalFooter>
+                  </form>
                   {/* <Button color="success" onClick={handleGoogleLogin} className="m-6 mx-12 text-xl text-white">Login with Google</Button> */}
     
                 </>
