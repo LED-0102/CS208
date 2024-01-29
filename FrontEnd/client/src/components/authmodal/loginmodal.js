@@ -1,4 +1,5 @@
 import React from "react";
+import {useState} from "react";
 import {
     Navbar,
     NavbarBrand,
@@ -22,10 +23,35 @@ import {
 import { MailIcon } from "../../images/MailIcon.jsx";
 import { LockIcon } from "../../images/LockIcon.jsx";
 import { UserNameIcon } from "../../images/UserName.jsx";
+import axios from "axios";
 
 
 export default function ModalComponentLogIn() {
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
+
+  const [post,setPost]=useState({
+    // username:'',
+    email:'',
+    password:'',
+  
+  })
+
+  const handleInput=(event)=>{
+    setPost({...post,[event.target.name]: event.target.value})
+
+  }
+
+  const handleSubmit = async (event) => { 
+    event.preventDefault();
+    
+    try {
+      const response = await axios.post('https://jsonplaceholder.typicode.com/posts', post); 
+      // const response = await axios.post('http://localhost:8000/URL/auth/register', post); 
+      console.log(response);
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   return (
     <>
@@ -40,6 +66,7 @@ export default function ModalComponentLogIn() {
               {(onClose) => (
                 <>
                   <ModalHeader className="flex flex-col gap-1 text-2xl">Log In</ModalHeader>
+                  <form onSubmit={handleSubmit}>
                   <ModalBody>
                   
                     <Input
@@ -50,9 +77,9 @@ export default function ModalComponentLogIn() {
                       label="email"
                       placeholder="Enter your email"
                       variant="bordered"
-                    //   onChange={handleInput}
+                      onChange={handleInput}
                       name="email"
-                    //   value={info.email}
+                      value={post.email}
                       classNames={{
                         label: "text-lg",
                         input: [
@@ -74,8 +101,8 @@ export default function ModalComponentLogIn() {
                       placeholder="Enter your password"
                       type="password"
                       name="password"
-                    //   value={info.password}
-                    //   onChange={(handleInput)}
+                      value={post.password}
+                      onChange={handleInput}
                       variant="bordered"
                       classNames={{
                         label: "text-lg",
@@ -108,11 +135,12 @@ export default function ModalComponentLogIn() {
                       Close
                     </Button>
                     <Button color="primary" onPress={onClose} 
-                    // onClick={handleloginsubmit} 
+                    type="submit"
                     >
                       Log in
                     </Button>
                   </ModalFooter>
+                  </form>
                   {/* <Button color="success" onClick={handleGoogleLogin} className="m-6 mx-12 text-xl text-white">Login with Google</Button> */}
     
                 </>
