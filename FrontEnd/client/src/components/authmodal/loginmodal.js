@@ -46,7 +46,7 @@ export default function ModalComponentLogIn() {
     
     try {
       const response = await axios.post('https://jsonplaceholder.typicode.com/posts', post); 
-      // const response = await axios.post('http://localhost:8000/URL/auth/register', post); 
+      // const response = await axios.post('http://localhost:8000/URL/auth/login', post); 
       console.log(response);
     } catch (err) {
       console.error(err);
