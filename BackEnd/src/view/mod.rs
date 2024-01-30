@@ -11,5 +11,6 @@ pub fn view_config (cfg: &mut web::ServiceConfig) {
 
 pub async fn yo (cookie: JwToken) -> HttpResponse {
     println!("{:?}", cookie);
+    println!("{:?}", cookie);
     HttpResponse::Ok().finish()
 }
