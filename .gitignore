@@ -1,3 +1,5 @@
 BackEnd/target
 BackEnd/Cargo.lock
 .idea
+FrontEnd/client/node_modules
+FrontEnd/client/package-lock.json
