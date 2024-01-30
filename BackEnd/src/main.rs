@@ -1,75 +1,43 @@
-use actix_web::middleware::Logger;
-use actix_web::{
-    error, get, post,
-    web::{self, Json, ServiceConfig},
-    Result,
-};
+use std::env;
+use actix_web::{web, HttpResponse, Responder, HttpServer, App, dev::Service};
+use actix_cors::Cors;
 use serde::{Deserialize, Serialize};
-use shuttle_actix_web::ShuttleActixWeb;
-use shuttle_runtime::{self, CustomError};
-use shuttle_shared_db;
-
+use sqlx::{Pool, Postgres};
 use sqlx::{Executor, FromRow, PgPool};
 mod auth;
 pub mod db;
 use auth::auth_config;
 
-#[get("/{id}")]
-async fn retrieve(path: web::Path<i32>, state: web::Data<AppState>) -> Result<Json<Todo>> {
-    let todo = sqlx::query_as("SELECT * FROM todos WHERE id = $1")
-        .bind(*path)
-        .fetch_one(&state.pool)
-        .await
-        .map_err(|e| error::ErrorBadRequest(e.to_string()))?;
-
-    Ok(Json(todo))
-}
-
-#[post("/")]
-async fn add(todo: Json<TodoNew>, state: web::Data<AppState>) -> Result<Json<Todo>> {
-    let todo = sqlx::query_as("INSERT INTO todos(note) VALUES ($1) RETURNING id, note")
-        .bind(&todo.note)
-        .fetch_one(&state.pool)
-        .await
-        .map_err(|e| error::ErrorBadRequest(e.to_string()))?;
-
-    Ok(Json(todo))
-}
-
 #[derive(Clone)]
 struct AppState {
-    pool: PgPool
+    pool: Pool<Postgres>
 }
 
-#[shuttle_runtime::main]
-async fn actix_web( #[shuttle_shared_db::Postgres] pool: PgPool, ) -> ShuttleActixWeb<impl FnOnce(&mut ServiceConfig) + Send + Clone + 'static> {
-    pool.execute(include_str!("../schema.sql"))
-        .await
-        .map_err(CustomError::new)?;
-
-    let state = web::Data::new(AppState { pool });
-
-    let config = move |cfg: &mut ServiceConfig| {
-        cfg.service(
-            web::scope("/todos")
-                .wrap(Logger::default())
-                .service(retrieve)
-                .service(add)
-                .configure(auth_config)
-                .app_data(state),
-        );
+#[actix_web::main]
+async fn main() -> std::io::Result<()> {
+    let database_url = "postgresql://darshil:password@localhost:5432/mems".to_string();
+    let pool = PgPool::connect(&database_url).await.expect("Failed to create pool");
+    let app_state = AppState{
+        pool
     };
-
-    Ok(config.into())
-}
-
-#[derive(Deserialize)]
-struct TodoNew {
-    pub note: String,
-}
-
-#[derive(Serialize, Deserialize, FromRow)]
-struct Todo {
-    pub id: i32,
-    pub note: String,
+    HttpServer::new(move || {
+        App::new()
+            .wrap(Cors::default().allow_any_origin().allow_any_method().allow_any_header())
+            .wrap_fn(|req, srv| {
+                println!("Hi boi got it {} {}", req.method(), req.uri());
+                let future = srv.call(req);
+                async {
+                    let result = future.await?;
+                    Ok(result)
+                }
+            })
+            .configure(auth_config)
+            .route(
+                "/",
+                web::get().to(|| async { HttpResponse::Ok().body("/") }),
+            ).app_data(web::Data::new(app_state.clone()))
+    })
+        .bind(("127.0.0.1", 8080))?
+        .run()
+        .await
 }

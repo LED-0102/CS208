@@ -4,7 +4,7 @@ use bcrypt::{ verify};
 use serde_json;
 #[derive(Deserialize)]
 pub struct Login {
-    pub username: String,
+    pub email: String,
     pub password: String
 }
 #[derive(Serialize)]
@@ -20,8 +20,8 @@ use crate::db::structs::Users;
 
 pub async fn login (credentials: web::Json<Login>, state: web::Data<AppState>) -> HttpResponse {
     let password = &credentials.password;
-    let mut todo: Vec<Users> = sqlx::query_as("SELECT password FROM users WHERE username = $1")
-        .bind(&credentials.username)
+    let mut todo: Vec<Users> = sqlx::query_as("SELECT password FROM users WHERE email = $1")
+        .bind(&credentials.email)
         .fetch_all(&state.pool)
         .await
         .map_err(|e| error::ErrorBadRequest(e.to_string())).unwrap();
@@ -33,7 +33,7 @@ pub async fn login (credentials: web::Json<Login>, state: web::Data<AppState>) -
     let rows = todo.pop().unwrap();
     match verify(password, &rows.password).unwrap() {
         true =>{
-            let token = JwToken::new(credentials.username.clone(), &state.pool);
+            let token = JwToken::new(credentials.email.clone(), &state.pool);
             let raw_token = token.await.encode();
             let response = LoginResponse{token: raw_token.clone()};
             let body = serde_json::to_string(&response).unwrap();
