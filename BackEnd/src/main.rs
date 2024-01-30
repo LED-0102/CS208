@@ -1,4 +1,3 @@
-use std::env;
 use actix_web::{web, HttpResponse, Responder, HttpServer, App, dev::Service};
 use actix_cors::Cors;
 use serde::{Deserialize, Serialize};
@@ -6,7 +5,10 @@ use sqlx::{Pool, Postgres};
 use sqlx::{Executor, FromRow, PgPool};
 mod auth;
 pub mod db;
+pub mod view;
+
 use auth::auth_config;
+use crate::view::view_config;
 
 #[derive(Clone)]
 struct AppState {
@@ -22,9 +24,9 @@ async fn main() -> std::io::Result<()> {
     };
     HttpServer::new(move || {
         App::new()
-            .wrap(Cors::default().allow_any_origin().allow_any_method().allow_any_header())
+            .wrap(Cors::default().allow_any_origin().allow_any_method().allow_any_header().supports_credentials())
             .wrap_fn(|req, srv| {
-                println!("Hi boi got it {} {}", req.method(), req.uri());
+                println!("{} {}", req.method(), req.uri());
                 let future = srv.call(req);
                 async {
                     let result = future.await?;
@@ -32,6 +34,7 @@ async fn main() -> std::io::Result<()> {
                 }
             })
             .configure(auth_config)
+            .configure(view_config)
             .route(
                 "/",
                 web::get().to(|| async { HttpResponse::Ok().body("/") }),

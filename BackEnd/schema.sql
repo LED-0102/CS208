@@ -8,17 +8,21 @@ CREATE TYPE SS04_items AS (
     con boolean,
     unit_price INT
 );
+CREATE TABLE id (
+    table_name VARCHAR(50) PRIMARY KEY,
+    count INT DEFAULT 0
+);
 CREATE TABLE users (
     id INT PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
     email VARCHAR UNIQUE NOT NULL,
     password VARCHAR NOT NULL,
     admin INT DEFAULT 0,
-    designation VARCHAR NOT NULL,
-    department VARCHAR NOT NULL,
+    designation VARCHAR,
+    department VARCHAR,
     location VARCHAR,
     room VARCHAR,
-    contact_number VARCHAR,
+    contact_number VARCHAR
 );
 CREATE TABLE forms (
     form VARCHAR
@@ -33,3 +37,6 @@ CREATE TABLE SS04 (
     head_approval boolean,
     reason VARCHAR[]
 );
+INSERT INTO id(table_name) VALUES ('users');
+INSERT INTO id(table_name) VALUES ('forms');
+INSERT INTO id(table_name) VALUES ('SS04');

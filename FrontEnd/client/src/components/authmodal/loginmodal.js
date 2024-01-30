@@ -1,5 +1,7 @@
 import React from "react";
 import {useState} from "react";
+import globalUrl from "../url";
+import Cookies from 'js-cookie';
 import {
     Navbar,
     NavbarBrand,
@@ -35,7 +37,7 @@ export default function ModalComponentLogIn() {
     password:'',
   
   })
-
+  const [cook , setCook]= useState("");
   const handleInput=(event)=>{
     setPost({...post,[event.target.name]: event.target.value})
 
@@ -45,13 +47,36 @@ export default function ModalComponentLogIn() {
     event.preventDefault();
     
     try {
-      const response = await axios.post('https://jsonplaceholder.typicode.com/posts', post); 
-      // const response = await axios.post('http://localhost:8000/URL/auth/login', post); 
-      console.log(response);
+      const response = await axios.post(`${globalUrl}/auth/login`, post, {
+          withCredentials: true,
+      });
+      console.log("Here");
+      console.log("Response.headers", response.headers);
+
+        if (response.headers['set-cookie']){
+            console.log("Inside");
+            const cookieValue = response.headers['set-cookie'][0];
+            localStorage.setItem('jwt', cookieValue);
+            console.log('Cookie set: ');
+        }
+        console.log(response);
     } catch (err) {
       console.error(err);
     }
   }
+
+    const setCookie = () => {
+        Cookies.set('userToken', 'exampleToken', { expires: 7 }); // Set a cookie that expires in 7 days
+    };
+
+    const getCookie = () => {
+        const userToken = Cookies.get('userToken'); // Get the value of the cookie
+        alert(`User Token: ${userToken || 'Not found'}`);
+    };
+
+    const deleteCookie = () => {
+        Cookies.remove('userToken'); // Remove the cookie
+    };
 
   return (
     <>

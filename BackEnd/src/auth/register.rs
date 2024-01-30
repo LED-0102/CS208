@@ -3,8 +3,9 @@ use bcrypt::{DEFAULT_COST, hash, verify};
 use serde_derive::Deserialize;
 use actix_web::{web, HttpResponse, Responder, error};
 use std::error::Error;
-use sqlx::{PgPool};
+use sqlx::{PgPool, Row};
 use crate::AppState;
+use crate::db::fetch_id::fetch_id;
 
 #[derive(Clone, Deserialize)]
 pub struct NewUser {
@@ -34,15 +35,15 @@ impl User {
     }
 }
 pub async fn insert( st: NewUser, pool: &PgPool) -> Result<(), Box<dyn Error>> {
-    println!("Ot jere");
-    let todo = sqlx::query("INSERT INTO users (username, password, email, admin) VALUES ($1, $2, $3, 0)")
+    let id = fetch_id("users".to_string(), pool).await;
+    let todo = sqlx::query("INSERT INTO users (id, username, password, email, admin) VALUES ($1, $2, $3, $4, 0)")
+        .bind(id)
         .bind(&st.username)
         .bind(&st.password)
         .bind(&st.email)
         .execute(pool)
         .await
         .map_err(|e| error::ErrorBadRequest(e.to_string()));
-    println!("234");
     match todo {
         Ok(_) => {
             println!("OK");

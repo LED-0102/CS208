@@ -17,7 +17,7 @@ pub struct JwToken {
 #[derive(Serialize, Deserialize, FromRow)]
 pub struct AdminEmail {
     pub admin: i32,
-    pub email: String
+    pub username: String
 }
 impl JwToken {
     pub fn get_key() -> String {
@@ -29,14 +29,14 @@ impl JwToken {
         let token = encode(&Header::default(), &self, &key).unwrap();
         return token;
     }
-    pub async fn new(username: String, pool: &PgPool) -> Self {
-        let todo: AdminEmail = sqlx::query_as("SELECT admin, email from users where username=$1")
-            .bind(&username)
+    pub async fn new(email: String, pool: &PgPool) -> Self {
+        let todo: AdminEmail = sqlx::query_as("SELECT admin, username from users where email=$1")
+            .bind(&email)
             .fetch_one(pool)
             .await
             .map_err(|e| error::ErrorBadRequest(e.to_string())).unwrap();
         let timestamp = Utc::now().checked_add_signed(chrono::Duration::minutes(360)).expect("valid Timestamp").timestamp();
-        return JwToken {username, exp: timestamp as usize, email: todo.email, is_admin: todo.admin};
+        return JwToken {username: todo.username, exp: timestamp as usize, email, is_admin: todo.admin};
     }
     pub fn from_token(token: String) -> Result<Self, String>{
         let key = DecodingKey::from_secret(
@@ -60,9 +60,16 @@ impl FromRequest for JwToken {
     type Future = Ready<Result<JwToken, Error>>;
 
     fn from_request(req: &HttpRequest, _payload: &mut Payload) -> Self::Future {
-        match req.headers().get("token") {
+        let res = req.cookies().unwrap();
+        // println!("{:?}", res);
+        let hed = req.headers();
+        // println!("{:?}", hed);
+        match req.cookie("jwt") {
             Some(data) => {
-                let raw_token = data.to_str().unwrap().to_string();
+                // println!("{}", data);
+                let raw_token = data.value().to_string();
+                // println!("{}", raw_token);
+
                 let token_result = JwToken::from_token(raw_token);
                 match token_result {
                     Ok(token) => {

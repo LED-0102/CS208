@@ -1,5 +1,6 @@
 import React from "react";
 import {useState} from "react";
+import globalUrl from "../url";
 import {
     Navbar,
     NavbarBrand,
@@ -45,7 +46,7 @@ export default function ModalComponentSign() {
     event.preventDefault();
     
     try {
-      const response = await axios.post('https://jsonplaceholder.typicode.com/posts', post); 
+      const response = await axios.post(`${globalUrl}/auth/register`, post);
       // const response = await axios.post('http://localhost:8000/URL/auth/register', post); 
       console.log(response);
     } catch (err) {

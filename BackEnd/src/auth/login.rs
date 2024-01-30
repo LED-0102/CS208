@@ -35,14 +35,20 @@ pub async fn login (credentials: web::Json<Login>, state: web::Data<AppState>) -
         true =>{
             let token = JwToken::new(credentials.email.clone(), &state.pool);
             let raw_token = token.await.encode();
+            println!("{}", raw_token);
             let response = LoginResponse{token: raw_token.clone()};
             let body = serde_json::to_string(&response).unwrap();
             println!("{body}");
             let mut cookie = Cookie::new("jwt", raw_token);
             cookie.set_http_only(true); // Set HttpOnly attribute
-            cookie.set_secure(true); // Set Secure attribute
+            cookie.set_secure(false); // Set Secure attribute
             cookie.set_same_site(SameSite::Strict);
-            HttpResponse::Ok().cookie(cookie).finish()
+            cookie.set_path("/");
+            HttpResponse::Ok()
+                .cookie(cookie)
+                .append_header(("Access-Control-Allow-Origin", "http://localhost:3000"))
+                .append_header(("Access-Control-Allow-Credentials", "true"))
+                .finish()
         },
         false => {
             HttpResponse::Unauthorized().into()
