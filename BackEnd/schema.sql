@@ -8,6 +8,7 @@ CREATE TYPE SS04_items AS (
     con boolean,
     unit_price INT
 );
+CREATE TYPE state AS ENUM ('Pending', 'Sent', 'Accepted', 'Rejected');
 CREATE TABLE id (
     table_name VARCHAR(50) PRIMARY KEY,
     count INT DEFAULT 0
@@ -22,19 +23,21 @@ CREATE TABLE users (
     department VARCHAR,
     location VARCHAR,
     room VARCHAR,
-    contact_number VARCHAR
+    contact_number VARCHAR,
+    seeking jsonb,
+    pending jsonb
 );
 CREATE TABLE forms (
-    form VARCHAR
+    form VARCHAR PRIMARY KEY
 );
 CREATE TABLE SS04 (
-    id serial PRIMARY KEY,
+    id INT PRIMARY KEY,
     note VARCHAR,
     submitter INT REFERENCES users (id),
     date DATE,
     submitted boolean,
     content SS04_items[],
-    head_approval boolean,
+    hod_approval state,
     reason VARCHAR[]
 );
 INSERT INTO id(table_name) VALUES ('users');
