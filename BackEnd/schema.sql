@@ -40,6 +40,17 @@ CREATE TABLE SS04 (
     hod_approval state,
     reason VARCHAR[]
 );
+CREATE TABLE students (
+    roll_no VARCHAR PRIMARY KEY,
+    student_name varchar NOT NULL,
+    email_id varchar NOT NULL,
+    degree ENUM ('Ph.D.', 'M.Tech.', 'MS', 'B.Tech') NOT NULL
+);
+CREATE TABLE inventory (
+    instrument_id VARCHAR PRIMARY KEY,
+    instrument_name VARCHAR NOT NULL,
+    location VARCHAR
+)
 INSERT INTO id(table_name) VALUES ('users');
 INSERT INTO id(table_name) VALUES ('forms');
 INSERT INTO id(table_name) VALUES ('SS04');
