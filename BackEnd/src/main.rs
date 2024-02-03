@@ -3,9 +3,10 @@ use actix_cors::Cors;
 use serde::{Deserialize, Serialize};
 use sqlx::{Pool, Postgres};
 use sqlx::{Executor, FromRow, PgPool};
-mod auth;
+pub mod auth;
 pub mod db;
 pub mod view;
+pub mod ws;
 
 use auth::auth_config;
 use crate::view::view_config;

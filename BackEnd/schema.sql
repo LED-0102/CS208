@@ -25,7 +25,8 @@ CREATE TABLE users (
     room VARCHAR,
     contact_number VARCHAR,
     seeking jsonb,
-    pending jsonb
+    pending jsonb,
+    previous jsonb
 );
 CREATE TABLE forms (
     form VARCHAR PRIMARY KEY
@@ -34,10 +35,10 @@ CREATE TABLE SS04 (
     id INT PRIMARY KEY,
     note VARCHAR,
     submitter INT REFERENCES users (id),
+    receiver INT REFERENCES users (id),
     date DATE,
-    submitted boolean,
     content SS04_items[],
-    hod_approval state,
+    approval state,
     reason VARCHAR[]
 );
 INSERT INTO id(table_name) VALUES ('users');
