@@ -5,3 +5,5 @@ use sqlx::FromRow;
 pub struct Users {
     pub(crate) password: String,
 }
+
+pub struct

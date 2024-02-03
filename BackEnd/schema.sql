@@ -15,7 +15,7 @@ CREATE TABLE id (
 );
 CREATE TABLE users (
     id INT PRIMARY KEY,
-    username VARCHAR(50) UNIQUE NOT NULL,
+    username VARCHAR(50) NOT NULL,
     email VARCHAR UNIQUE NOT NULL,
     password VARCHAR NOT NULL,
     admin INT DEFAULT 0,

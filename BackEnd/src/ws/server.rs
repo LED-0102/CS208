@@ -4,6 +4,7 @@ use std::sync::atomic::{AtomicUsize, Ordering};
 use rand::rngs::ThreadRng;
 use actix::{Actor, Context, Handler, Recipient};
 use rand::Rng;
+use sqlx::FromRow;
 
 
 #[derive(actix_derive::Message)]
@@ -38,6 +39,7 @@ pub struct Person {
     pub designation: String,
     pub addr: Recipient<Message>
 }
+#[derive(FromRow)]
 pub struct Identifier {
     pub name: String,
     pub designation: String
