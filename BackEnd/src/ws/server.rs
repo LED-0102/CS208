@@ -34,6 +34,7 @@ pub struct ClientMessage {
     /// Room name
     pub addr: Identifier,
 }
+#[derive(Debug)]
 pub struct Person {
     pub name: String,
     pub designation: String,

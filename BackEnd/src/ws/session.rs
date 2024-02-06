@@ -1,9 +1,8 @@
 use std::time::{Duration, Instant};
 use actix::{Actor, ActorContext, ActorFutureExt, Addr, AsyncContext, ContextFutureSpawner, fut, Running, StreamHandler, WrapFuture};
 use actix_web_actors::ws;
-use actix_web_actors::ws::{Message, ProtocolError};
-use crate::ws::server;
-use crate::ws::server::{ChatServer, Disconnect, Connect, ClientMessage, Identifier};
+use actix_web_actors::ws::{ProtocolError};
+use crate::ws::server::{self, ChatServer, Disconnect, Connect, ClientMessage, Identifier};
 
 const HEARTBEAT_INTERVAL: Duration = Duration::from_secs(5);
 const CLIENT_TIMEOUT: Duration = Duration::from_secs(10);
@@ -76,8 +75,16 @@ impl Actor for WsSession {
     }
 }
 
-impl StreamHandler<Result<Message, ProtocolError>> for WsSession {
-    fn handle(&mut self, item: Result<Message, ProtocolError>, ctx: &mut Self::Context) {
+impl actix::Handler<server::Message> for WsSession {
+    type Result = ();
+
+    fn handle(&mut self, msg: server::Message, ctx: &mut Self::Context) {
+        ctx.text(msg.0);
+    }
+}
+
+impl StreamHandler<Result<ws::Message, ProtocolError>> for WsSession {
+    fn handle(&mut self, item: Result<ws::Message, ProtocolError>, ctx: &mut Self::Context) {
         let msg = match item {
             Err(_) => {
                 ctx.stop();
@@ -87,14 +94,14 @@ impl StreamHandler<Result<Message, ProtocolError>> for WsSession {
         };
 
         match msg {
-            Message::Ping(p) => {
+            ws::Message::Ping(p) => {
                 self.hb = Instant::now();
                 ctx.pong(&p);
             }
-            Message::Pong(_p) => {
+            ws::Message::Pong(_p) => {
                 self.hb = Instant::now();
             }
-            Message::Text(msg) => {
+            ws::Message::Text(msg) => {
                 let m = msg.trim();
                 self.addr.do_send(ClientMessage {
                     id: self.id,
@@ -105,15 +112,15 @@ impl StreamHandler<Result<Message, ProtocolError>> for WsSession {
                     },
                 })
             }
-            Message::Binary(_) => println!("Unexpected binary"),
-            Message::Close(reason) => {
+            ws::Message::Binary(_) => println!("Unexpected binary"),
+            ws::Message::Close(reason) => {
                 ctx.close(reason);
                 ctx.stop();
             }
-            Message::Continuation(_) => {
+            ws::Message::Continuation(_) => {
                 ctx.stop();
             }
-            Message::Nop => (),
+            _ => (),
         }
     }
 }
