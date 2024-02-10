@@ -4,10 +4,11 @@ use actix_cors::Cors;
 use serde::{Deserialize, Serialize};
 use sqlx::{Pool, Postgres};
 use sqlx::{Executor, FromRow, PgPool};
-mod auth;
+pub mod auth;
 pub mod db;
 pub mod view;
-mod lists;
+pub mod lists;
+pub mod ws;
 
 use auth::auth_config;
 use lists::{get_students, get_inventory};

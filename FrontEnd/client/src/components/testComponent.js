@@ -17,8 +17,8 @@ const TestComponent = () => {
                 'Cookie': storedCookie, // Include the retrieved cookie in the 'Cookie' header
             });
             const headersObject = Object.fromEntries(customHeaders.entries());
-            const response = await fetch('https://jsonplaceholder.typicode.com/posts',{
-            // const response = await fetch('http://localhost:8080/v1/test', {
+            // const response = await fetch('https://jsonplaceholder.typicode.com/posts',{
+            const response = await fetch('http://localhost:8080/v1/test', {
                 method: 'POST',
                 credentials: 'include',  // Include credentials (cookies) in the request
                 headers: headersObject,
