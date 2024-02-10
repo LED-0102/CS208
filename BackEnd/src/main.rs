@@ -1,3 +1,4 @@
+use actix_web::web::{resource, scope};
 use actix_web::{web, HttpResponse, Responder, HttpServer, App, dev::Service};
 use actix_cors::Cors;
 use serde::{Deserialize, Serialize};
@@ -6,9 +7,11 @@ use sqlx::{Executor, FromRow, PgPool};
 pub mod auth;
 pub mod db;
 pub mod view;
+pub mod lists;
 pub mod ws;
 
 use auth::auth_config;
+use lists::{get_students, get_inventory};
 use crate::view::view_config;
 
 #[derive(Clone)]
@@ -36,10 +39,19 @@ async fn main() -> std::io::Result<()> {
             })
             .configure(auth_config)
             .configure(view_config)
-            .route(
-                "/",
-                web::get().to(|| async { HttpResponse::Ok().body("/") }),
-            ).app_data(web::Data::new(app_state.clone()))
+            .route("/",web::get().to(|| async { HttpResponse::Ok().body("/") }))
+            .service(
+                scope("/v1")
+                    .service(
+                        resource("/students")
+                            .route(web::get().to(get_students))
+                    )
+                    .service(
+                        resource("/inventory")
+                            .route(web::get().to(get_inventory))
+                    )
+            )
+            .app_data(web::Data::new(app_state.clone()))
     })
         .bind(("127.0.0.1", 8080))?
         .run()
