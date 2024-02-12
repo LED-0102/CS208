@@ -24,7 +24,7 @@ CREATE TABLE users (
     location VARCHAR,
     room VARCHAR,
     contact_number VARCHAR,
-    seeking jsonb,
+    seeking jsonb,      --It would contain primary keys of all the forms
     pending jsonb,
     previous jsonb
 );

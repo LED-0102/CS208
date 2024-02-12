@@ -10,6 +10,7 @@ pub mod ws;
 
 use auth::auth_config;
 use crate::view::view_config;
+use crate::ws::ws_config;
 
 #[derive(Clone)]
 struct AppState {
@@ -36,6 +37,7 @@ async fn main() -> std::io::Result<()> {
             })
             .configure(auth_config)
             .configure(view_config)
+            .configure(ws_config)
             .route(
                 "/",
                 web::get().to(|| async { HttpResponse::Ok().body("/") }),
