@@ -6,9 +6,11 @@ use sqlx::{Executor, FromRow, PgPool};
 pub mod auth;
 pub mod db;
 pub mod view;
+pub mod lists;
 pub mod ws;
 
 use auth::auth_config;
+use crate::lists::list_config;
 use crate::view::view_config;
 use crate::ws::ws_config;
 
@@ -38,10 +40,12 @@ async fn main() -> std::io::Result<()> {
             .configure(auth_config)
             .configure(view_config)
             .configure(ws_config)
+            .configure(list_config)
             .route(
                 "/",
                 web::get().to(|| async { HttpResponse::Ok().body("/") }),
-            ).app_data(web::Data::new(app_state.clone()))
+            )
+            .app_data(web::Data::new(app_state.clone()))
     })
         .bind(("127.0.0.1", 8080))?
         .run()
