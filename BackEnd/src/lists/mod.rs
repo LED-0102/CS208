@@ -1,4 +1,4 @@
-use actix_web::{web::Data, HttpResponse, Responder};
+use actix_web::{web::Data, HttpResponse, Responder, web};
 use serde_derive::Serialize;
 use sqlx::{FromRow};
 
@@ -41,4 +41,11 @@ pub async fn get_inventory(app_state: Data<AppState>) -> impl Responder{
         Ok(items) => HttpResponse::Ok().json(items),
         Err(_) => HttpResponse::NotFound().json("No Instruments Found!")
     }
+}
+pub fn list_config (cfg: &mut web::ServiceConfig) {
+    cfg.service(
+        web::scope("/")
+            .route("/students", web::get().to(get_students))
+            .route("/inventory", web::get().to(get_inventory))
+    );
 }

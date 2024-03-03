@@ -1,14 +1,5 @@
 CREATE TYPE department_enum AS ENUM ('CSE', 'EE', 'MEMS', 'CE', 'ME');
-CREATE TYPE SS04_items AS (
-    supplier VARCHAR,
-    bill VARCHAR,
-    and_date DATE,
-    item VARCHAR,
-    quantity INT,
-    con boolean,
-    unit_price INT
-);
-CREATE TYPE state AS ENUM ('Pending', 'Sent', 'Accepted', 'Rejected');
+CREATE TYPE state AS ENUM ('Pending', 'Accepted', 'Rejected');
 CREATE TABLE id (
     table_name VARCHAR(50) PRIMARY KEY,
     count INT DEFAULT 0
@@ -24,12 +15,21 @@ CREATE TABLE users (
     location VARCHAR,
     room VARCHAR,
     contact_number VARCHAR,
-    seeking jsonb,
+    seeking jsonb,      --It would contain primary keys of all the forms
     pending jsonb,
     previous jsonb
 );
 CREATE TABLE forms (
     form VARCHAR PRIMARY KEY
+);
+CREATE TYPE SS04_items AS (
+    supplier VARCHAR,
+    bill VARCHAR,
+    and_date DATE,
+    item VARCHAR,
+    quantity INT,
+    con boolean,
+    unit_price INT
 );
 CREATE TABLE SS04 (
     id INT PRIMARY KEY,
@@ -38,7 +38,73 @@ CREATE TABLE SS04 (
     receiver INT REFERENCES users (id),
     date DATE,
     content SS04_items[],
-    approval state,
+    intermediate_approval state,
+    hod_approval state,
+    reason VARCHAR[]
+);
+CREATE TYPE E01_items AS(
+    employee_id VARCHAR,
+    hod_signature_date DATE,
+    jr_signature_date DATE,
+    type_of_work VARCHAR,
+    request_number VARCHAR
+);
+CREATE TABLE E01 (
+    id INT PRIMARY KEY,
+    note VARCHAR,
+    submitter INT REFERENCES users (id),
+    receiver INT REFERENCES users (id),
+    date DATE,
+    content E01_items[],
+    intermediate_approval state,
+    hod_approval state,
+    reason VARCHAR[]
+);
+CREATE TYPE MM04_items AS (
+    quotation_no VARCHAR,
+    date DATE,
+    requester_name VARCHAR,
+    amount INT,
+    amount_tax INT,
+    amount_words VARCHAR,
+    name_member VARCHAR,
+    name_convenor VARCHAR,
+    designation_member VARCHAR,
+    designation_convenor VARCHAR
+);
+CREATE TABLE MM04 (
+    id INT PRIMARY KEY,
+    note VARCHAR,
+    submitter INT REFERENCES users (id),
+    receiver INT REFERENCES users (id),
+    date DATE,
+    content MM04_items[],
+    intermediate_approval state,
+    hod_approval state,
+    reason VARCHAR[]
+);
+CREATE TYPE R1_items AS (
+    purpose_of_expenditure VARCHAR,
+    name_of_applicant VARCHAR,
+    designation VARCHAR,
+    department VARCHAR,
+    payment_favour ENUM ('Claimant', 'Party'),
+    budget_head_expenditure VARCHAR,
+    project_sanction_no VARCHAR,
+    expenditure_head VARCHAR,
+    amount_claimed INT,
+    recommending_authority_name VARCHAR,
+    approving_authority_name VARCHAR
+);
+CREATE TABLE R1 (
+    id INT PRIMARY KEY,
+    note VARCHAR,
+    submitter INT REFERENCES users (id),
+    receiver INT REFERENCES users (id),
+    date DATE,
+    content R1_items[],
+    intermediate_approval state,
+    hod_approval state,
     reason VARCHAR[]
 );
 CREATE TABLE students (

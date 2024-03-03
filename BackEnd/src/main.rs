@@ -12,7 +12,9 @@ pub mod ws;
 
 use auth::auth_config;
 use lists::{get_students, get_inventory};
+use crate::lists::list_config;
 use crate::view::view_config;
+use crate::ws::ws_config;
 
 #[derive(Clone)]
 struct AppState {
@@ -39,17 +41,11 @@ async fn main() -> std::io::Result<()> {
             })
             .configure(auth_config)
             .configure(view_config)
-            .route("/",web::get().to(|| async { HttpResponse::Ok().body("/") }))
-            .service(
-                scope("/v1")
-                    .service(
-                        resource("/students")
-                            .route(web::get().to(get_students))
-                    )
-                    .service(
-                        resource("/inventory")
-                            .route(web::get().to(get_inventory))
-                    )
+            .configure(ws_config)
+            .configure(list_config)
+            .route(
+                "/",
+                web::get().to(|| async { HttpResponse::Ok().body("/") }),
             )
             .app_data(web::Data::new(app_state.clone()))
     })
