@@ -137,7 +137,7 @@ CREATE TYPE SS01_orders AS (
     item_name VARCHAR,
     item_specification VARCHAR,
     con_n_con ENUM('Con', 'N-Con'),
-    reqired_number INT,
+    required_number INT,
     issued VARCHAR,
     cost INT
 );
