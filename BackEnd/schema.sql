@@ -22,14 +22,40 @@ CREATE TABLE users (
 CREATE TABLE forms (
     form VARCHAR PRIMARY KEY
 );
-CREATE TYPE SS04_items AS (
+CREATE TYPE SS04_orders AS (
     supplier VARCHAR,
     bill VARCHAR,
     and_date DATE,
     item VARCHAR,
     quantity INT,
-    con boolean,
-    unit_price INT
+    con_n_con ENUM('Con', 'N-Con'),
+    unit_price INT,
+    total INT
+);
+CREATE TYPE SS04_items AS (
+    name_of_custodian VARCHAR,
+    department VARCHAR,
+    location VARCHAR,
+    contact_no VARCHAR,
+    designation VARCHAR,
+    inventory_no VARCHAR,
+    room_no VARCHAR,
+    email_id VARCHAR,
+    items_received_date DATE,
+    list_orders SS01_orders[],
+    total_amount INT,
+    name_indenter VARCHAR,
+    sign_date_indenter DATE,
+    name_head VARCHAR,
+    sign_date_head DATE,
+    issued_approved_name VARCHAR,
+    issued_approved_date DATE,
+    items_received_name VARCHAR,
+    items_received_date DATE,
+    items_issued_name VARCHAR,
+    items_issued_date DATE,
+    action_ledger_name VARCHAR,
+    action_ledger_date DATE,
 );
 CREATE TABLE SS04 (
     id INT PRIMARY KEY,
@@ -37,7 +63,7 @@ CREATE TABLE SS04 (
     submitter INT REFERENCES users (id),
     receiver INT REFERENCES users (id),
     date DATE,
-    content SS04_items[],
+    content SS04_items,
     intermediate_approval state,
     hod_approval state,
     reason VARCHAR[]
@@ -55,7 +81,7 @@ CREATE TABLE E01 (
     submitter INT REFERENCES users (id),
     receiver INT REFERENCES users (id),
     date DATE,
-    content E01_items[],
+    content E01_items,
     intermediate_approval state,
     hod_approval state,
     reason VARCHAR[]
@@ -78,7 +104,7 @@ CREATE TABLE MM04 (
     submitter INT REFERENCES users (id),
     receiver INT REFERENCES users (id),
     date DATE,
-    content MM04_items[],
+    content MM04_items,
     intermediate_approval state,
     hod_approval state,
     reason VARCHAR[]
@@ -102,7 +128,56 @@ CREATE TABLE R1 (
     submitter INT REFERENCES users (id),
     receiver INT REFERENCES users (id),
     date DATE,
-    content R1_items[],
+    content R1_items,
+    intermediate_approval state,
+    hod_approval state,
+    reason VARCHAR[]
+);
+CREATE TYPE SS01_orders AS (
+    item_name VARCHAR,
+    item_specification VARCHAR,
+    con_n_con ENUM('Con', 'N-Con'),
+    reqired_number INT,
+    issued VARCHAR,
+    cost INT
+);
+CREATE TYPE SS01_items AS (
+    name_of_custodian VARCHAR,
+    department VARCHAR,
+    location VARCHAR,
+    designation VARCHAR,
+    inventory_no VARCHAR,
+    room_no VARCHAR,
+    item_purchase_info VARCHAR[],
+    name_head VARCHAR,
+    list_orders SS01_orders[],
+    total_cost INT,
+    issued_approved_name VARCHAR,
+    issued_approved_date DATE,
+    items_received_name VARCHAR,
+    items_received_date DATE,
+    items_issued_name VARCHAR,
+    items_issued_date DATE,
+    action_ledger_name VARCHAR,
+    action_ledger_date DATE,
+    supplier VARCHAR,
+    po_no_date VARCHAR[],
+    budget_head_account VARCHAR,
+    challan_no_date VARCHAR,
+    invoice_no_date VARCHAR[],
+    invoice_amount INT,
+    project_no VARCHAR,
+    name_indenter VARCHAR,
+    sign_date_indenter DATE,
+    sign_date_head DATE
+);
+CREATE TABLE SS01 (
+    id INT PRIMARY KEY,
+    note VARCHAR,
+    submitter INT REFERENCES users (id),
+    receiver INT REFERENCES users (id),
+    date DATE,
+    content SS01_items,
     intermediate_approval state,
     hod_approval state,
     reason VARCHAR[]
