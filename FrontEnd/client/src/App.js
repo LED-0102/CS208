@@ -5,19 +5,17 @@ import FacultyHome from './pages/HomePages/FacultyHome/FacultyHome';
 
 function App() {
   return (
-    // <div>
-    //   {/* <LandingPage></LandingPage> */}
-    //   <FacultyHome></FacultyHome>
-    // </div>
 
     <>
-       <Routes>
-       <Route path="/LandingPage" element={<LandingPage/>}></Route>
- 
-       <Route path="/FacultyHome" element={<FacultyHome/>}></Route>
- 
-        </Routes>
+      
+        <Routes>
+        <Route exact path="/" element={ <LandingPage /> } />
 
+          <Route exact path="/login" element={ <LandingPage /> } />
+  
+          <Route exact path="/facultyHome" element={ <FacultyHome /> } />
+  
+        </Routes>
     </>
   );
 }
