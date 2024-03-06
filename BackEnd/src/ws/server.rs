@@ -4,6 +4,7 @@ use std::sync::atomic::{AtomicUsize, Ordering};
 use rand::rngs::ThreadRng;
 use actix::{Actor, Context, Handler, Recipient};
 use rand::Rng;
+use serde_derive::Serialize;
 use sqlx::FromRow;
 
 
@@ -40,7 +41,7 @@ pub struct Person {
     pub designation: String,
     pub addr: Recipient<Message>
 }
-#[derive(FromRow)]
+#[derive(FromRow, Serialize)]
 pub struct Identifier {
     pub name: String,
     pub designation: String
@@ -59,7 +60,7 @@ impl ChatServer {
             visitor_count,
         }
     }
-    async fn send_message(&self, msg: &str, receiver: Identifier) {
+    pub async fn send_message(&self, msg: &str, receiver: &Identifier) {
         for (_key, value) in self.sessions.iter() {
             if value.name == receiver.name && value.designation == receiver.designation {
                 let id = &value.addr;
@@ -101,7 +102,7 @@ impl Handler<ClientMessage> for ChatServer {
     fn handle(&mut self, msg: ClientMessage, _ctx: &mut Self::Context) -> Self::Result {
 
         async_io::block_on( async {
-            self.send_message(&msg.msg, msg.addr).await;
+            self.send_message(&msg.msg, &msg.addr).await;
         });
 
     }
