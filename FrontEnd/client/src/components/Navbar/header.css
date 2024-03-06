@@ -1,0 +1,94 @@
+.fH_FocusPage{
+    position: relative;
+    left: 179px;
+    width: calc(100vw - 179px);
+    background-color: #fff;
+    overflow-x: hidden;
+}
+
+.cb{
+    color: #000;
+}
+
+.fH_head{
+    display: flex;
+    height: 50px;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #000;
+}
+
+.headHam{
+    margin-left: 20px;
+    width: 25px;
+    padding: 5px;
+    cursor: pointer;
+    z-index: 4;
+}
+
+.htb{
+    background-color: #000;
+    height: 2px;
+    width: 10px;
+    margin:6px 0;
+}
+
+.hm{
+    background-color: #000;
+    height: 2px;
+    width: 5px;
+}
+
+@media screen and (min-width: 845px) {
+    .fH_head{
+        justify-content: end;
+    }
+    .headHam{
+        display: none;
+    }
+}
+
+.fh_User{
+    position: relative;
+}
+
+.fH_headUser{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    font-size: 2em;
+    cursor: pointer;
+    margin-right: 100px;
+}
+
+.fH_headUserDropDown{
+    position: fixed;
+    top:48px;
+    right:65px;
+    z-index: 3;
+    background-color: #fff;
+    padding: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 8px;
+    border: 1px solid #000;
+    border-top: none;
+}
+
+.fH_headUserDropDownHide{
+    display: none;
+}
+
+.fH_headUserDropDown > ul > li{
+    display: flex;
+    font-size: 1.3em;
+    align-items: center;
+    justify-content: start;
+}
+
+@media screen and (max-width: 845px) {
+    .fH_FocusPage{
+        position: static;
+        width: calc(100vw);
+    }
+}

@@ -1,0 +1,10 @@
+.setup{
+    margin-left: 179px;
+    overflow-x: hidden;
+}
+
+@media screen and (max-width: 845px) {
+    .setup{
+        margin-left: 0;
+    }
+}

@@ -2,6 +2,7 @@ import './App.css';
 import { Routes, Route } from "react-router-dom";
 import LandingPage from './pages/LandingPage/LandingPage';
 import FacultyHome from './pages/HomePages/FacultyHome/FacultyHome';
+import FirstFormofPurchase from './pages/PurchasePages/FirstFormofPurchase';
 
 function App() {
   return (
@@ -14,6 +15,8 @@ function App() {
           <Route exact path="/login" element={ <LandingPage /> } />
   
           <Route exact path="/facultyHome" element={ <FacultyHome /> } />
+
+          <Route exact path="/faculty/purchase/ff" element={ <FirstFormofPurchase /> } />
   
         </Routes>
     </>
