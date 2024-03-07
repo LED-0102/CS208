@@ -1,4 +1,4 @@
-use actix_web::{web::Data, HttpResponse, Responder, web};
+use actix_web::{web::Data, HttpResponse, Responder, web, error};
 use serde_derive::Serialize;
 use sqlx::{FromRow};
 
@@ -17,6 +17,13 @@ struct Instrument {
     instrument_id: String,
     instrument_name: String,
     location: String
+}
+
+#[derive(Serialize, FromRow)]
+struct Receivers {
+    id: String,
+    username: String,
+    designation: String
 }
 
 pub async fn get_students(app_state: Data<AppState>) -> impl Responder{
@@ -42,10 +49,21 @@ pub async fn get_inventory(app_state: Data<AppState>) -> impl Responder{
         Err(_) => HttpResponse::NotFound().json("No Instruments Found!")
     }
 }
+
+pub async fn get_receiver(pool: Data<AppState>) -> HttpResponse {
+    let todo: Vec<Receivers> = sqlx::query_as("SELECT id, username, designation FROM users")
+        .fetch_all(&pool.pool)
+        .await
+        .map_err(|e| error::ErrorBadRequest(e.to_string())).unwrap();
+
+    let json_string = serde_json::to_string(&todo).unwrap();
+    HttpResponse::Ok().body(json_string)
+}
 pub fn list_config (cfg: &mut web::ServiceConfig) {
     cfg.service(
-        web::scope("/")
+        web::scope("/list")
             .route("/students", web::get().to(get_students))
             .route("/inventory", web::get().to(get_inventory))
+            .route("/receiver", web::get().to(get_receiver))
     );
 }

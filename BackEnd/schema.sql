@@ -1,5 +1,6 @@
 CREATE TYPE department_enum AS ENUM ('CSE', 'EE', 'MEMS', 'CE', 'ME');
 CREATE TYPE state AS ENUM ('Pending', 'Accepted', 'Rejected');
+CREATE TYPE desig AS ENUM ('HOD', 'Staff', 'Professor', 'Office', 'Student');
 CREATE TABLE id (
     table_name VARCHAR(50) PRIMARY KEY,
     count INT DEFAULT 0
@@ -10,8 +11,8 @@ CREATE TABLE users (
     email VARCHAR UNIQUE NOT NULL,
     password VARCHAR NOT NULL,
     admin INT DEFAULT 0,
-    designation VARCHAR,
-    department VARCHAR,
+    designation desig,
+    department department_enum,
     location VARCHAR,
     room VARCHAR,
     contact_number VARCHAR,
@@ -33,14 +34,6 @@ CREATE TYPE SS04_orders AS (
     total INT
 );
 CREATE TYPE SS04_items AS (
-    name_of_custodian VARCHAR,
-    department VARCHAR,
-    location VARCHAR,
-    contact_no VARCHAR,
-    designation VARCHAR,
-    inventory_no VARCHAR,
-    room_no VARCHAR,
-    email_id VARCHAR,
     items_received_date DATE,
     list_orders SS01_orders[],
     total_amount INT,
@@ -64,9 +57,7 @@ CREATE TABLE SS04 (
     receiver INT REFERENCES users (id),
     date DATE,
     content SS04_items,
-    intermediate_approval state,
     hod_approval state,
-    reason VARCHAR[]
 );
 CREATE TYPE E01_items AS(
     employee_id VARCHAR,
