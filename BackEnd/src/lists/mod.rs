@@ -61,7 +61,7 @@ pub async fn get_receiver(pool: Data<AppState>) -> HttpResponse {
 }
 pub fn list_config (cfg: &mut web::ServiceConfig) {
     cfg.service(
-        web::scope("/list")
+        web::scope("/v1/list")
             .route("/students", web::get().to(get_students))
             .route("/inventory", web::get().to(get_inventory))
             .route("/receiver", web::get().to(get_receiver))

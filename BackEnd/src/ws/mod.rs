@@ -4,7 +4,7 @@ use actix_web::{Error, HttpRequest, HttpResponse, web};
 use actix_web_actors::ws;
 use crate::AppState;
 use crate::auth::jwt::JwToken;
-use crate::db::fetch_identifier;
+use crate::db::fetch_id::identifier_email;
 
 pub mod session;
 pub mod server;
@@ -23,7 +23,7 @@ pub async fn chat_route(
     jwt: JwToken,
     pool: web::Data<AppState>
 ) -> Result<HttpResponse, Error> {
-    let id = fetch_identifier(&jwt.email, &pool.pool).await;
+    let id = identifier_email(&jwt.email, &pool.pool).await;
     ws::start(
         session::WsSession {
             id: 0,
