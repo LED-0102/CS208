@@ -1,10 +1,63 @@
 .setup{
     margin-left: 179px;
     overflow-x: hidden;
+    border: 5px solid yellow;
 }
 
 @media screen and (max-width: 845px) {
     .setup{
         margin-left: 0;
     }
+}
+
+.proContainer {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  @media (min-width: 768px) {
+    .proContainer {
+      width: 750px;
+    }
+  }
+  @media (min-width: 992px) {
+    .proContainer {
+      width: 970px;
+    }
+  }
+  @media (min-width: 1200px) {
+    .proContainer {
+      width: 1170px;
+    }
+  }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+th {
+    background-color: #f2f2f2;
+}
+textarea {
+    width: 100%;
+    height: 100px;
+}
+.signature-section {
+    margin-top: 20px;
+}
+button {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }

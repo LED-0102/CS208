@@ -42,7 +42,11 @@
   padding: 0;
   box-sizing: border-box;
 }
-
+body{
+  background-color: #fff;
+  height:100vh;
+  width:100vw;
+}
 .cb{
   color: #000;
 }
