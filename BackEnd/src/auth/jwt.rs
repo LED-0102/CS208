@@ -13,9 +13,11 @@ pub struct JwToken {
     pub exp: usize,
     pub email: String,
     pub is_admin: i32,
+    pub id: i32,
 }
 #[derive(Serialize, Deserialize, FromRow)]
 pub struct AdminEmail {
+    pub id: i32,
     pub admin: i32,
     pub username: String
 }
@@ -30,13 +32,13 @@ impl JwToken {
         return token;
     }
     pub async fn new(email: String, pool: &PgPool) -> Self {
-        let todo: AdminEmail = sqlx::query_as("SELECT admin, username from users where email=$1")
+        let todo: AdminEmail = sqlx::query_as("SELECT id, admin, username from users where email=$1")
             .bind(&email)
             .fetch_one(pool)
             .await
             .map_err(|e| error::ErrorBadRequest(e.to_string())).unwrap();
         let timestamp = Utc::now().checked_add_signed(chrono::Duration::minutes(360)).expect("valid Timestamp").timestamp();
-        return JwToken {username: todo.username, exp: timestamp as usize, email, is_admin: todo.admin};
+        return JwToken {username: todo.username, exp: timestamp as usize, email, is_admin: todo.admin, id: todo.id};
     }
     pub fn from_token(token: String) -> Result<Self, String>{
         let key = DecodingKey::from_secret(
@@ -60,9 +62,9 @@ impl FromRequest for JwToken {
     type Future = Ready<Result<JwToken, Error>>;
 
     fn from_request(req: &HttpRequest, _payload: &mut Payload) -> Self::Future {
-        let res = req.cookies().unwrap();
+        // let res = req.cookies().unwrap();
         // println!("{:?}", res);
-        let hed = req.headers();
+        // let hed = req.headers();
         // println!("{:?}", hed);
         match req.cookie("jwt") {
             Some(data) => {

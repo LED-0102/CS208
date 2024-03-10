@@ -1,23 +1,10 @@
 use serde_derive::{Deserialize, Serialize};
-use sqlx::FromRow;
-use pgdatetime::Timestamp;
+use sqlx::{Error, FromRow};
+use crate::db::date::PgDate;
 
 #[derive(Serialize, Deserialize, FromRow)]
 pub struct Users {
     pub(crate) password: String,
-}
-
-
-#[derive(Debug, Serialize, Deserialize)]
-pub struct SS04Orders {
-    pub supplier: String,
-    pub bill: String,
-    pub and_date: Option<Timestamp>, // Assuming the date could be null
-    pub item: String,
-    pub quantity: i32,
-    pub con_n_con: ConNonCon,
-    pub unit_price: i32,
-    pub total: i32,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -37,37 +24,45 @@ impl std::str::FromStr for ConNonCon {
         }
     }
 }
-
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, FromRow)]
+pub struct SS04Orders {
+    pub supplier: String,
+    pub bill: String,
+    pub and_date: Option<PgDate>, // Assuming the date could be null
+    pub item: String,
+    pub quantity: i32,
+    pub con_n_con: ConNonCon,
+    pub unit_price: i32,
+    pub total: i32,
+}
+#[derive(Debug, Serialize, Deserialize, FromRow)]
 pub struct SS04Items {
-    pub items_received_date: Option<Timestamp>, // Assuming the date could be null
+    pub items_received_date: Option<PgDate>, // Assuming the date could be null
     pub list_orders: Vec<SS04Orders>,
     pub total_amount: i32,
     pub name_indenter: String,
-    pub sign_date_indenter: Option<Timestamp>, // Assuming the date could be null
+    pub sign_date_indenter: Option<PgDate>, // Assuming the date could be null
     pub name_head: String,
-    pub sign_date_head: Option<Timestamp>, // Assuming the date could be null
+    pub sign_date_head: Option<PgDate>, // Assuming the date could be null
     pub issued_approved_name: String,
-    pub issued_approved_date: Option<Timestamp>, // Assuming the date could be null
+    pub issued_approved_date: Option<PgDate>, // Assuming the date could be null
     pub items_received_name: String,
-    pub items_issued_date: Option<Timestamp>, // Assuming the date could be null
+    pub items_issued_date: Option<PgDate>, // Assuming the date could be null
     pub action_ledger_name: String,
-    pub action_ledger_date: Option<Timestamp>, // Assuming the date could be null
+    pub action_ledger_date: Option<PgDate>, // Assuming the date could be null
 }
 #[derive(Debug, Serialize, Deserialize, FromRow)]
 pub struct SS04 {
-    pub id: i32,
     pub note: String,
     pub submitter: i32,
     pub receiver: i32,
-    pub date: Option<Timestamp>, // Assuming the date could be null
+    pub date: Option<PgDate>, // Assuming the date could be null
     pub content: SS04Items,
     pub hod_approval: State,
 }
 impl SS04 {
     pub fn default() -> Self {
         SS04{
-            id: 0,
             note: "".to_string(),
             submitter: 0,
             receiver: 0,
