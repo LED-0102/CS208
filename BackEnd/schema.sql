@@ -35,7 +35,7 @@ CREATE TYPE SS04_orders AS (
 );
 CREATE TYPE SS04_items AS (
     items_received_date DATE,
-    list_orders SS01_orders[],
+    list_orders SS04_orders[],
     total_amount INT,
     name_indenter VARCHAR,
     sign_date_indenter DATE,
