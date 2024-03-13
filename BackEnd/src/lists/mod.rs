@@ -1,5 +1,5 @@
 use actix_web::{web::Data, HttpResponse, Responder, web, error};
-use serde_derive::Serialize;
+use serde::Serialize;
 use sqlx::{FromRow};
 
 use crate::AppState;

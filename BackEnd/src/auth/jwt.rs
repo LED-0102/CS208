@@ -2,7 +2,7 @@ use actix_web::dev::Payload;
 use actix_web::{Error, error, FromRequest, HttpRequest};
 use actix_web::error::ErrorUnauthorized;
 use futures::future::{Ready, ok, err};
-use serde_derive::{Deserialize, Serialize};
+use serde::{Deserialize, Serialize};
 use jsonwebtoken::{encode, decode, Header, EncodingKey, DecodingKey, Validation};
 use chrono::{Utc};
 use sqlx::{FromRow, PgPool};

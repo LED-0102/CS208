@@ -4,7 +4,7 @@ use std::sync::atomic::{AtomicUsize, Ordering};
 use rand::rngs::ThreadRng;
 use actix::{Actor, Context, Handler, Recipient};
 use rand::Rng;
-use serde_derive::Serialize;
+use serde::Serialize;
 use sqlx::FromRow;
 
 

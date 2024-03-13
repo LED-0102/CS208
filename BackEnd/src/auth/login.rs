@@ -1,5 +1,3 @@
-
-use serde_derive::{Deserialize, Serialize};
 use bcrypt::{ verify};
 use serde_json;
 #[derive(Deserialize)]
@@ -14,6 +12,7 @@ pub struct LoginResponse {
 
 use actix_web::{web, HttpResponse, error};
 use actix_web::cookie::{Cookie, SameSite};
+use serde::{Deserialize, Serialize};
 use crate::AppState;
 use crate::auth::jwt::{JwToken};
 use crate::db::structs::Users;

@@ -1,6 +1,6 @@
 
 use bcrypt::{DEFAULT_COST, hash, verify};
-use serde_derive::Deserialize;
+use serde::Deserialize;
 use actix_web::{web, HttpResponse, Responder, error};
 use std::error::Error;
 use sqlx::{PgPool, Row};

@@ -1,6 +1,7 @@
 CREATE TYPE department_enum AS ENUM ('CSE', 'EE', 'MEMS', 'CE', 'ME');
 CREATE TYPE state AS ENUM ('Pending', 'Accepted', 'Rejected');
 CREATE TYPE desig AS ENUM ('HOD', 'Staff', 'Professor', 'Office', 'Student');
+CREATE TYPE con AS ENUM ('Con', 'N-Con');
 CREATE TABLE id (
     table_name VARCHAR(50) PRIMARY KEY,
     count INT DEFAULT 0
@@ -26,43 +27,43 @@ CREATE TABLE forms (
 CREATE TYPE SS04_orders AS (
     supplier VARCHAR,
     bill VARCHAR,
-    and_date DATE,
+    and_date VARCHAR,
     item VARCHAR,
     quantity INT,
-    con_n_con ENUM('Con', 'N-Con'),
+    con_n_con con,
     unit_price INT,
     total INT
 );
 CREATE TYPE SS04_items AS (
-    items_received_date DATE,
+    items_received_date VARCHAR,
     list_orders SS01_orders[],
     total_amount INT,
     name_indenter VARCHAR,
-    sign_date_indenter DATE,
+    sign_date_indenter VARCHAR,
     name_head VARCHAR,
-    sign_date_head DATE,
+    sign_date_head VARCHAR,
     issued_approved_name VARCHAR,
-    issued_approved_date DATE,
+    issued_approved_date VARCHAR,
     items_received_name VARCHAR,
-    items_received_date DATE,
+    items_received_date VARCHAR,
     items_issued_name VARCHAR,
-    items_issued_date DATE,
+    items_issued_date VARCHAR,
     action_ledger_name VARCHAR,
-    action_ledger_date DATE,
+    action_ledger_date VARCHAR,
 );
 CREATE TABLE SS04 (
     id INT PRIMARY KEY,
     note VARCHAR,
     submitter INT REFERENCES users (id),
     receiver INT REFERENCES users (id),
-    date DATE,
+    date VARCHAR,
     content SS04_items,
     hod_approval state,
 );
 CREATE TYPE E01_items AS(
     employee_id VARCHAR,
-    hod_signature_date DATE,
-    jr_signature_date DATE,
+    hod_signature_date VARCHAR,
+    jr_signature_date VARCHAR,
     type_of_work VARCHAR,
     request_number VARCHAR
 );
@@ -71,7 +72,7 @@ CREATE TABLE E01 (
     note VARCHAR,
     submitter INT REFERENCES users (id),
     receiver INT REFERENCES users (id),
-    date DATE,
+    date VARCHAR,
     content E01_items,
     intermediate_approval state,
     hod_approval state,
@@ -79,7 +80,7 @@ CREATE TABLE E01 (
 );
 CREATE TYPE MM04_items AS (
     quotation_no VARCHAR,
-    date DATE,
+    date VARCHAR,
     requester_name VARCHAR,
     amount INT,
     amount_tax INT,
@@ -94,7 +95,7 @@ CREATE TABLE MM04 (
     note VARCHAR,
     submitter INT REFERENCES users (id),
     receiver INT REFERENCES users (id),
-    date DATE,
+    date VARCHAR,
     content MM04_items,
     intermediate_approval state,
     hod_approval state,
@@ -118,7 +119,7 @@ CREATE TABLE R1 (
     note VARCHAR,
     submitter INT REFERENCES users (id),
     receiver INT REFERENCES users (id),
-    date DATE,
+    date VARCHAR,
     content R1_items,
     intermediate_approval state,
     hod_approval state,
@@ -144,13 +145,13 @@ CREATE TYPE SS01_items AS (
     list_orders SS01_orders[],
     total_cost INT,
     issued_approved_name VARCHAR,
-    issued_approved_date DATE,
+    issued_approved_date VARCHAR,
     items_received_name VARCHAR,
-    items_received_date DATE,
+    items_received_date VARCHAR,
     items_issued_name VARCHAR,
-    items_issued_date DATE,
+    items_issued_date VARCHAR,
     action_ledger_name VARCHAR,
-    action_ledger_date DATE,
+    action_ledger_date VARCHAR,
     supplier VARCHAR,
     po_no_date VARCHAR[],
     budget_head_account VARCHAR,
@@ -159,15 +160,15 @@ CREATE TYPE SS01_items AS (
     invoice_amount INT,
     project_no VARCHAR,
     name_indenter VARCHAR,
-    sign_date_indenter DATE,
-    sign_date_head DATE
+    sign_date_indenter VARCHAR,
+    sign_date_head VARCHAR
 );
 CREATE TABLE SS01 (
     id INT PRIMARY KEY,
     note VARCHAR,
     submitter INT REFERENCES users (id),
     receiver INT REFERENCES users (id),
-    date DATE,
+    date VARCHAR,
     content SS01_items,
     intermediate_approval state,
     hod_approval state,

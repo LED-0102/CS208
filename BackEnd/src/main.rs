@@ -11,7 +11,6 @@ pub mod lists;
 pub mod ws;
 
 use auth::auth_config;
-use lists::{get_students, get_inventory};
 use crate::lists::list_config;
 use crate::view::view_config;
 use crate::ws::ws_config;
