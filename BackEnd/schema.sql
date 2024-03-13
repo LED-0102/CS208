@@ -1,7 +1,9 @@
 CREATE TYPE department_enum AS ENUM ('CSE', 'EE', 'MEMS', 'CE', 'ME');
 CREATE TYPE state AS ENUM ('Pending', 'Accepted', 'Rejected');
 CREATE TYPE desig AS ENUM ('HOD', 'Staff', 'Professor', 'Office', 'Student');
-CREATE TYPE con AS ENUM ('Con', 'N-Con');
+CREATE TYPE con_enum AS ENUM ('Con', 'N-Con');
+CREATE TYPE degree_enum AS ENUM ('Ph.D.', 'M.Tech.', 'MS', 'B.Tech');
+CREATE TYPE claimant_enum AS ENUM ('Claimant', 'Party');
 CREATE TABLE id (
     table_name VARCHAR(50) PRIMARY KEY,
     count INT DEFAULT 0
@@ -30,13 +32,13 @@ CREATE TYPE SS04_orders AS (
     and_date VARCHAR,
     item VARCHAR,
     quantity INT,
-    con_n_con con,
+    con_n_con con_enum,
     unit_price INT,
     total INT
 );
 CREATE TYPE SS04_items AS (
-    items_received_date VARCHAR,
-    list_orders SS01_orders[],
+    items_receiving_date DATE,
+    list_orders SS04_orders[],
     total_amount INT,
     name_indenter VARCHAR,
     sign_date_indenter VARCHAR,
@@ -58,7 +60,7 @@ CREATE TABLE SS04 (
     receiver INT REFERENCES users (id),
     date VARCHAR,
     content SS04_items,
-    hod_approval state,
+    hod_approval state
 );
 CREATE TYPE E01_items AS(
     employee_id VARCHAR,
@@ -106,7 +108,7 @@ CREATE TYPE R1_items AS (
     name_of_applicant VARCHAR,
     designation VARCHAR,
     department VARCHAR,
-    payment_favour ENUM ('Claimant', 'Party'),
+    payment_favour claimant_enum,
     budget_head_expenditure VARCHAR,
     project_sanction_no VARCHAR,
     expenditure_head VARCHAR,
@@ -128,7 +130,7 @@ CREATE TABLE R1 (
 CREATE TYPE SS01_orders AS (
     item_name VARCHAR,
     item_specification VARCHAR,
-    con_n_con ENUM('Con', 'N-Con'),
+    con_n_con con_enum,
     required_number INT,
     issued VARCHAR,
     cost INT
@@ -178,7 +180,7 @@ CREATE TABLE students (
     roll_no VARCHAR PRIMARY KEY,
     student_name varchar NOT NULL,
     email_id varchar NOT NULL,
-    degree ENUM ('Ph.D.', 'M.Tech.', 'MS', 'B.Tech') NOT NULL
+    degree degree_enum NOT NULL
 );
 CREATE TABLE inventory (
     instrument_id VARCHAR PRIMARY KEY,
