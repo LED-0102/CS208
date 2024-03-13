@@ -88,9 +88,9 @@ CREATE TYPE MM04_items AS (
     amount_tax INT,
     amount_words VARCHAR,
     name_member VARCHAR,
-    name_convenor VARCHAR,
+    name_convener VARCHAR,
     designation_member VARCHAR,
-    designation_convenor VARCHAR
+    designation_convener VARCHAR
 );
 CREATE TABLE MM04 (
     id INT PRIMARY KEY,
