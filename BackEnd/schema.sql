@@ -38,7 +38,7 @@ CREATE TYPE SS04_orders AS (
 );
 CREATE TYPE SS04_items AS (
     items_receiving_date DATE,
-    list_orders SS04_orders[],
+    list_orders jsonb,
     total_amount INT,
     name_indenter VARCHAR,
     sign_date_indenter VARCHAR,
@@ -59,7 +59,7 @@ CREATE TABLE SS04 (
     submitter INT REFERENCES users (id),
     receiver INT REFERENCES users (id),
     date VARCHAR,
-    content SS04_items,
+    content jsonb,
     hod_approval state
 );
 CREATE TYPE E01_items AS(
@@ -144,7 +144,7 @@ CREATE TYPE SS01_items AS (
     room_no VARCHAR,
     item_purchase_info VARCHAR[],
     name_head VARCHAR,
-    list_orders SS01_orders[],
+    list_orders jsonb,
     total_cost INT,
     issued_approved_name VARCHAR,
     issued_approved_date VARCHAR,
@@ -171,7 +171,7 @@ CREATE TABLE SS01 (
     submitter INT REFERENCES users (id),
     receiver INT REFERENCES users (id),
     date VARCHAR,
-    content SS01_items,
+    content jsonb,
     intermediate_approval state,
     hod_approval state,
     reason VARCHAR[]
