@@ -2,6 +2,7 @@ import React from 'react';
 import Navbar from '../../components/Navbar/Navbar';
 import Header from '../../components/Navbar/Header';
 import { Input } from "@nextui-org/react";
+import "./ssform.css"
 
 
 const SS04form = () => {
@@ -100,14 +101,58 @@ const SS04form = () => {
                   <span className='font-bold'>Email id :</span>
                   <span><a href="mailto:nisheeth@iiti.ac.in ?body=My custom mail body">nisheeth@iiti.ac.in </a></span>
                 </p>
-               
+
               </div>
             </div>
             <span className='flex justify'>
-            <span  className='mx-auto  border-4 border-green-100'>If Item purchased under buy-back (No) & Item purchase information GeM Contract No.: DP</span>
-           
+              <span className='mx-auto  border-4 border-green-100'>If Item purchased under buy-back (No) & Item purchase information GeM Contract No.: DP</span>
+
             </span>
-            
+
+          </div>
+          <div className='p-4 '  style={{ overflowX: 'auto' }}>
+          <table border="1" className='w-fit'>
+  <thead>
+    <tr>
+      <th>SNO</th>
+      <th>Column 1</th>
+      <th>Column 2</th>
+      <th>Column 3</th>
+      <th>Column 4</th>
+      <th>Column 5</th>
+      <th>Column 6</th>
+      <th>Column 7</th>
+      {/* <th>Column </th> */}
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><input type="text" value="1"/></td>
+      <td><input type="text" value="Data 1"/></td>
+      <td><input type="text" value="Data 2"/></td>
+      <td><input type="text" value="Data 3"/></td>
+      <td><input type="text" value="Data 4"/></td>
+      <td><input type="text" value="Data 5"/></td>
+      <td><input type="text" value="Data 6"/></td>
+      <td><input type="text" value="Data 7"/></td>
+    </tr>
+    <tr>
+      <td><input type="text" value="2"/></td>
+      <td><input type="text" value="Data 8"/></td>
+      <td><input type="text" value="Data 9"/></td>
+      <td><input type="text" value="Data 10"/></td>
+      <td><input type="text" value="Data 11"/></td>
+      <td><input type="text" value="Data 12"/></td>
+      <td><input type="text" value="Data 13"/></td>
+      <td><input type="text" value="Data 14"/></td>
+    </tr>
+  </tbody>
+</table>
+
+
+          </div>
+          <div className='py-8'>
+            hi++++++++++++++
           </div>
         </form>
       </div>
