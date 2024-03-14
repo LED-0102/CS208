@@ -11,10 +11,10 @@ const SS04form = () => {
       <Navbar />
       <Header />
       <div></div>
-      <div className='ml-56 border-4 border-yellow-300 h-full'>
+      <div className='ml-56 border-2 border-black h-full'>
         <form>
-          <div className='flex w-full p-4 border-4 border-red-300'>
-            <div className='w-2/3'>hi</div>
+          <div className='flex w-full p-4 '>
+            <div className='w-2/3'>IITI logo and header left</div>
             <div>
               <div className=' border-2 border-black'>
                 <div className='flex-col p-4'>
@@ -59,9 +59,9 @@ const SS04form = () => {
 
             </div>
           </div>
-          <div className=' w-full px-4 py-2  border-4 border-red-300'>
+          <div className=' w-full px-4 py-2  '>
             <span className='flex justify'>
-              <span className='mx-auto  border-4 border-green-100'>(To be prepared in duplicate. One copy will be forwarded to Finance, and one held with Store Office.)</span>
+              <span className='mx-auto'>(To be prepared in duplicate. One copy will be forwarded to Finance, and one held with Store Office.)</span>
             </span>
             {/* <div className='flex w-full px-4 py-2  border-4 border-red-300'> */}
             <div className='flex w-full px-4 py-2  '>
@@ -105,7 +105,7 @@ const SS04form = () => {
               </div>
             </div>
             <span className='flex justify'>
-              <span className='mx-auto  border-4 border-green-100'>If Item purchased under buy-back (No) & Item purchase information GeM Contract No.: DP</span>
+              <span className='mx-auto '>If Item purchased under buy-back (No) & Item purchase information GeM Contract No.: DP</span>
 
             </span>
 
@@ -115,13 +115,13 @@ const SS04form = () => {
   <thead>
     <tr>
       <th>SNO</th>
-      <th>Column 1</th>
-      <th>Column 2</th>
-      <th>Column 3</th>
-      <th>Column 4</th>
-      <th>Column 5</th>
-      <th>Column 6</th>
-      <th>Column 7</th>
+      <th>Name of Supplier </th>
+      <th>Bill No & Date</th>
+      <th>Item Name and Specification</th>
+      <th>Qty</th>
+      <th>Con/Non-Con</th>
+      <th>Unit Price</th>
+      <th>Total</th>
       {/* <th>Column </th> */}
     </tr>
   </thead>
@@ -152,7 +152,7 @@ const SS04form = () => {
 
           </div>
           <div className='py-8'>
-            hi++++++++++++++
+            Signatures section left
           </div>
         </form>
       </div>
