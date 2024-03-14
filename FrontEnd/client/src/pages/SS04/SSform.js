@@ -154,6 +154,9 @@ const SS04form = () => {
           <div className='py-8'>
             Signatures section left
           </div>
+          <div className='flex justify-center w-full mb-8'>
+          <button >Submit</button>
+          </div>
         </form>
       </div>
 
