@@ -30,7 +30,7 @@
     background-color: #000;
     height: 2px;
     width: 10px;
-    margin:6px 0;
+    margin: 6px 0;
 }
 
 .hm{
@@ -64,8 +64,8 @@
 
 .fH_headUserDropDown{
     position: fixed;
-    top:48px;
-    right:65px;
+    top: 48px;
+    right: 65px;
     z-index: 3;
     background-color: #fff;
     padding: 5px;
@@ -89,6 +89,6 @@
 @media screen and (max-width: 845px) {
     .fH_FocusPage{
         position: static;
-        width: calc(100vw);
+        width: calc( 100vw );
     }
 }

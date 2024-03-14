@@ -4,6 +4,10 @@
     border: 5px solid yellow;
 }
 
+ol{
+  list-style-type: decimal;
+}
+
 @media screen and (max-width: 845px) {
     .setup{
         margin-left: 0;
