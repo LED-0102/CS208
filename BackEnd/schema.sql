@@ -4,12 +4,8 @@ CREATE TYPE desig AS ENUM ('HOD', 'Staff', 'Professor', 'Office', 'Student');
 CREATE TYPE con_enum AS ENUM ('Con', 'N-Con');
 CREATE TYPE degree_enum AS ENUM ('Ph.D.', 'M.Tech.', 'MS', 'B.Tech');
 CREATE TYPE claimant_enum AS ENUM ('Claimant', 'Party');
-CREATE TABLE id (
-    table_name VARCHAR(50) PRIMARY KEY,
-    count INT DEFAULT 0
-);
 CREATE TABLE users (
-    id INT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     username VARCHAR(50) NOT NULL,
     email VARCHAR UNIQUE NOT NULL,
     password VARCHAR NOT NULL,
@@ -36,9 +32,14 @@ CREATE TYPE SS04_orders AS (
     unit_price INT,
     total INT
 );
-CREATE TYPE SS04_items AS (
+CREATE TABLE SS04 (
+    id SERIAL PRIMARY KEY,
+    note VARCHAR,
+    submitter INT REFERENCES users (id),
+    receiver INT REFERENCES users (id),
+    date VARCHAR,
     items_receiving_date DATE,
-    list_orders jsonb,
+    list_orders jsonb,      --SS04 orders
     total_amount INT,
     name_indenter VARCHAR,
     sign_date_indenter VARCHAR,
@@ -52,14 +53,6 @@ CREATE TYPE SS04_items AS (
     items_issued_date VARCHAR,
     action_ledger_name VARCHAR,
     action_ledger_date VARCHAR,
-);
-CREATE TABLE SS04 (
-    id INT PRIMARY KEY,
-    note VARCHAR,
-    submitter INT REFERENCES users (id),
-    receiver INT REFERENCES users (id),
-    date VARCHAR,
-    content jsonb,
     hod_approval state
 );
 CREATE TYPE E01_items AS(

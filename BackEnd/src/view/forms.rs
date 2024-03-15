@@ -1,13 +1,13 @@
 use std::error::Error;
 use actix_web::{HttpResponse};
 use serde::{Serialize, Serializer};
-use crate::db::structs::{SS04};
+use crate::db::structs::{ SS04};
 use crate::ws::server::{ChatServer, Identifier};
 use serde_json;
 use serde_json::Value;
-use sqlx::{PgPool};
+use sqlx::{PgPool, Row};
 use crate::auth::jwt::JwToken;
-use crate::db::fetch_id::{fetch_id, identifier_id};
+use crate::db::fetch_id::{identifier_id};
 
 pub enum Forms {
     SS04(SS04),
@@ -67,17 +67,56 @@ impl FormTrait for Forms {
     async fn pg_insert(&self, pool: &PgPool) -> Result<(), Box<dyn Error>> {
         match self {
             Forms::SS04(ss04) => {
-                let id = fetch_id("SS04".parse().unwrap(), pool).await;
-                let _ = sqlx::query("INSERT INTO SS04 (id, note, submitter, receiver, date, content, hod_approval) VALUES ($1, $2, $3, $4, $5, $6, $7)")
-                    .bind(id)
+                let result = sqlx::query(
+                        "INSERT INTO SS04 (
+                            note,
+                            submitter,
+                            receiver,
+                            date,
+                            items_receiving_date,
+                            list_orders,
+                            total_amount,
+                            name_indenter,
+                            sign_date_indenter,
+                            name_head,
+                            sign_date_head,
+                            issued_approved_name,
+                            issued_approved_date,
+                            items_received_name,
+                            items_received_date,
+                            items_issued_name,
+                            items_issued_date,
+                            action_ledger_name,
+                            action_ledger_date,
+                            hod_approval
+                        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20)
+                        RETURNING id",
+                    )
                     .bind(&ss04.note)
                     .bind(&ss04.submitter)
                     .bind(&ss04.receiver)
                     .bind(&ss04.date)
-                    .bind(&ss04.content)
+                    .bind(&ss04.items_receiving_date)
+                    .bind(&serde_json::to_value(&ss04.list_orders).unwrap()) // Assuming ss04.list_orders is a serde_json::Value
+                    .bind(&ss04.total_amount)
+                    .bind(&ss04.name_indenter)
+                    .bind(&ss04.sign_date_indenter)
+                    .bind(&ss04.name_head)
+                    .bind(&ss04.sign_date_head)
+                    .bind(&ss04.issued_approved_name)
+                    .bind(&ss04.issued_approved_date)
+                    .bind(&ss04.items_received_name)
+                    .bind(&ss04.items_received_date)
+                    .bind(&ss04.items_issued_name)
+                    .bind(&ss04.items_issued_date)
+                    .bind(&ss04.action_ledger_name)
+                    .bind(&ss04.action_ledger_date)
                     .bind(&ss04.hod_approval)
-                    .execute(pool)
+                    .fetch_one(pool)
                     .await?;
+
+                let id: i32 = result.try_get("id")?;
+                println!("{id}");
                 Ok(())
             }
         }
