@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Navbar from '../../components/Navbar/Navbar';
 import Header from '../../components/Navbar/Header';
 import { Input } from "@nextui-org/react";
@@ -6,9 +6,20 @@ import "./ssform.css"
 
 
 const SS04form = () => {
+  // const [rows, setRows] = useState([]);
+  const [rows, setRows] = useState([]);
+
+  const addRow = (e) => {
+    e.preventDefault(); 
+    // Create a new row with a unique ID and serial number
+    const newRow = { id: rows.length + 1, sno: rows.length + 1 };
+    // Update the state to include the new row
+    setRows([...rows, newRow]);
+  };
+
   return (
     <div>
-      <Navbar />
+      {/* <Navbar /> */}
       <Header />
       <div></div>
       <div className='ml-56 border-2 border-black h-full'>
@@ -33,7 +44,7 @@ const SS04form = () => {
                         <label for="StoreNo">Store Number/IN/IV/DP/NO. : </label>
                       </td>
                       <td>
-                        <input type="text" id="StoreNo" name="StoreNo" class="border-2 border-black" />
+                        <input type="text" id="StoreNo" name="StoreNo" className="border-2 border-black" />
                       </td>
                     </tr>
                     <tr>
@@ -41,7 +52,7 @@ const SS04form = () => {
                         <label for="financialyear">Financial year : </label>
                       </td>
                       <td>
-                        <input type="number" id="financialyear" name="financialyear" class="border-2 border-black" />
+                        <input type="number" id="financialyear" name="financialyear" className="border-2 border-black" />
                       </td>
                     </tr>
                     <tr>
@@ -49,7 +60,7 @@ const SS04form = () => {
                         <label for="reqdate">Date : </label>
                       </td>
                       <td>
-                        <input type="date" id="reqdate" name="reqdate" class="border-2 border-black" />
+                        <input type="date" id="reqdate" name="reqdate" className="border-2 border-black" />
                       </td>
                     </tr>
                   </table>
@@ -110,52 +121,94 @@ const SS04form = () => {
             </span>
 
           </div>
-          <div className='p-4 '  style={{ overflowX: 'auto' }}>
-          <table border="1" className='w-fit'>
-  <thead>
-    <tr>
-      <th>SNO</th>
-      <th>Name of Supplier </th>
-      <th>Bill No & Date</th>
-      <th>Item Name and Specification</th>
-      <th>Qty</th>
-      <th>Con/Non-Con</th>
-      <th>Unit Price</th>
-      <th>Total</th>
-      {/* <th>Column </th> */}
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><input type="text" value="1"/></td>
-      <td><input type="text" value="Data 1"/></td>
-      <td><input type="text" value="Data 2"/></td>
-      <td><input type="text" value="Data 3"/></td>
-      <td><input type="text" value="Data 4"/></td>
-      <td><input type="text" value="Data 5"/></td>
-      <td><input type="text" value="Data 6"/></td>
-      <td><input type="text" value="Data 7"/></td>
-    </tr>
-    <tr>
-      <td><input type="text" value="2"/></td>
-      <td><input type="text" value="Data 8"/></td>
-      <td><input type="text" value="Data 9"/></td>
-      <td><input type="text" value="Data 10"/></td>
-      <td><input type="text" value="Data 11"/></td>
-      <td><input type="text" value="Data 12"/></td>
-      <td><input type="text" value="Data 13"/></td>
-      <td><input type="text" value="Data 14"/></td>
-    </tr>
-  </tbody>
-</table>
+          {/*<div className='p-4 ' style={{ overflowX: 'auto' }}>
+            <table border="1" className='w-fit'>
+              <thead>
+                <tr>
+                  <th>SNO</th>
+                  <th>Name of Supplier </th>
+                  <th>Bill No & Date</th>
+                  <th>Item Name and Specification</th>
+                  <th>Qty</th>
+                  <th>Con/Non-Con</th>
+                  <th>Unit Price</th>
+                  <th>Total</th>
+              
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><input type="text" value="1" /></td>
+                  <td><input type="text" value="Data 1" /></td>
+                  <td><input type="text" value="Data 2" /></td>
+                  <td><input type="text" value="Data 3" /></td>
+                  <td><input type="text" value="Data 4" /></td>
+                  <td><input type="text" value="Data 5" /></td>
+                  <td><input type="text" value="Data 6" /></td>
+                  <td><input type="text" value="Data 7" /></td>
+                </tr>
+                <tr>
+                  <td><input type="text" value="2" /></td>
+                  <td><input type="text" value="Data 8" /></td>
+                  <td><input type="text" value="Data 9" /></td>
+                  <td><input type="text" value="Data 10" /></td>
+                  <td><input type="text" value="Data 11" /></td>
+                  <td><input type="text" value="Data 12" /></td>
+                  <td><input type="text" value="Data 13" /></td>
+                  <td><input type="text" value="Data 14" /></td>
+                </tr>
+              </tbody>
+            </table>
 
 
-          </div>
+          </div>*/}
+          <div className='p-4 ' style={{ overflowX: 'auto' }}>
+      {/* <h1>Dynamic Table</h1> */}
+      <table>
+        <thead>
+          <tr>
+            <th>Sno</th>
+            <th>Name of Supplier </th>
+                  <th>Bill No & Date</th>
+                  <th>Item Name and Specification</th>
+                  <th>Qty</th>
+                  <th>Con/Non-Con</th>
+                  <th>Unit Price</th>
+                  <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row, index) => (
+            <tr key={index}>
+              <td>{row.sno}</td>
+              <td><input type="text" className="border-2 border-black" /></td>
+              <td><input type="text" className="border-2 border-black" /></td>
+              <td><input type="text" className="border-2 border-black" /></td>
+              <td><input type="text" className="border-2 border-black" /></td>
+              <td><input type="text" className="border-2 border-black" /></td>
+              <td><input type="text" className="border-2 border-black" /></td>
+              <td><input type="text" className="border-2 border-black" /></td>
+            
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <div className='flex w-full gap-80 '>
+        <div className='w-1/2 p-4'>
+      <p className='text-2xl'>Total Amount (incl. 18% GST) :	<input type="text" className="border-2 border-black" /></p>
+      </div>
+      <div>
+      <button onClick={addRow}>Add Row</button></div>
+      </div>
+    </div>
+       
+
+
           <div className='py-8'>
             Signatures section left
           </div>
           <div className='flex justify-center w-full mb-8'>
-          <button >Submit</button>
+            <button >Submit</button>
           </div>
         </form>
       </div>
