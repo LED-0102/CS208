@@ -24,6 +24,14 @@ pub enum HodApproval {
     Accepted,
     Rejected
 }
+#[derive(Debug, PartialEq, Eq, Type, Deserialize, Serialize, Clone)]
+pub enum Desig {
+    HOD,
+    Faculty,
+    Staff,
+    Student,
+    Office
+}
 #[derive(Debug, Serialize, Deserialize, FromRow)]
 pub struct SS04 {
     pub note: String,
@@ -76,12 +84,24 @@ impl SS04 {
 }
 impl FromStr for HodApproval {
     type Err = ();
-
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
             "Pending" => Ok(Self::Pending),
             "Accepted" => Ok(Self::Accepted),
             "Rejected" => Ok(Self::Rejected),
+            _ => Err(())
+        }
+    }
+}
+impl FromStr for Desig {
+    type Err = ();
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "HOD" => Ok(Self::HOD),
+            "Faculty" => Ok(Self::Faculty),
+            "Staff" => Ok(Self::Staff),
+            "Office" => Ok(Self::Office),
+            "Student" => Ok(Self::Student),
             _ => Err(())
         }
     }
