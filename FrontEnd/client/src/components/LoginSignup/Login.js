@@ -17,6 +17,7 @@ const LoginSignup = () => {
           <span class="font-light text-gray-400 mb-8">
             Welcom back! Please enter your details
           </span>
+            <form>
           <div class="py-4">
             <span class="mb-2 text-md">Email</span>
             <input
@@ -47,6 +48,7 @@ const LoginSignup = () => {
           >
             Sign in
           </button>
+          </form>
           <button
             class="w-full border border-gray-300 text-md p-2 rounded-lg mb-6 hover:bg-black hover:text-white"
           >

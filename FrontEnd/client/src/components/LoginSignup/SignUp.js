@@ -46,7 +46,7 @@ const LoginSignup = () => {
           <button
             class="w-full bg-black text-white p-2 rounded-lg mb-6 hover:bg-white hover:text-black hover:border hover:border-gray-300"
           >
-            Sign in
+            Sign Up
           </button>
           <button
             class="w-full border border-gray-300 text-md p-2 rounded-lg mb-6 hover:bg-black hover:text-white"
@@ -62,7 +62,7 @@ const LoginSignup = () => {
         {/* right side */}
         <div class="relative">
           <img
-            src={image_icon}
+            src=""
             alt="img"
             class="w-[400px] h-full hidden rounded-r-2xl md:block object-cover"
           />
