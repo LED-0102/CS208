@@ -19,7 +19,7 @@ const SS04form = () => {
 
   return (
     <div>
-      {/* <Navbar /> */}
+      <Navbar />
       <Header />
       <div></div>
       <div className='ml-56 border-2 border-black h-full'>
