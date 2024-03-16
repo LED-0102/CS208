@@ -3,6 +3,7 @@ import Navbar from '../../components/Navbar/Navbar';
 import Header from '../../components/Navbar/Header';
 import { Input } from "@nextui-org/react";
 import "./ssform.css"
+import axios from 'axios'
 
 
 const SS04form = () => {
@@ -55,11 +56,22 @@ const SS04form = () => {
   };
 
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault(); 
     console.log("formdata", formData);
     console.log("tabledata", rows);
-    // console.log("formdata",StoreNo);
+    // console.log("formdata",formData.StoreNo);
+
+    try {
+      // Make POST request to your server endpoint
+      const response = await axios.post('http://localhost:8000', { formData, rows });
+  
+      // Handle the response, if needed
+      console.log("Response from server:", response.data);
+    } catch (error) {
+      // Handle any errors that occur during the request
+      console.error("Error:", error);
+    }
   };
 
 
