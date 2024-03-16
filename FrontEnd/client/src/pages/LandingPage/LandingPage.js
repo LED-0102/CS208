@@ -7,9 +7,9 @@ import TestComponent from "../../components/testComponent";
 export default function LandingPage(){
 return(
     <div>
-        {/* <ModalComponentSign></ModalComponentSign>
+        {/* <ModalComponentSign></ModalComponentSign> */}
         <ModalComponentLogIn></ModalComponentLogIn>
-        <TestComponent></TestComponent> */}
+        {/* <TestComponent></TestComponent> */}
         {/* <LoginSignup/> */}
     </div>
 );
