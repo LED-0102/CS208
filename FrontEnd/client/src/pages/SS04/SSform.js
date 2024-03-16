@@ -6,22 +6,68 @@ import "./ssform.css"
 
 
 const SS04form = () => {
-  // const [rows, setRows] = useState([]);
   const [rows, setRows] = useState([]);
 
   const addRow = (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
     // Create a new row with a unique ID and serial number
     const newRow = { id: rows.length + 1, sno: rows.length + 1 };
     // Update the state to include the new row
     setRows([...rows, newRow]);
   };
 
+  const [formData, setFormData] = useState({
+    StoreNo: "",
+    financialyear: "",
+    reqdate: "",
+    custodian: "",
+    department: "",
+    location: "",
+    contact: "",
+    dateItem: "",
+    designation: "",
+    inventoryNo: "",
+    roomNo: "",
+    email: "",
+    totalAmt: "",
+
+  });
+
+  const handleChange = (evt) => {
+    const changedField = evt.target.name;
+    const newValue = evt.target.value;
+    console.log(changedField, newValue)
+
+    setFormData((currData) => {
+      currData[changedField] = newValue;
+      return {
+        ...currData,  //making copy by spread operator
+
+      };
+    });
+  };
+
+  const handleChangeTable = (event, index, key) => {
+    const { value } = event.target;
+    const updatedRows = [...rows];
+    updatedRows[index][key] = value;
+    setRows(updatedRows);
+  };
+
+
+  const handleSubmit = (e) => {
+    e.preventDefault(); 
+    console.log("formdata", formData);
+    console.log("tabledata", rows);
+    // console.log("formdata",StoreNo);
+  };
+
+
   return (
     <div>
       <Navbar />
       <Header />
-      <div></div>
+      {/* <div></div> */}
       <div className='ml-56 border-2 border-black h-full'>
         <form>
           <div className='flex w-full p-4 '>
@@ -30,39 +76,38 @@ const SS04form = () => {
               <div className=' border-2 border-black'>
                 <div className='flex-col p-4'>
                   <h2>FORM NO:SS04</h2>
-                  {/* <div>
-              <label for="StoreNo">Store Number/IN/IV/DP/NO. : </label>
-              <input type="text" id="StoreNo" name="StoreNo" className='border-2 border-black'/>
-              </div>
-              <div>
-              <label for="financialyear">Financial year : </label>
-              <input type="number" id="financialyear" name="financialyear" class="border-2 border-black"/>
-              </div> */}
                   <table>
-                    <tr>
-                      <td>
-                        <label for="StoreNo">Store Number/IN/IV/DP/NO. : </label>
-                      </td>
-                      <td>
-                        <input type="text" id="StoreNo" name="StoreNo" className="border-2 border-black" />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <label for="financialyear">Financial year : </label>
-                      </td>
-                      <td>
-                        <input type="number" id="financialyear" name="financialyear" className="border-2 border-black" />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <label for="reqdate">Date : </label>
-                      </td>
-                      <td>
-                        <input type="date" id="reqdate" name="reqdate" className="border-2 border-black" />
-                      </td>
-                    </tr>
+                    <thead>
+                      <tr>
+                        {/* Table headers */}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <label htmlFor="StoreNo">Store Number/IN/IV/DP/NO. : </label>
+                        </td>
+                        <td>
+                          <input type="text" id="StoreNo" name="StoreNo" placeholder="Store No" value={formData.StoreNo} onChange={handleChange} className="border-2 border-black" />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <label htmlFor="financialyear">Financial year : </label>
+                        </td>
+                        <td>
+                          <input type="number" id="financialyear" name="financialyear" placeholder='financialyear' value={formData.financialyear} onChange={handleChange} className="border-2 border-black" />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <label htmlFor="reqdate">Date : </label>
+                        </td>
+                        <td>
+                          <input type="date" id="reqdate" name="reqdate" value={formData.reqdate} onChange={handleChange} className="border-2 border-black" />
+                        </td>
+                      </tr>
+                    </tbody>
                   </table>
                   <p>(to be filled by store assistant)</p>
                 </div>
@@ -77,41 +122,64 @@ const SS04form = () => {
             {/* <div className='flex w-full px-4 py-2  border-4 border-red-300'> */}
             <div className='flex w-full px-4 py-2  '>
               <div className='flex-col w-1/2 px-12'>
-                <p>
-                  <span className='font-bold'>Name of custodian of assets :</span>
-                  <span>Dr. Nisheeth K. Prasad</span>
-                </p>
-                <p>
-                  <span className='font-bold'>Department/Project No. :</span>
-                  <span>MEMS</span>
-                </p>
-                <p>
-                  <span className='font-bold'>Location :</span>
-                  <span>POD 1D</span>
-                </p>
-                <p>
-                  <span className='font-bold'>Contact No :</span>
-                  <span>#3175</span>
-                </p>
-                <p><span className='font-bold'>Item Receiving Date: </span> 15 October 2023</p>
+                <table>
+                  <tbody>
+                  <tr>
+                    <td><label className='font-bold' htmlFor="custodian">Name of custodian of assets :</label></td>
+                    <td>
+                      {/* <!-- <span>Dr. Nisheeth K. Prasad</span> --> */}
+                      <input type="text" id="custodian" name="custodian" value={formData.custodian} placeholder='custodian name' onChange={handleChange} className="border-2 border-black" /></td>
+                  </tr>
+                  <tr>
+                    <td><label className='font-bold' htmlFor="department">Department/Project No. :</label></td>
+                    <td>
+                      {/* <!-- <span>MEMS</span> --> */}
+                      <input type="text" id="department" name="department" value={formData.department} placeholder='department name' onChange={handleChange} className="border-2 border-black" /></td>
+                  </tr>
+                  <tr>
+                    <td><label className='font-bold' htmlFor="location">Location :</label></td>
+                    <td><input type="text" id="location" name="location" placeholder='location' value={formData.location} onChange={handleChange} className="border-2 border-black" /></td>
+                  </tr>
+                  <tr>
+                    <td><label className='font-bold' htmlFor="contact">Contact No :</label></td>
+                    <td><input type="number" id="contact" name="contact" placeholder='contact' value={formData.contact} onChange={handleChange} className="border-2 border-black" /></td>
+                  </tr>
+                  <tr>
+                    <td><label className='font-bold' htmlFor="dateItem">Item Receiving Date: </label></td>
+                    <td><input type="date" id="dateItem" name="dateItem" placeholder='date' value={formData.dateItem} onChange={handleChange} className="border-2 border-black" /></td>
+                  </tr>
+                  </tbody>
+                </table>
+
               </div>
               <div className='flex-col w-1/2 px-12'>
-                <p>
-                  <span className='font-bold'>Designation :</span>
-                  <span>Asst. Prof.</span>
-                </p>
-                <p>
-                  <label for="inventoryNo">Inventory No : </label>
-                  <input type="number" id="inventoryNo" name="inventoryNo" class="border-2 border-black" />
-                </p>
-                <p>
-                  <span className='font-bold'>Room No :</span>
-                  <span>205B</span>
-                </p>
-                <p>
-                  <span className='font-bold'>Email id :</span>
-                  <span><a href="mailto:nisheeth@iiti.ac.in ?body=My custom mail body">nisheeth@iiti.ac.in </a></span>
-                </p>
+                <table>
+                  <thead>
+                    <tr>
+                      {/* Table headers */}
+                      {/* Fill the Info */}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><label className='font-bold' htmlFor='designation'>Designation :</label></td>
+                      <td><input type="text" id="designation" name="designation" placeholder='designation' value={formData.designation} onChange={handleChange} className="border-2 border-black" /></td>
+                    </tr>
+                    <tr>
+                      <td><label for="inventoryNo" htmlFor='inventoryNo'>Inventory No :</label></td>
+                      <td><input type="number" id="inventoryNo" name="inventoryNo" value={formData.inventoryNo} onChange={handleChange} class="border-2 border-black" /></td>
+                    </tr>
+                    <tr>
+                      <td><label className='font-bold' htmlFor='roomNo'>Room No :</label></td>
+                      <td><input type="text" id="roomNo" name="roomNo" placeholder='room number' value={formData.roomNo} onChange={handleChange} className="border-2 border-black" /></td>
+                    </tr>
+                    <tr>
+                      <td><label className='font-bold' htmlFor='email'>Email id :</label></td>
+                      <td><input type="email" id="email" name="email" placeholder='email' value={formData.email} onChange={handleChange} className="border-2 border-black" /></td>
+                    </tr>
+                  </tbody>
+                </table>
+
 
               </div>
             </div>
@@ -121,11 +189,12 @@ const SS04form = () => {
             </span>
 
           </div>
-          {/*<div className='p-4 ' style={{ overflowX: 'auto' }}>
-            <table border="1" className='w-fit'>
+          <div className='p-4 ' style={{ overflowX: 'auto' }}>
+            {/* <h1>Dynamic Table</h1> */}
+            <table>
               <thead>
                 <tr>
-                  <th>SNO</th>
+                  <th>Sno</th>
                   <th>Name of Supplier </th>
                   <th>Bill No & Date</th>
                   <th>Item Name and Specification</th>
@@ -133,82 +202,39 @@ const SS04form = () => {
                   <th>Con/Non-Con</th>
                   <th>Unit Price</th>
                   <th>Total</th>
-              
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td><input type="text" value="1" /></td>
-                  <td><input type="text" value="Data 1" /></td>
-                  <td><input type="text" value="Data 2" /></td>
-                  <td><input type="text" value="Data 3" /></td>
-                  <td><input type="text" value="Data 4" /></td>
-                  <td><input type="text" value="Data 5" /></td>
-                  <td><input type="text" value="Data 6" /></td>
-                  <td><input type="text" value="Data 7" /></td>
-                </tr>
-                <tr>
-                  <td><input type="text" value="2" /></td>
-                  <td><input type="text" value="Data 8" /></td>
-                  <td><input type="text" value="Data 9" /></td>
-                  <td><input type="text" value="Data 10" /></td>
-                  <td><input type="text" value="Data 11" /></td>
-                  <td><input type="text" value="Data 12" /></td>
-                  <td><input type="text" value="Data 13" /></td>
-                  <td><input type="text" value="Data 14" /></td>
-                </tr>
+                {rows.map((row, index) => (
+                  <tr key={index}>
+                    <td>{row.sno}</td>
+                    <td><input type="text" id={`supplierName_${index}`} name={`supplierName_${index}`} value={row.supplierName} onChange={(e) => handleChangeTable(e, index, 'supplierName')} placeholder="Supplier Name" className="border-2 border-black" /></td>
+                    <td><input type="text" id={`billNo_${index}`} name={`billNo_${index}`} value={row.billNo} onChange={(e) => handleChangeTable(e, index, 'billNo')} placeholder="Bill No & Date" className="border-2 border-black" /></td>
+                    <td><input type="text" id={`itemName_${index}`} name={`itemName_${index}`} value={row.itemName} onChange={(e) => handleChangeTable(e, index, 'itemName')} placeholder="Item Name and Specification" className="border-2 border-black" /></td>
+                    <td><input type="text" id={`qty_${index}`} name={`qty_${index}`} value={row.qty} onChange={(e) => handleChangeTable(e, index, 'qty')} placeholder="Qty" className="border-2 border-black" /></td>
+                    <td><input type="text" id={`conNonCon_${index}`} name={`conNonCon_${index}`} value={row.conNonCon} onChange={(e) => handleChangeTable(e, index, 'conNonCon')} placeholder="Con/Non-Con" className="border-2 border-black" /></td>
+                    <td><input type="text" id={`unitPrice_${index}`} name={`unitPrice_${index}`} value={row.unitPrice} onChange={(e) => handleChangeTable(e, index, 'unitPrice')} placeholder="Unit Price" className="border-2 border-black" /></td>
+                    <td><input type="text" id={`total_${index}`} name={`total_${index}`} value={row.total} onChange={(e) => handleChangeTable(e, index, 'total')} placeholder="Total" className="border-2 border-black" /></td>
+                  </tr>
+                ))}
               </tbody>
             </table>
+            <div className='flex w-full gap-80 '>
+              <div className='w-1/2 p-4'>
+                <p className='text-2xl'>Total Amount (incl. 18% GST) :	<input type="number" id="totalAmt" name="totalAmt" value={formData.totalAmt} onChange={handleChange} className="border-2 border-black" /></p>
+              </div>
+              <div>
+                <button onClick={addRow}>Add Row</button></div>
+            </div>
+          </div>
 
-
-          </div>*/}
-          <div className='p-4 ' style={{ overflowX: 'auto' }}>
-      {/* <h1>Dynamic Table</h1> */}
-      <table>
-        <thead>
-          <tr>
-            <th>Sno</th>
-            <th>Name of Supplier </th>
-                  <th>Bill No & Date</th>
-                  <th>Item Name and Specification</th>
-                  <th>Qty</th>
-                  <th>Con/Non-Con</th>
-                  <th>Unit Price</th>
-                  <th>Total</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row, index) => (
-            <tr key={index}>
-              <td>{row.sno}</td>
-              <td><input type="text" className="border-2 border-black" /></td>
-              <td><input type="text" className="border-2 border-black" /></td>
-              <td><input type="text" className="border-2 border-black" /></td>
-              <td><input type="text" className="border-2 border-black" /></td>
-              <td><input type="text" className="border-2 border-black" /></td>
-              <td><input type="text" className="border-2 border-black" /></td>
-              <td><input type="text" className="border-2 border-black" /></td>
-            
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <div className='flex w-full gap-80 '>
-        <div className='w-1/2 p-4'>
-      <p className='text-2xl'>Total Amount (incl. 18% GST) :	<input type="text" className="border-2 border-black" /></p>
-      </div>
-      <div>
-      <button onClick={addRow}>Add Row</button></div>
-      </div>
-    </div>
-       
 
 
           <div className='py-8'>
             Signatures section left
           </div>
           <div className='flex justify-center w-full mb-8'>
-            <button >Submit</button>
+            <button onClick={(e) => handleSubmit(e)} >Submit</button>
           </div>
         </form>
       </div>
