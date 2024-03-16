@@ -30,7 +30,7 @@ const SS04form = () => {
     inventoryNo: "",
     roomNo: "",
     email: "",
-    totalAmt: "",
+    total_amount: "",
 
   });
 
@@ -220,12 +220,12 @@ const SS04form = () => {
                 {rows.map((row, index) => (
                   <tr key={index}>
                     <td>{row.sno}</td>
-                    <td><input type="text" id={`supplierName_${index}`} name={`supplierName_${index}`} value={row.supplierName} onChange={(e) => handleChangeTable(e, index, 'supplierName')} placeholder="Supplier Name" className="border-2 border-black" /></td>
+                    <td><input type="text" id={`supplier_${index}`} name={`supplier_${index}`} value={row.supplier} onChange={(e) => handleChangeTable(e, index, 'supplier')} placeholder="Supplier Name" className="border-2 border-black" /></td>
                     <td><input type="text" id={`billNo_${index}`} name={`billNo_${index}`} value={row.billNo} onChange={(e) => handleChangeTable(e, index, 'billNo')} placeholder="Bill No & Date" className="border-2 border-black" /></td>
-                    <td><input type="text" id={`itemName_${index}`} name={`itemName_${index}`} value={row.itemName} onChange={(e) => handleChangeTable(e, index, 'itemName')} placeholder="Item Name and Specification" className="border-2 border-black" /></td>
-                    <td><input type="text" id={`qty_${index}`} name={`qty_${index}`} value={row.qty} onChange={(e) => handleChangeTable(e, index, 'qty')} placeholder="Qty" className="border-2 border-black" /></td>
-                    <td><input type="text" id={`conNonCon_${index}`} name={`conNonCon_${index}`} value={row.conNonCon} onChange={(e) => handleChangeTable(e, index, 'conNonCon')} placeholder="Con/Non-Con" className="border-2 border-black" /></td>
-                    <td><input type="text" id={`unitPrice_${index}`} name={`unitPrice_${index}`} value={row.unitPrice} onChange={(e) => handleChangeTable(e, index, 'unitPrice')} placeholder="Unit Price" className="border-2 border-black" /></td>
+                    <td><input type="text" id={`item_${index}`} name={`item_${index}`} value={row.item} onChange={(e) => handleChangeTable(e, index, 'item')} placeholder="Item Name and Specification" className="border-2 border-black" /></td>
+                    <td><input type="text" id={`quantity_${index}`} name={`quantity_${index}`} value={row.quantity} onChange={(e) => handleChangeTable(e, index, 'quantity')} placeholder="Qty" className="border-2 border-black" /></td>
+                    <td><input type="text" id={`con_n_con_${index}`} name={`con_n_con_${index}`} value={row.con_n_con} onChange={(e) => handleChangeTable(e, index, 'con_n_con')} placeholder="Con/Non-Con" className="border-2 border-black" /></td>
+                    <td><input type="text" id={`unit_price_${index}`} name={`unit_price_${index}`} value={row.unit_price} onChange={(e) => handleChangeTable(e, index, 'unit_price')} placeholder="Unit Price" className="border-2 border-black" /></td>
                     <td><input type="text" id={`total_${index}`} name={`total_${index}`} value={row.total} onChange={(e) => handleChangeTable(e, index, 'total')} placeholder="Total" className="border-2 border-black" /></td>
                   </tr>
                 ))}
@@ -233,7 +233,7 @@ const SS04form = () => {
             </table>
             <div className='flex w-full gap-80 '>
               <div className='w-1/2 p-4'>
-                <p className='text-2xl'>Total Amount (incl. 18% GST) :	<input type="number" id="totalAmt" name="totalAmt" value={formData.totalAmt} onChange={handleChange} className="border-2 border-black" /></p>
+                <p className='text-2xl'>Total Amount (incl. 18% GST) :	<input type="number" id="total_amount" name="total_amount" value={formData.total_amount} onChange={handleChange} className="border-2 border-black" /></p>
               </div>
               <div>
                 <button onClick={addRow}>Add Row</button></div>
