@@ -1,29 +1,24 @@
-use actix_web::{web::Data, HttpResponse, Responder, web, error};
-use serde::Serialize;
+use actix_web::{web::{Data, Json, Path}, HttpResponse, Responder, web, error};
+use serde::{de::value, Deserialize, Serialize};
+use serde_json::json;
 use sqlx::{FromRow};
+use crate::db::structs::{Student, Instrument, Receivers, SS04Orders, SS04, Seeking};
 
 use crate::AppState;
 
-#[derive(Serialize, FromRow)]
-struct Student {
-    roll_no: String,
-    student_name: String,
-    email_id: String,
-    degree: String
-}
-
-#[derive(Serialize, FromRow)]
-struct Instrument {
-    instrument_id: String,
-    instrument_name: String,
-    location: String
-}
-
-#[derive(Serialize, FromRow)]
-struct Receivers {
-    id: String,
-    username: String,
-    designation: String
+pub async fn get_pending(app_state: Data<AppState>, path: Path<i32>) -> impl Responder{
+    let id = path.into_inner();
+    let result = match sqlx::query_as::<_, Seeking>(
+        "SELECT seeking FROM users WHERE id = $1"
+    ).bind(id)
+    .fetch_one(&app_state.pool)
+    .await
+    {
+        Ok(res) => res,
+        Err(_) => Seeking {data: json!(null)}
+    };
+    let ss04_primary_keys = result.data["SS04"].as_array().unwrap().clone();
+    "to_string"
 }
 
 pub async fn get_students(app_state: Data<AppState>) -> impl Responder{

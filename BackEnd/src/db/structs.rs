@@ -55,6 +55,34 @@ pub struct SS04 {
     pub action_ledger_date: String, // Assuming the date could be null
     pub hod_approval: State,
 }
+
+#[derive(Debug, Serialize, Deserialize, FromRow)]
+pub struct Seeking {
+    pub data: serde_json::Value
+}
+
+#[derive(Serialize, FromRow)]
+pub struct Student {
+    pub roll_no: String,
+    pub student_name: String,
+    pub email_id: String,
+    pub degree: String
+}
+
+#[derive(Serialize, FromRow)]
+pub struct Instrument {
+    pub instrument_id: String,
+    pub instrument_name: String,
+    pub location: String
+}
+
+#[derive(Serialize, FromRow)]
+pub struct Receivers {
+    pub id: String,
+    pub username: String,
+    pub designation: String
+}
+
 impl SS04 {
     pub fn default() -> Self {
         SS04{
