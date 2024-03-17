@@ -7,14 +7,14 @@ import axios from 'axios'
 
 
 const SS04form = () => {
-  const [rows, setRows] = useState([]);
+  const [list_orders, setlist_orders] = useState([]);
 
   const addRow = (e) => {
     e.preventDefault();
     // Create a new row with a unique ID and serial number
-    const newRow = { id: rows.length + 1, sno: rows.length + 1 };
+    const newRow = { id: list_orders.length + 1, sno: list_orders.length + 1 };
     // Update the state to include the new row
-    setRows([...rows, newRow]);
+    setlist_orders([...list_orders, newRow]);
   };
 
   const [formData, setFormData] = useState({
@@ -25,7 +25,7 @@ const SS04form = () => {
     department: "",
     location: "",
     contact: "",
-    dateItem: "",
+    items_receiving_date: "",
     designation: "",
     inventoryNo: "",
     roomNo: "",
@@ -33,11 +33,12 @@ const SS04form = () => {
     total_amount: "",
 
   });
+  const abc="newvar++";
 
   const handleChange = (evt) => {
     const changedField = evt.target.name;
     const newValue = evt.target.value;
-    console.log(changedField, newValue)
+    // console.log(changedField, newValue)
 
     setFormData((currData) => {
       currData[changedField] = newValue;
@@ -50,21 +51,21 @@ const SS04form = () => {
 
   const handleChangeTable = (event, index, key) => {
     const { value } = event.target;
-    const updatedRows = [...rows];
-    updatedRows[index][key] = value;
-    setRows(updatedRows);
+    const updatedlist_orders = [...list_orders];
+    updatedlist_orders[index][key] = value;
+    setlist_orders(updatedlist_orders);
   };
 
 
   const handleSubmit = async (e) => {
     e.preventDefault(); 
     console.log("formdata", formData);
-    console.log("tabledata", rows);
+    console.log("list_orders", list_orders);
     // console.log("formdata",formData.StoreNo);
 
     try {
       // Make POST request to your server endpoint
-      const response = await axios.post('http://localhost:8000', { formData, rows });
+      const response = await axios.post('http://localhost:8000', { formData, list_orders });
   
       // Handle the response, if needed
       console.log("Response from server:", response.data);
@@ -157,8 +158,8 @@ const SS04form = () => {
                     <td><input type="number" id="contact" name="contact" placeholder='contact' value={formData.contact} onChange={handleChange} className="border-2 border-black" /></td>
                   </tr>
                   <tr>
-                    <td><label className='font-bold' htmlFor="dateItem">Item Receiving Date: </label></td>
-                    <td><input type="date" id="dateItem" name="dateItem" placeholder='date' value={formData.dateItem} onChange={handleChange} className="border-2 border-black" /></td>
+                    <td><label className='font-bold' htmlFor="items_receiving_date">Item Receiving Date: </label></td>
+                    <td><input type="date" id="items_receiving_date" name="items_receiving_date" placeholder='date' value={formData.items_receiving_date} onChange={handleChange} className="border-2 border-black" /></td>
                   </tr>
                   </tbody>
                 </table>
@@ -217,7 +218,7 @@ const SS04form = () => {
                 </tr>
               </thead>
               <tbody>
-                {rows.map((row, index) => (
+                {list_orders.map((row, index) => (
                   <tr key={index}>
                     <td>{row.sno}</td>
                     <td><input type="text" id={`supplier_${index}`} name={`supplier_${index}`} value={row.supplier} onChange={(e) => handleChangeTable(e, index, 'supplier')} placeholder="Supplier Name" className="border-2 border-black" /></td>
