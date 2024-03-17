@@ -83,7 +83,7 @@ pub async fn reject_ss04(app_state: Data<AppState>, path: web::Path<(i32, i32)>)
         .await
     {
         Ok(_) => HttpResponse::Ok().finish(),
-        Err(_) => HttpResponse::InternalServerError().body("Error accepting SS04 from")
+        Err(_) => HttpResponse::InternalServerError().body("Error rejecting SS04 from")
     }
 }
 
