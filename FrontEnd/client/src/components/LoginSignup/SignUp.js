@@ -43,7 +43,7 @@ const LoginSignup = () => {
     console.log("formdata submit clicked ",post)
     
     try {
-      const response = await axios.post(`${globalUrl}/auth/login`, post, {
+      const response = await axios.post(`${globalUrl}/auth/register`, post, {
           withCredentials: true,
       });
       console.log("Here");

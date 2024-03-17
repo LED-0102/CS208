@@ -7,14 +7,14 @@ import axios from 'axios'
 
 
 const SS04form = () => {
-  const [rows, setRows] = useState([]);
+  const [list_orders, setlist_orders] = useState([]);
 
   const addRow = (e) => {
     e.preventDefault();
     // Create a new row with a unique ID and serial number
-    const newRow = { id: rows.length + 1, sno: rows.length + 1 };
+    const newRow = { id: list_orders.length + 1, sno: list_orders.length + 1 };
     // Update the state to include the new row
-    setRows([...rows, newRow]);
+    setlist_orders([...list_orders, newRow]);
   };
 
   const [formData, setFormData] = useState({
@@ -25,19 +25,20 @@ const SS04form = () => {
     department: "",
     location: "",
     contact: "",
-    dateItem: "",
+    items_receiving_date: "",
     designation: "",
     inventoryNo: "",
     roomNo: "",
     email: "",
-    totalAmt: "",
+    total_amount: "",
 
   });
+  const abc="newvar++";
 
   const handleChange = (evt) => {
     const changedField = evt.target.name;
     const newValue = evt.target.value;
-    console.log(changedField, newValue)
+    // console.log(changedField, newValue)
 
     setFormData((currData) => {
       currData[changedField] = newValue;
@@ -50,21 +51,21 @@ const SS04form = () => {
 
   const handleChangeTable = (event, index, key) => {
     const { value } = event.target;
-    const updatedRows = [...rows];
-    updatedRows[index][key] = value;
-    setRows(updatedRows);
+    const updatedlist_orders = [...list_orders];
+    updatedlist_orders[index][key] = value;
+    setlist_orders(updatedlist_orders);
   };
 
 
   const handleSubmit = async (e) => {
     e.preventDefault(); 
     console.log("formdata", formData);
-    console.log("tabledata", rows);
+    console.log("list_orders", list_orders);
     // console.log("formdata",formData.StoreNo);
 
     try {
       // Make POST request to your server endpoint
-      const response = await axios.post('http://localhost:8000', { formData, rows });
+      const response = await axios.post('http://localhost:8000', { formData, list_orders });
   
       // Handle the response, if needed
       console.log("Response from server:", response.data);
@@ -157,8 +158,8 @@ const SS04form = () => {
                     <td><input type="number" id="contact" name="contact" placeholder='contact' value={formData.contact} onChange={handleChange} className="border-2 border-black" /></td>
                   </tr>
                   <tr>
-                    <td><label className='font-bold' htmlFor="dateItem">Item Receiving Date: </label></td>
-                    <td><input type="date" id="dateItem" name="dateItem" placeholder='date' value={formData.dateItem} onChange={handleChange} className="border-2 border-black" /></td>
+                    <td><label className='font-bold' htmlFor="items_receiving_date">Item Receiving Date: </label></td>
+                    <td><input type="date" id="items_receiving_date" name="items_receiving_date" placeholder='date' value={formData.items_receiving_date} onChange={handleChange} className="border-2 border-black" /></td>
                   </tr>
                   </tbody>
                 </table>
@@ -217,15 +218,15 @@ const SS04form = () => {
                 </tr>
               </thead>
               <tbody>
-                {rows.map((row, index) => (
+                {list_orders.map((row, index) => (
                   <tr key={index}>
                     <td>{row.sno}</td>
-                    <td><input type="text" id={`supplierName_${index}`} name={`supplierName_${index}`} value={row.supplierName} onChange={(e) => handleChangeTable(e, index, 'supplierName')} placeholder="Supplier Name" className="border-2 border-black" /></td>
+                    <td><input type="text" id={`supplier_${index}`} name={`supplier_${index}`} value={row.supplier} onChange={(e) => handleChangeTable(e, index, 'supplier')} placeholder="Supplier Name" className="border-2 border-black" /></td>
                     <td><input type="text" id={`billNo_${index}`} name={`billNo_${index}`} value={row.billNo} onChange={(e) => handleChangeTable(e, index, 'billNo')} placeholder="Bill No & Date" className="border-2 border-black" /></td>
-                    <td><input type="text" id={`itemName_${index}`} name={`itemName_${index}`} value={row.itemName} onChange={(e) => handleChangeTable(e, index, 'itemName')} placeholder="Item Name and Specification" className="border-2 border-black" /></td>
-                    <td><input type="text" id={`qty_${index}`} name={`qty_${index}`} value={row.qty} onChange={(e) => handleChangeTable(e, index, 'qty')} placeholder="Qty" className="border-2 border-black" /></td>
-                    <td><input type="text" id={`conNonCon_${index}`} name={`conNonCon_${index}`} value={row.conNonCon} onChange={(e) => handleChangeTable(e, index, 'conNonCon')} placeholder="Con/Non-Con" className="border-2 border-black" /></td>
-                    <td><input type="text" id={`unitPrice_${index}`} name={`unitPrice_${index}`} value={row.unitPrice} onChange={(e) => handleChangeTable(e, index, 'unitPrice')} placeholder="Unit Price" className="border-2 border-black" /></td>
+                    <td><input type="text" id={`item_${index}`} name={`item_${index}`} value={row.item} onChange={(e) => handleChangeTable(e, index, 'item')} placeholder="Item Name and Specification" className="border-2 border-black" /></td>
+                    <td><input type="text" id={`quantity_${index}`} name={`quantity_${index}`} value={row.quantity} onChange={(e) => handleChangeTable(e, index, 'quantity')} placeholder="Qty" className="border-2 border-black" /></td>
+                    <td><input type="text" id={`con_n_con_${index}`} name={`con_n_con_${index}`} value={row.con_n_con} onChange={(e) => handleChangeTable(e, index, 'con_n_con')} placeholder="Con/Non-Con" className="border-2 border-black" /></td>
+                    <td><input type="text" id={`unit_price_${index}`} name={`unit_price_${index}`} value={row.unit_price} onChange={(e) => handleChangeTable(e, index, 'unit_price')} placeholder="Unit Price" className="border-2 border-black" /></td>
                     <td><input type="text" id={`total_${index}`} name={`total_${index}`} value={row.total} onChange={(e) => handleChangeTable(e, index, 'total')} placeholder="Total" className="border-2 border-black" /></td>
                   </tr>
                 ))}
@@ -233,7 +234,7 @@ const SS04form = () => {
             </table>
             <div className='flex w-full gap-80 '>
               <div className='w-1/2 p-4'>
-                <p className='text-2xl'>Total Amount (incl. 18% GST) :	<input type="number" id="totalAmt" name="totalAmt" value={formData.totalAmt} onChange={handleChange} className="border-2 border-black" /></p>
+                <p className='text-2xl'>Total Amount (incl. 18% GST) :	<input type="number" id="total_amount" name="total_amount" value={formData.total_amount} onChange={handleChange} className="border-2 border-black" /></p>
               </div>
               <div>
                 <button onClick={addRow}>Add Row</button></div>
