@@ -19,7 +19,7 @@ pub struct SS04Orders {
     pub total: i32,
 }
 #[derive(Debug, PartialEq, Eq, Type, Deserialize, Serialize)]
-pub enum HodApproval {
+pub enum State {
     Pending,
     Accepted,
     Rejected
@@ -53,7 +53,7 @@ pub struct SS04 {
     pub items_issued_date: String, // Assuming the date could be null
     pub action_ledger_name: String,
     pub action_ledger_date: String, // Assuming the date could be null
-    pub hod_approval: HodApproval,
+    pub hod_approval: State,
 }
 impl SS04 {
     pub fn default() -> Self {
@@ -82,7 +82,7 @@ impl SS04 {
         }
     }
 }
-impl FromStr for HodApproval {
+impl FromStr for State {
     type Err = ();
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {

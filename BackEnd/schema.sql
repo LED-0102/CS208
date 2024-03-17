@@ -38,7 +38,7 @@ CREATE TABLE SS04 (
     submitter INT REFERENCES users (id),
     receiver INT REFERENCES users (id),
     date VARCHAR,
-    items_receiving_date DATE,
+    items_receiving_date VARCHAR,
     list_orders jsonb,      --SS04 orders
     total_amount INT,
     name_indenter VARCHAR,

@@ -22,6 +22,7 @@ pub fn view_config (cfg: &mut web::ServiceConfig) {
 
 #[post("/submit/{form_type}")]
 pub async fn form_handler(jwt: JwToken, form_type: web::Path<String>, form_data: web::Json<Value>, pool: web::Data<AppState>) -> HttpResponse{
+    println!("Got here!");
     let form_type = form_type.into_inner();
     let form = match Forms::from_str(&form_type, form_data.into_inner(), &jwt){
         Ok(form) => form,
@@ -29,11 +30,12 @@ pub async fn form_handler(jwt: JwToken, form_type: web::Path<String>, form_data:
     };
 
     match form.pg_insert(&pool.pool).await {
-        Ok(_) => {
+        Ok(s) => {
+            form.process().await;
             HttpResponse::Ok().finish()
         }
-        Err(_) => {
-            HttpResponse::InternalServerError().body("Error inserting SS04 to the database")
+        Err(e) => {
+            HttpResponse::InternalServerError().body(e.to_string())
         }
     }
 }

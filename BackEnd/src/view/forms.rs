@@ -13,7 +13,7 @@ pub enum Forms {
     SS04(SS04),
 }
 pub trait FormTrait: Serialize {
-    async fn process (&self);
+    async fn process (&self, id: i32);
     async fn get_identifier (&self, pool: &PgPool) -> Result<Identifier, Box<dyn Error>>;
     async fn pg_insert (&self, pool: &PgPool) -> Result<(), Box<dyn Error>>;
     async fn send_form (&self, srv: &mut ChatServer, pool: &PgPool) -> Result<(), Box<dyn Error>>{
@@ -49,9 +49,11 @@ impl Serialize for Forms {
 
 impl FormTrait for Forms {
 
-    async fn process(&self) {
+    async fn process(&self, id: u32) {
         match self {
-            Forms::SS04(_) => {}
+            Forms::SS04(f) => {
+
+            }
         }
     }
 
@@ -64,7 +66,7 @@ impl FormTrait for Forms {
         }
     }
 
-    async fn pg_insert(&self, pool: &PgPool) -> Result<(), Box<dyn Error>> {
+    async fn pg_insert(&self, pool: &PgPool) -> Result<i32, Box<dyn Error>> {
         match self {
             Forms::SS04(ss04) => {
                 let result = sqlx::query(
@@ -117,7 +119,7 @@ impl FormTrait for Forms {
 
                 let id: i32 = result.try_get("id")?;
                 println!("{id}");
-                Ok(())
+                Ok(id)
             }
         }
     }
