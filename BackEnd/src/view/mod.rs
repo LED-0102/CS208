@@ -29,21 +29,12 @@ pub async fn accept_ss04(app_state: Data<AppState>, path: web::Path<(i32, i32)>)
     match sqlx::query("
         UPDATE SS04 SET hod_approval = 'Accepted' WHERE id = &1;
         UPDATE users
-        SET seeking = jsonb_set(seeking, '{SS04}', ((seeking -> 'SS04') #- \"{$2}\"))
-        WHERE id = $3;
-        UPDATE users
-        SET previous = 
-            CASE
-                WHEN seeking ? 'SS04' THEN
-                    jsonb_set(seeking, '{SS04}', seeking->'SS04' || '$4'::jsonb)
-                ELSE
-                    '{\"SS04\" : [&5]}'::jsonb
-            END
-        WHERE id = &6;
+        SET 
+            ss04_seeking = array_remove(ss04_seeking, &2),
+            ss04_previous = array_remove(ss04_pevious, &3)
+        WHERE id = &4;
     ")
         .bind(primary_key)
-        .bind(primary_key)
-        .bind(user_id)
         .bind(primary_key)
         .bind(primary_key)
         .bind(user_id)
@@ -61,21 +52,12 @@ pub async fn reject_ss04(app_state: Data<AppState>, path: web::Path<(i32, i32)>)
     match sqlx::query("
         UPDATE SS04 SET hod_approval = 'Rejected' WHERE id = &1;
         UPDATE users
-        SET seeking = jsonb_set(seeking, '{SS04}', ((seeking -> 'SS04') #- \"{$2}\"))
-        WHERE id = $3;
-        UPDATE users
-        SET previous = 
-            CASE
-                WHEN seeking ? 'SS04' THEN
-                    jsonb_set(seeking, '{SS04}', seeking->'SS04' || '$4'::jsonb)
-                ELSE
-                    '{\"SS04\" : [&5]}'::jsonb
-            END
-        WHERE id = &6;
+        SET 
+            ss04_seeking = array_remove(ss04_seeking, &2),
+            ss04_previous = array_remove(ss04_pevious, &3)
+        WHERE id = &4;
     ")
         .bind(primary_key)
-        .bind(primary_key)
-        .bind(user_id)
         .bind(primary_key)
         .bind(primary_key)
         .bind(user_id)
