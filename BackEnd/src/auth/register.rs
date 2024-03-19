@@ -1,8 +1,8 @@
 use bcrypt::{DEFAULT_COST, hash, verify};
 use serde::Deserialize;
-use actix_web::{web, HttpResponse, Responder, error};
+use actix_web::{web, HttpResponse, Responder};
 use std::error::Error;
-use sqlx::{PgPool};
+use sqlx::{PgPool, Row};
 use crate::AppState;
 use crate::db::structs::Desig;
 use std::str::FromStr;
@@ -44,25 +44,29 @@ impl User {
     }
 }
 pub async fn insert(st: NewUserDesig, pool: &PgPool) -> Result<(), Box<dyn Error>> {
-    let todo = sqlx::query("INSERT INTO users (username, password, email, admin, designation) VALUES ($1, $2, $3, 0, $4)")
+    let todo = sqlx::query("INSERT INTO users (username, password, email, admin, designation) VALUES ($1, $2, $3, 0, $4) RETURNING id;")
         .bind(&st.username)
         .bind(&st.password)
         .bind(&st.email)
         .bind(&st.designation)
+        .fetch_one(pool)
+        .await?;
+    let id: i32 = todo.try_get("id")?;
+    let _ = sqlx::query("WITH form_keys AS (
+            SELECT DISTINCT form FROM forms
+        )
+        UPDATE users
+        SET
+            seeking = jsonb_object_agg(form, '[]'::jsonb),
+            pending = jsonb_object_agg(form, '[]'::jsonb),
+            previous = jsonb_object_agg(form, '[]'::jsonb)
+        FROM form_keys
+        WHERE id=$1;
+    ")
+        .bind(id)
         .execute(pool)
-        .await
-        .map_err(|e| error::ErrorBadRequest(e.to_string()));
-    match todo {
-        Ok(_) => {
-            println!("OK");
-            Ok(())
-        }
-        Err(e) => {
-            println!("Err");
-            println!("{e}");
-            Err(Box::try_from(e).unwrap())
-        }
-    }
+        .await?;
+    Ok(())
 }
 pub async fn register (new_user: web::Json<NewUser>, state: web::Data<AppState>) -> impl Responder {
     let new_user = NewUserDesig::new(

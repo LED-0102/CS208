@@ -1,24 +1,42 @@
 use actix_web::{web::{Data, Json, Path}, HttpResponse, Responder, web, error};
+use futures::stream::iter;
+use futures::StreamExt;
 use serde::{de::value, Deserialize, Serialize};
-use serde_json::json;
-use sqlx::{FromRow};
+use serde_json::{json, Value};
+use sqlx::{Error, FromRow, Row};
 use crate::db::structs::{Student, Instrument, Receivers, SS04Orders, SS04, Seeking};
 
 use crate::AppState;
+use crate::auth::jwt::JwToken;
 
-pub async fn get_pending(app_state: Data<AppState>, path: Path<i32>) -> impl Responder{
-    let id = path.into_inner();
-    let result = match sqlx::query_as::<_, Seeking>(
+pub async fn get_pending(app_state: Data<AppState>, jwt: JwToken) -> HttpResponse {
+    let id = jwt.id;
+    let result = sqlx::query_as::<_, Seeking>(
         "SELECT seeking FROM users WHERE id = $1"
     ).bind(id)
-    .fetch_one(&app_state.pool)
-    .await
-    {
-        Ok(res) => res,
-        Err(_) => Seeking {data: json!(null)}
+        .fetch_one(&app_state.pool)
+        .await;
+    let result = match result {
+        Ok(s) => {s}
+        Err(e) => {
+            return HttpResponse::InternalServerError().body(e.to_string());
+        }
     };
-    let ss04_primary_keys = result.data["SS04"].as_array().unwrap().clone();
-    "to_string"
+    let todo = sqlx::query("SELECT DISTINCT form from forms;")
+        .fetch_all(&app_state.pool)
+        .await?;
+    let p: Vec<String> = todo.iter()
+        .map(|row| row.get("form"))
+        .collect();
+
+    let seeking = sqlx::query("SELECT seeking from users where id=$1")
+        .bind(id)
+        .fetch_one(&app_state.pool)
+        .await?;
+    
+
+
+    HttpResponse::Ok().finish()
 }
 
 pub async fn get_students(app_state: Data<AppState>) -> impl Responder{
@@ -60,5 +78,6 @@ pub fn list_config (cfg: &mut web::ServiceConfig) {
             .route("/students", web::get().to(get_students))
             .route("/inventory", web::get().to(get_inventory))
             .route("/receiver", web::get().to(get_receiver))
+            .route("/pending", web::post().to(get_pending))
     );
 }

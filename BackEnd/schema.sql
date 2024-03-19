@@ -22,6 +22,7 @@ CREATE TABLE users (
 CREATE TABLE forms (
     form VARCHAR PRIMARY KEY
 );
+INSERT INTO forms(form) VALUES ('SS04'), ('MM04'), ('E01');
 CREATE TYPE SS04_orders AS (
     supplier VARCHAR,
     bill VARCHAR,
@@ -43,8 +44,8 @@ CREATE TABLE SS04 (
     location VARCHAR,
     contact VARCHAR,
     designation VARCHAR,
-    inventoryNo VARCHAR,
-    roomNo VARCHAR,
+    inventory_no VARCHAR,
+    room_no VARCHAR,
     email VARCHAR,
     items_receiving_date DATE,
     list_orders jsonb,      --SS04 orders
@@ -187,7 +188,4 @@ CREATE TABLE inventory (
     instrument_id VARCHAR PRIMARY KEY,
     instrument_name VARCHAR NOT NULL,
     location VARCHAR
-)
-INSERT INTO id(table_name) VALUES ('users');
-INSERT INTO id(table_name) VALUES ('forms');
-INSERT INTO id(table_name) VALUES ('SS04');
+);

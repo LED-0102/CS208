@@ -31,7 +31,12 @@ pub async fn form_handler(jwt: JwToken, form_type: web::Path<String>, form_data:
 
     match form.pg_insert(&pool.pool).await {
         Ok(s) => {
-            form.process().await;
+            match form.process(&pool.pool, s).await {
+                Ok(_) => {}
+                Err(e) => {
+                    return HttpResponse::InternalServerError().body(e.to_string());
+                }
+            }
             HttpResponse::Ok().finish()
         }
         Err(e) => {
