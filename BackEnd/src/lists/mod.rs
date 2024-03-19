@@ -4,6 +4,7 @@ use futures::StreamExt;
 use serde::{de::value, Deserialize, Serialize};
 use serde_json::{json, Value};
 use sqlx::{Error, FromRow, Row};
+use sqlx::postgres::PgRow;
 use crate::db::structs::{Student, Instrument, Receivers, SS04Orders, SS04, Seeking};
 
 use crate::AppState;
@@ -16,7 +17,7 @@ pub async fn get_pending(app_state: Data<AppState>, jwt: JwToken) -> HttpRespons
     ).bind(id)
         .fetch_one(&app_state.pool)
         .await;
-    let result = match result {
+    let _ = match result {
         Ok(s) => {s}
         Err(e) => {
             return HttpResponse::InternalServerError().body(e.to_string());
@@ -24,16 +25,23 @@ pub async fn get_pending(app_state: Data<AppState>, jwt: JwToken) -> HttpRespons
     };
     let todo = sqlx::query("SELECT DISTINCT form from forms;")
         .fetch_all(&app_state.pool)
-        .await?;
-    let p: Vec<String> = todo.iter()
+        .await;
+    match todo {
+        Ok(_) => {}
+        Err(e) => {
+            return HttpResponse::InternalServerError().body(e.to_string());
+        }
+    }
+    let p: Vec<String> = todo.unwrap().iter()
         .map(|row| row.get("form"))
         .collect();
 
     let seeking = sqlx::query("SELECT seeking from users where id=$1")
         .bind(id)
         .fetch_one(&app_state.pool)
-        .await?;
-    
+        .await;
+    //Have some work to do here
+
 
 
     HttpResponse::Ok().finish()

@@ -54,7 +54,8 @@ pub async fn form_handler(jwt: JwToken, form_type: web::Path<String>, form_data:
 }
 
 #[post("/approval")]
-pub async fn accept_reject(pool: &PgPool, jwt: JwToken, data: web::Json<ApprovalData>) -> HttpResponse {
+pub async fn accept_reject(pool: Data<AppState>, jwt: JwToken, data: web::Json<ApprovalData>) -> HttpResponse {
+    let pool = &pool.pool;
     let res = verify_receiver(pool, data.form_id, &data.form_type, jwt.id).await;
     match res {
         Ok(s) => {
