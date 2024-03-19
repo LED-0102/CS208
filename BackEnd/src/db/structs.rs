@@ -27,7 +27,7 @@ pub enum State {
 #[derive(Debug, PartialEq, Eq, Type, Deserialize, Serialize, Clone)]
 pub enum Desig {
     HOD,
-    Faculty,
+    Professor,
     Staff,
     Student,
     Office
@@ -86,9 +86,9 @@ pub struct Instrument {
 
 #[derive(Serialize, FromRow)]
 pub struct Receivers {
-    pub id: String,
+    pub id: i32,
     pub username: String,
-    pub designation: String
+    pub designation: Desig
 }
 
 impl SS04 {
@@ -141,7 +141,7 @@ impl FromStr for Desig {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
             "HOD" => Ok(Self::HOD),
-            "Faculty" => Ok(Self::Faculty),
+            "Professor" => Ok(Self::Professor),
             "Staff" => Ok(Self::Staff),
             "Office" => Ok(Self::Office),
             "Student" => Ok(Self::Student),

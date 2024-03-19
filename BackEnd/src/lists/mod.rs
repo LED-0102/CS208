@@ -1,11 +1,6 @@
-use actix_web::{web::{Data, Json, Path}, HttpResponse, Responder, web, error};
-use futures::stream::iter;
-use futures::StreamExt;
-use serde::{de::value, Deserialize, Serialize};
-use serde_json::{json, Value};
-use sqlx::{Error, FromRow, Row};
-use sqlx::postgres::PgRow;
-use crate::db::structs::{Student, Instrument, Receivers, SS04Orders, SS04, Seeking};
+use actix_web::{web::{Data}, HttpResponse, Responder, web};
+use sqlx::{Error, Row};
+use crate::db::structs::{Student, Instrument, Receivers, Seeking};
 
 use crate::AppState;
 use crate::auth::jwt::JwToken;
@@ -72,17 +67,25 @@ pub async fn get_inventory(app_state: Data<AppState>) -> impl Responder{
 }
 
 pub async fn get_receiver(pool: Data<AppState>) -> HttpResponse {
-    let todo: Vec<Receivers> = sqlx::query_as("SELECT id, username, designation FROM users")
+    let todo: Result<Vec<Receivers>, Error> = sqlx::query_as("SELECT id, username, designation FROM users")
         .fetch_all(&pool.pool)
-        .await
-        .map_err(|e| error::ErrorBadRequest(e.to_string())).unwrap();
+        .await;
 
-    let json_string = serde_json::to_string(&todo).unwrap();
-    HttpResponse::Ok().body(json_string)
+    match todo {
+        Ok(todo) => {
+            let json_string = serde_json::to_string(&todo).unwrap();
+            HttpResponse::Ok().body(json_string)
+        }
+
+        Err(e) => {
+            return HttpResponse::InternalServerError().body(e.to_string());
+        }
+    }
+
 }
 pub fn list_config (cfg: &mut web::ServiceConfig) {
     cfg.service(
-        web::scope("/v1/list")
+        web::scope("/list")
             .route("/students", web::get().to(get_students))
             .route("/inventory", web::get().to(get_inventory))
             .route("/receiver", web::get().to(get_receiver))

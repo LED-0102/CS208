@@ -52,20 +52,6 @@ pub async fn insert(st: NewUserDesig, pool: &PgPool) -> Result<(), Box<dyn Error
         .fetch_one(pool)
         .await?;
     let id: i32 = todo.try_get("id")?;
-    let _ = sqlx::query("WITH form_keys AS (
-            SELECT DISTINCT form FROM forms
-        )
-        UPDATE users
-        SET
-            seeking = jsonb_object_agg(form, '[]'::jsonb),
-            pending = jsonb_object_agg(form, '[]'::jsonb),
-            previous = jsonb_object_agg(form, '[]'::jsonb)
-        FROM form_keys
-        WHERE id=$1;
-    ")
-        .bind(id)
-        .execute(pool)
-        .await?;
     Ok(())
 }
 pub async fn register (new_user: web::Json<NewUser>, state: web::Data<AppState>) -> impl Responder {
@@ -81,7 +67,8 @@ pub async fn register (new_user: web::Json<NewUser>, state: web::Data<AppState>)
             println!("Created");
             HttpResponse::Created()
         },
-        Err(_) => {
+        Err(e) => {
+            println!("{}", &e.to_string());
             println!("Conflict");
             HttpResponse::Conflict()
         }

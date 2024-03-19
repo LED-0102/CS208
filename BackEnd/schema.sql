@@ -50,7 +50,7 @@ CREATE TABLE SS04 (
     inventory_no VARCHAR,
     room_no VARCHAR,
     email VARCHAR,
-    items_receiving_date DATE,
+    items_receiving_date VARCHAR,
     list_orders jsonb,      --SS04 orders
     total_amount INT,
     name_indenter VARCHAR,

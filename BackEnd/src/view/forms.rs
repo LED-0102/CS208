@@ -6,14 +6,16 @@ use crate::ws::server::{ChatServer, Identifier};
 use serde_json;
 use serde_json::Value;
 use sqlx::{PgPool, Row};
+use sqlx::postgres::PgRow;
 use crate::auth::jwt::JwToken;
 use crate::db::fetch_id::{identifier_id, verify_receiver};
 
+#[derive(Debug)]
 pub enum Forms {
     SS04(SS04),
 }
 pub trait FormTrait: Serialize {
-    async fn process (&self, pool: &PgPool, id: i32) -> Result<(), Box<dyn Error>>;
+    async fn process (&self, pool: &PgPool, id: i32, user_id: i32) -> Result<(), Box<dyn Error>>;
     async fn get_identifier (&self, pool: &PgPool) -> Result<Identifier, Box<dyn Error>>;
     async fn pg_insert (&self, pool: &PgPool) -> Result<i32, Box<dyn Error>>;
     async fn send_form_ws (&self, srv: &mut ChatServer, pool: &PgPool) -> Result<(), Box<dyn Error>>{
@@ -35,7 +37,7 @@ pub trait FormTrait: Serialize {
             }
         }
     }
-    async fn send_recv_update(&self, pool: &PgPool, id: i32, form_name: &str) -> Result<(), Box<dyn Error>> {
+    async fn send_recv_update(&self, pool: &PgPool, id: i32, form_name: &str, user_id: i32) -> Result<(), Box<dyn Error>> {
         let a = sqlx::query("SELECT submitter, receiver FROM $1 WHERE id=$2")
             .bind(form_name)
             .bind(id)
@@ -43,6 +45,7 @@ pub trait FormTrait: Serialize {
             .await?;
         let submitter: i32 = a.try_get("submitter")?;
         let receiver: i32 = a.try_get("receiver")?;
+        println!("{submitter} {receiver}");
         let data_table = format!("{form_name}_data");
         let _  = sqlx::query("IF EXISTS(SELECT 1 FROM $1 WHERE id = $2) THEN
                 UPDATE $1
@@ -53,7 +56,7 @@ pub trait FormTrait: Serialize {
                 VALUES ($2, ARRAY[$3], ARRAY[], ARRAY[]);
             END IF;")
             .bind(&data_table)
-            .bind(id)
+            .bind(user_id)
             .bind(receiver)
             .execute(pool)
             .await?;
@@ -66,7 +69,7 @@ pub trait FormTrait: Serialize {
                 VALUES ($2, ARRAY[], ARRAY[$3], ARRAY[]);
             END IF;")
             .bind(&data_table)
-            .bind(id)
+            .bind(user_id)
             .bind(submitter)
             .execute(pool)
             .await?;
@@ -86,10 +89,10 @@ impl Serialize for Forms {
 
 impl FormTrait for Forms {
 
-    async fn process(&self, pool: &PgPool, id: i32) -> Result<(), Box<dyn Error>>{
+    async fn process(&self, pool: &PgPool, id: i32, user_id: i32) -> Result<(), Box<dyn Error>>{
         match self {
             Forms::SS04(f) => {
-                let e = self.send_recv_update(pool, id, self.enum_to_str()).await?;
+                let e = self.send_recv_update(pool, id, self.enum_to_str(), user_id).await?;
             }
         }
         Ok(())
@@ -107,8 +110,7 @@ impl FormTrait for Forms {
     async fn pg_insert(&self, pool: &PgPool) -> Result<i32, Box<dyn Error>> {
         match self {
             Forms::SS04(ss04) => {
-                let result = sqlx::query(
-                    "INSERT INTO SS04 (
+                let result = sqlx::query("INSERT INTO SS04 (
                             note,
                             submitter,
                             receiver,
@@ -138,8 +140,7 @@ impl FormTrait for Forms {
                             action_ledger_date,
                             approval_status
                         ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28)
-                        RETURNING id",
-                                )
+                        RETURNING id;")
                     .bind(&ss04.note)
                     .bind(&ss04.submitter)
                     .bind(&ss04.receiver)
@@ -169,11 +170,15 @@ impl FormTrait for Forms {
                     .bind(&ss04.action_ledger_date)
                     .bind(&ss04.approval_status)
                     .fetch_one(pool)
-                    .await?;
-
-
-                let id: i32 = result.try_get("id")?;
-                println!("{id}");
+                    .await;
+                match result {
+                    Ok(_) => {
+                    }
+                    Err(e) => {
+                        return Err(Box::try_from(e).unwrap());
+                    }
+                }
+                let id: i32 = result.unwrap().try_get("id")?;
                 Ok(id)
             }
         }
