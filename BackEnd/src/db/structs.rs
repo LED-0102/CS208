@@ -61,7 +61,7 @@ pub struct SS04 {
     pub items_issued_date: String, // Assuming the date could be null
     pub action_ledger_name: String,
     pub action_ledger_date: String, // Assuming the date could be null
-    pub hod_approval: State,
+    pub approval_status: State,
 }
 
 #[derive(Debug, Serialize, Deserialize, FromRow)]
@@ -121,7 +121,7 @@ impl SS04 {
             items_issued_date: "".to_string(),
             action_ledger_name: "".to_string(),
             action_ledger_date: "".to_string(),
-            hod_approval: "Pending".parse().unwrap(),
+            approval_status: "Pending".parse().unwrap(),
         }
     }
 }

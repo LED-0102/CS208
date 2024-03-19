@@ -7,7 +7,7 @@ use serde_json;
 use serde_json::Value;
 use sqlx::{PgPool, Row};
 use crate::auth::jwt::JwToken;
-use crate::db::fetch_id::{identifier_id};
+use crate::db::fetch_id::{identifier_id, verify_receiver};
 
 pub enum Forms {
     SS04(SS04),
@@ -35,7 +35,6 @@ pub trait FormTrait: Serialize {
             }
         }
     }
-
     async fn send_recv_update(&self, pool: &PgPool, id: i32, form_name: &str) -> Result<(), Box<dyn Error>> {
         let a = sqlx::query("SELECT submitter, receiver FROM $1 WHERE id=$2")
             .bind(form_name)
@@ -44,34 +43,31 @@ pub trait FormTrait: Serialize {
             .await?;
         let submitter: i32 = a.try_get("submitter")?;
         let receiver: i32 = a.try_get("receiver")?;
-
-        let _ = sqlx::query(r#"UPDATE users
-            SET seeking =
-                CASE
-                    WHEN seeking ? '$1' THEN
-                        jsonb_set(seeking, '{$1}', seeking->'$1' || '$2'::jsonb)
-                    ELSE
-                        '{"$1" : [$2]}'::jsonb
-                END
-            WHEN id = $3;"#)
-            .bind(form_name)
-            .bind(id)
-            .bind(submitter)
-            .execute(pool)
-            .await?;
-
-        let _ = sqlx::query(r#"UPDATE users
-            SET pending =
-                CASE
-                    WHEN pending ? '$1' THEN
-                        jsonb_set(pending, '{$1}', pending->'$1' || '$2'::jsonb)
-                    ELSE
-                        '{"$1" : [$2]}'::jsonb
-                END
-            WHEN id = $3;"#)
-            .bind(form_name)
+        let data_table = format!("{form_name}_data");
+        let _  = sqlx::query("IF EXISTS(SELECT 1 FROM $1 WHERE id = $2) THEN
+                UPDATE $1
+                SET pending = array_append(pending, $3)
+                WHERE id = $2;
+            ELSE
+                INSERT INTO $1 (id, pending, seeking, previous)
+                VALUES ($2, ARRAY[$3], ARRAY[], ARRAY[]);
+            END IF;")
+            .bind(&data_table)
             .bind(id)
             .bind(receiver)
+            .execute(pool)
+            .await?;
+        let _ = sqlx::query("IF EXISTS(SELECT 1 FROM $1 WHERE id = $2) THEN
+                UPDATE $1
+                SET seeking = array_append(seeking, $3)
+                WHERE id = $2;
+            ELSE
+                INSERT INTO $1 (id, pending, seeking, previous)
+                VALUES ($2, ARRAY[], ARRAY[$3], ARRAY[]);
+            END IF;")
+            .bind(&data_table)
+            .bind(id)
+            .bind(submitter)
             .execute(pool)
             .await?;
         Ok(())
@@ -140,7 +136,7 @@ impl FormTrait for Forms {
                             items_issued_date,
                             action_ledger_name,
                             action_ledger_date,
-                            hod_approval
+                            approval_status
                         ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28)
                         RETURNING id",
                                 )
@@ -171,7 +167,7 @@ impl FormTrait for Forms {
                     .bind(&ss04.items_issued_date)
                     .bind(&ss04.action_ledger_name)
                     .bind(&ss04.action_ledger_date)
-                    .bind(&ss04.hod_approval)
+                    .bind(&ss04.approval_status)
                     .fetch_one(pool)
                     .await?;
 

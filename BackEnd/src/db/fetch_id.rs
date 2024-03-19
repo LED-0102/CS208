@@ -1,5 +1,6 @@
 
-use sqlx::{ PgPool, Row};
+use sqlx::{Error, PgPool, Row};
+use sqlx::postgres::PgRow;
 use crate::ws::server::Identifier;
 
 pub async fn identifier_id (id: i32, pool: &PgPool) -> Result<Identifier, Box<dyn std::error::Error>> {
@@ -31,4 +32,26 @@ pub async fn identifier_email (email: &str, pool: &PgPool) -> Identifier{
         .unwrap()
         ;
     id
+}
+
+pub async fn verify_receiver (pool: &PgPool, form_id: i32, form_name: &str, receiver_id: i32) -> Result<bool, String> {
+    let a = sqlx::query("SELECT receiver from $1 where id=$2")
+        .bind(&form_name)
+        .bind(&form_id)
+        .fetch_one(pool)
+        .await;
+    match a {
+        Ok(s) => {
+            let receiver: i32 = s.get("receiver");
+            if receiver == receiver_id {
+                Ok(true)
+            } else {
+                Ok(false)
+            }
+        }
+        Err(e) => {
+            Err("BadRequest".to_string())
+        }
+    }
+
 }

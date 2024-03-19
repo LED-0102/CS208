@@ -14,10 +14,7 @@ CREATE TABLE users (
     department department_enum,
     location VARCHAR,
     room VARCHAR,
-    contact_number VARCHAR,
-    ss04_seeking INT[],
-    ss04_pending INT[],
-    ss04_previous INT[]
+    contact_number VARCHAR
 );
 CREATE TABLE forms (
     form VARCHAR PRIMARY KEY
@@ -33,9 +30,15 @@ CREATE TYPE SS04_orders AS (
     unit_price INT,
     total INT
 );
+CREATE TABLE SS04_data (
+    id INT PRIMARY KEY REFERENCES users (id),
+    pending INT[],
+    seeking INT[],
+    previous INT[]
+);
 CREATE TABLE SS04 (
     id SERIAL PRIMARY KEY,
-    note VARCHAR,
+    note VARCHAR DEFAULT '',
     submitter INT REFERENCES users (id),
     receiver INT REFERENCES users (id),
     date VARCHAR,
@@ -62,7 +65,7 @@ CREATE TABLE SS04 (
     items_issued_date VARCHAR,
     action_ledger_name VARCHAR,
     action_ledger_date VARCHAR,
-    hod_approval state
+    approval_status state
 );
 CREATE TYPE E01_items AS(
     employee_id VARCHAR,
