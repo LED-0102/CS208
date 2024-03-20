@@ -42,17 +42,14 @@ pub async fn get_pending(app_state: Data<AppState>, jwt: JwToken) -> HttpRespons
     HttpResponse::Ok().finish()
 }
 
-pub async fn get_students(app_state: Data<AppState>) -> HttpResponse{
+pub async fn get_students(app_state: Data<AppState>) -> impl Responder{
     match sqlx::query_as::<_, Student>(
         "SELECT roll_no, student_name, email_id, degree FROM students"
     )
         .fetch_all(&app_state.pool)
         .await 
     {
-        Ok(students) => {
-            let json_string = serde_json::to_string(&students).unwrap();
-            HttpResponse::Ok().json(json_string)
-        },
+        Ok(students) => HttpResponse::Ok().json(students),
         Err(_) => HttpResponse::NotFound().json("No Students Found!")
     }
 }
