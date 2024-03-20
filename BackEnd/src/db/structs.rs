@@ -156,3 +156,15 @@ impl FromStr for Desig {
         }
     }
 }
+impl FromStr for Degree {
+    type Err = ();
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "MS" => Ok(Self::MS),
+            "PhD" => Ok(Self::PhD),
+            "MTech" => Ok(Self::MTech),
+            "BTech" => Ok(Self::BTech),
+            _ => Err(())
+        }
+    }
+}

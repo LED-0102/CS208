@@ -15,7 +15,7 @@ pub enum Forms {
     SS04(SS04),
 }
 pub trait FormTrait: Serialize {
-    async fn process (&self, pool: &PgPool, id: i32, user_id: i32) -> Result<(), Box<dyn Error>>;
+    async fn process (&self, pool: &PgPool, id: i32) -> Result<(), Box<dyn Error>>;
     async fn get_identifier (&self, pool: &PgPool) -> Result<Identifier, Box<dyn Error>>;
     async fn pg_insert (&self, pool: &PgPool) -> Result<i32, Box<dyn Error>>;
     async fn send_form_ws (&self, srv: &mut ChatServer, pool: &PgPool) -> Result<(), Box<dyn Error>>{
@@ -37,54 +37,52 @@ pub trait FormTrait: Serialize {
             }
         }
     }
-    async fn send_recv_update(&self, pool: &PgPool, id: i32, form_name: &str, user_id: i32) -> Result<(), Box<dyn Error>> {
-        let a = sqlx::query("SELECT submitter, receiver FROM table_name WHERE id = $1")
+    async fn send_recv_update(&self, pool: &PgPool, id: i32, form_name: &str) -> Result<(), Box<dyn Error>> {
+        let query = format!("SELECT submitter, receiver FROM {form_name} WHERE id = $1");
+        let a = sqlx::query(&query)
             .bind(id)
             .fetch_one(pool)
             .await?;
+        println!("Done here");
         let submitter: i32 = a.try_get("submitter")?;
         let receiver: i32 = a.try_get("receiver")?;
         println!("{submitter} {receiver}");
 
         let data_table = format!("{}_data", form_name);
-
+        println!("{data_table}");
         let update_query = format!("
             DO $$
             BEGIN
-                IF EXISTS (SELECT 1 FROM {} WHERE id = $1) THEN
+                IF EXISTS (SELECT 1 FROM {} WHERE id = {submitter}) THEN
                     UPDATE {}
-                    SET pending = array_append(pending, $2)
-                    WHERE id = $1;
+                    SET pending = array_append(pending, {id})
+                    WHERE id = {submitter};
                 ELSE
                     INSERT INTO {} (id, pending, seeking, previous)
-                    VALUES ($1, ARRAY[$2], ARRAY[], ARRAY[]);
+                    VALUES ({submitter}, ARRAY[{id}], ARRAY[]::integer[], ARRAY[]::integer[]);
                 END IF;
             END $$;
             ", data_table, data_table, data_table);
-
+        println!("{update_query}");
         let _ = sqlx::query(&update_query)
-            .bind(user_id)
-            .bind(receiver)
             .execute(pool)
             .await?;
-
+        println!("Here!");
         let seeking_query = format!("
             DO $$
             BEGIN
-                IF EXISTS (SELECT 1 FROM {} WHERE id = $1) THEN
+                IF EXISTS (SELECT 1 FROM {} WHERE id = {receiver}) THEN
                     UPDATE {}
-                    SET seeking = array_append(seeking, $2)
-                    WHERE id = $1;
+                    SET seeking = array_append(seeking, {id})
+                    WHERE id = {receiver};
                 ELSE
                     INSERT INTO {} (id, pending, seeking, previous)
-                    VALUES ($1, ARRAY[], ARRAY[$2], ARRAY[]);
+                    VALUES ({receiver}, ARRAY[]::integer[], ARRAY[{id}], ARRAY[]::integer[]);
                 END IF;
             END $$;
             ", data_table, data_table, data_table);
 
         let _ = sqlx::query(&seeking_query)
-            .bind(user_id)
-            .bind(submitter)
             .execute(pool)
             .await?;
 
@@ -105,10 +103,10 @@ impl Serialize for Forms {
 
 impl FormTrait for Forms {
 
-    async fn process(&self, pool: &PgPool, id: i32, user_id: i32) -> Result<(), Box<dyn Error>>{
+    async fn process(&self, pool: &PgPool, id: i32) -> Result<(), Box<dyn Error>>{
         match self {
             Forms::SS04(f) => {
-                let e = self.send_recv_update(pool, id, self.enum_to_str(), user_id).await?;
+                let e = self.send_recv_update(pool, id, self.enum_to_str()).await?;
             }
         }
         Ok(())
@@ -225,3 +223,5 @@ impl Forms {
         }
     }
 }
+
+
