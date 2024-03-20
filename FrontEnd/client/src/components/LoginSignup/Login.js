@@ -69,13 +69,8 @@ const LoginSignup = () => {
       >
         {/* <!-- left side --> */}
         <div className="flex flex-col justify-center p-8 md:p-14">
-<<<<<<< Updated upstream
-          <span className="mb-3 text-4xl font-bold">Welcome back</span>
-          <span className="font-light text-gray-400 mb-8">
-=======
           <span className="mb-3 text-4xl font-bold overflow-y-hidden">Welcome back</span>
           <span className="text-gray-600 mb-8">
->>>>>>> Stashed changes
             Welcome back! Please enter your details
           </span>
             <form>

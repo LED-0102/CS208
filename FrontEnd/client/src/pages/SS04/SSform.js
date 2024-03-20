@@ -2,20 +2,21 @@ import React, { useState } from 'react';
 import Navbar from '../../components/Navbar/Navbar';
 import Header from '../../components/Navbar/Header';
 import { Input } from "@nextui-org/react";
-import "./ssform.css"
-import axios from 'axios'
+import "./ssform.css";
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import globalUrl from "../../components/url";
 
-
 const SS04form = () => {
-  const [list_orders, setlist_orders] = useState([]);
+  const [tabledata, setTabledata] = useState([]);
+  const navigate = useNavigate();
 
   const addRow = (e) => {
     e.preventDefault();
     // Create a new row with a unique ID and serial number
-    const newRow = { id: list_orders.length + 1, sno: list_orders.length + 1 };
+    const newRow = { id: tabledata.length + 1, sno: tabledata.length + 1 };
     // Update the state to include the new row
-    setlist_orders([...list_orders, newRow]);
+    setTabledata([...tabledata, newRow]);
   };
 
   const [formData, setFormData] = useState({
@@ -32,49 +33,67 @@ const SS04form = () => {
     roomNo: "",
     email: "",
     total_amount: "",
-
+    list_order:[],
   });
-  const abc="newvar++";
+
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [selectedOption, setSelectedOption] = useState("");
+
+  const toggleDropdown = () => {
+    setShowDropdown(!showDropdown);
+  };
+
+  const handleOptionClick = (option) => {
+    setSelectedOption(option);
+    setFormData({ ...formData, designation: option }); // Update designation field with selected option
+    setShowDropdown(false);
+  };
 
   const handleChange = (evt) => {
     const changedField = evt.target.name;
     const newValue = evt.target.value;
-    // console.log(changedField, newValue)
 
     setFormData((currData) => {
       currData[changedField] = newValue;
       return {
-        ...currData,  //making copy by spread operator
-
+        ...currData,
       };
     });
   };
 
   const handleChangeTable = (event, index, key) => {
     const { value } = event.target;
-    const updatedlist_orders = [...list_orders];
-    updatedlist_orders[index][key] = value;
-    setlist_orders(updatedlist_orders);
+    const updatedListOrders = [...tabledata];
+    updatedListOrders[index][key] = value;
+    setTabledata(updatedListOrders);
   };
-
 
   const handleSubmit = async (e) => {
     e.preventDefault(); 
-    console.log("formdata", formData);
-    console.log("list_orders", list_orders);
-    // console.log("formdata",formData.StoreNo);
+
+    const listOrders = tabledata.map(row => ({
+      supplier: row.supplier,
+      billNo: row.billNo,
+      item: row.item,
+      quantity: row.quantity,
+      con_n_con: row.con_n_con,
+      unit_price: row.unit_price,
+      total: row.total
+    }));
+
+    const updatedFormData = { ...formData, list_order: listOrders };
+    console.log("update form data:",updatedFormData)
 
     try {
-      // Make POST request to your server endpoint
-      const response = await axios.post(`${globalUrl}/v1/submit/SS04`, { formData, list_orders });
-  
-      // Handle the response, if needed
+      const response = await axios.post(`${globalUrl}/v1/submit/SS04`, updatedFormData);
+      const { id } = response.data;
+      navigate(`/SS04/${id}`);
       console.log("Response from server:", response.data);
     } catch (error) {
-      // Handle any errors that occur during the request
       console.error("Error:", error);
     }
   };
+
 
 
   return (
@@ -219,7 +238,7 @@ const SS04form = () => {
                 </tr>
               </thead>
               <tbody>
-                {list_orders.map((row, index) => (
+                {tabledata.map((row, index) => (
                   <tr key={index}>
                     <td>{row.sno}</td>
                     <td><input type="text" id={`supplier_${index}`} name={`supplier_${index}`} value={row.supplier} onChange={(e) => handleChangeTable(e, index, 'supplier')} placeholder="Supplier Name" className="border-2 border-black" /></td>
