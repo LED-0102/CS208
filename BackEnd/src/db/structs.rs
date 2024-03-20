@@ -32,6 +32,13 @@ pub enum Desig {
     Student,
     Office
 }
+#[derive(Debug, PartialEq, Eq, Type, Deserialize, Serialize, Clone)]
+pub enum Degree {
+    PhD, 
+    MTech, 
+    MS, 
+    BTech,
+}
 #[derive(Debug, Serialize, Deserialize, FromRow)]
 pub struct SS04 {
     pub note: String,
@@ -74,7 +81,7 @@ pub struct Student {
     pub roll_no: String,
     pub student_name: String,
     pub email_id: String,
-    pub degree: String
+    pub degree: Degree
 }
 
 #[derive(Serialize, FromRow)]

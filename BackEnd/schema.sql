@@ -2,7 +2,7 @@ CREATE TYPE department_enum AS ENUM ('CSE', 'EE', 'MEMS', 'CE', 'ME');
 CREATE TYPE state AS ENUM ('Pending', 'Accepted', 'Rejected');
 CREATE TYPE desig AS ENUM ('HOD', 'Staff', 'Professor', 'Office', 'Student');
 CREATE TYPE con_enum AS ENUM ('Con', 'N-Con');
-CREATE TYPE degree_enum AS ENUM ('Ph.D.', 'M.Tech.', 'MS', 'B.Tech');
+CREATE TYPE degree_enum AS ENUM ('PhD', 'MTech', 'MS', 'BTech');
 CREATE TYPE claimant_enum AS ENUM ('Claimant', 'Party');
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
@@ -183,9 +183,9 @@ CREATE TABLE SS01 (
 );
 CREATE TABLE students (
     roll_no VARCHAR PRIMARY KEY,
-    student_name varchar NOT NULL,
-    email_id varchar NOT NULL,
-    degree degree_enum NOT NULL
+    student_name VARCHAR,
+    email_id VARCHAR,
+    degree degree_enum
 );
 CREATE TABLE inventory (
     instrument_id VARCHAR PRIMARY KEY,
