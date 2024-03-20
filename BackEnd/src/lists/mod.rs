@@ -44,7 +44,7 @@ pub async fn get_pending(app_state: Data<AppState>, jwt: JwToken) -> HttpRespons
 
 pub async fn get_students(app_state: Data<AppState>) -> impl Responder{
     match sqlx::query_as::<_, Student>(
-        "SELECT * FROM students"
+        "SELECT roll_no, student_name, email_id, degree FROM students"
     )
         .fetch_all(&app_state.pool)
         .await 
