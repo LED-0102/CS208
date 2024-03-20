@@ -5,7 +5,6 @@ use std::str::FromStr;
 use actix_web::{post, web::{self, Data}, HttpResponse};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-use sqlx::PgPool;
 use crate::auth::jwt::JwToken;
 use forms::{Forms, FormTrait};
 use crate::AppState;

@@ -38,43 +38,59 @@ pub trait FormTrait: Serialize {
         }
     }
     async fn send_recv_update(&self, pool: &PgPool, id: i32, form_name: &str, user_id: i32) -> Result<(), Box<dyn Error>> {
-        let a = sqlx::query("SELECT submitter, receiver FROM $1 WHERE id=$2")
-            .bind(form_name)
+        let a = sqlx::query("SELECT submitter, receiver FROM table_name WHERE id = $1")
             .bind(id)
             .fetch_one(pool)
             .await?;
         let submitter: i32 = a.try_get("submitter")?;
         let receiver: i32 = a.try_get("receiver")?;
         println!("{submitter} {receiver}");
-        let data_table = format!("{form_name}_data");
-        let _  = sqlx::query("IF EXISTS(SELECT 1 FROM $1 WHERE id = $2) THEN
-                UPDATE $1
-                SET pending = array_append(pending, $3)
-                WHERE id = $2;
-            ELSE
-                INSERT INTO $1 (id, pending, seeking, previous)
-                VALUES ($2, ARRAY[$3], ARRAY[], ARRAY[]);
-            END IF;")
-            .bind(&data_table)
+
+        let data_table = format!("{}_data", form_name);
+
+        let update_query = format!("
+            DO $$
+            BEGIN
+                IF EXISTS (SELECT 1 FROM {} WHERE id = $1) THEN
+                    UPDATE {}
+                    SET pending = array_append(pending, $2)
+                    WHERE id = $1;
+                ELSE
+                    INSERT INTO {} (id, pending, seeking, previous)
+                    VALUES ($1, ARRAY[$2], ARRAY[], ARRAY[]);
+                END IF;
+            END $$;
+            ", data_table, data_table, data_table);
+
+        let _ = sqlx::query(&update_query)
             .bind(user_id)
             .bind(receiver)
             .execute(pool)
             .await?;
-        let _ = sqlx::query("IF EXISTS(SELECT 1 FROM $1 WHERE id = $2) THEN
-                UPDATE $1
-                SET seeking = array_append(seeking, $3)
-                WHERE id = $2;
-            ELSE
-                INSERT INTO $1 (id, pending, seeking, previous)
-                VALUES ($2, ARRAY[], ARRAY[$3], ARRAY[]);
-            END IF;")
-            .bind(&data_table)
+
+        let seeking_query = format!("
+            DO $$
+            BEGIN
+                IF EXISTS (SELECT 1 FROM {} WHERE id = $1) THEN
+                    UPDATE {}
+                    SET seeking = array_append(seeking, $2)
+                    WHERE id = $1;
+                ELSE
+                    INSERT INTO {} (id, pending, seeking, previous)
+                    VALUES ($1, ARRAY[], ARRAY[$2], ARRAY[]);
+                END IF;
+            END $$;
+            ", data_table, data_table, data_table);
+
+        let _ = sqlx::query(&seeking_query)
             .bind(user_id)
             .bind(submitter)
             .execute(pool)
             .await?;
+
         Ok(())
     }
+
 }
 
 impl Serialize for Forms {

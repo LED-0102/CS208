@@ -4,6 +4,7 @@ import Header from '../../components/Navbar/Header';
 import { Input } from "@nextui-org/react";
 import "./ssform.css"
 import axios from 'axios'
+import globalUrl from "../../components/url";
 
 
 const SS04form = () => {
@@ -65,7 +66,7 @@ const SS04form = () => {
 
     try {
       // Make POST request to your server endpoint
-      const response = await axios.post('http://localhost:8000', { formData, list_orders });
+      const response = await axios.post(`${globalUrl}/v1/submit/SS04`, { formData, list_orders });
   
       // Handle the response, if needed
       console.log("Response from server:", response.data);

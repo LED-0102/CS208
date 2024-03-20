@@ -28,7 +28,7 @@ const LoginSignup = () => {
     console.log("formdata",post)
     
     try {
-      const response = await axios.post(`${globalUrl}/auth/login`, post, {
+      const response = await axios.post(`${globalUrl}/v1/auth/login`, post, {
           withCredentials: true,
       });
       console.log("Here");
@@ -68,7 +68,7 @@ const LoginSignup = () => {
         <div className="flex flex-col justify-center p-8 md:p-14">
           <span className="mb-3 text-4xl font-bold">Welcome back</span>
           <span className="font-light text-gray-400 mb-8">
-            Welcom back! Please enter your details
+            Welcome back! Please enter your details
           </span>
             <form>
             {/* <form onSubmit={handleSubmit}> */}
