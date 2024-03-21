@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import Navbar from '../../components/Navbar/Navbar';
 import Header from '../../components/Navbar/Header';
 import { Input } from "@nextui-org/react";
@@ -19,6 +19,8 @@ const SS04form = () => {
     setTabledata([...tabledata, newRow]);
   };
 
+  const [userData,setUserData]=useState({})
+  const [error,setError]=useState({})
   const [formData, setFormData] = useState({
     StoreNo: "",
     financialyear: "",
@@ -121,6 +123,28 @@ const SS04form = () => {
       console.error("Error:", error);
     }
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${globalUrl}/list/receiver`);
+        // const response = await axios.get(`https://randomuser.me/api/`);
+        setUserData(response.data);
+        console.log(response.data)
+      } catch (error) {
+        setError(error);
+      } finally {
+        // setLoading(false);
+      }
+    };
+
+    fetchData();
+
+  
+    return () => {
+      
+    };
+  }, []); 
 
 
 
