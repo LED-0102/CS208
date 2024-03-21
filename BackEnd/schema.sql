@@ -85,7 +85,12 @@ CREATE TABLE E01 (
     hod_approval state,
     reason VARCHAR[]
 );
-CREATE TYPE MM04_items AS (
+CREATE TABLE MM04 (
+    id INT PRIMARY KEY,
+    note VARCHAR,
+    submitter INT REFERENCES users (id),
+    receiver INT REFERENCES users (id),
+    date VARCHAR,
     quotation_no VARCHAR,
     date VARCHAR,
     requester_name VARCHAR,
@@ -95,15 +100,6 @@ CREATE TYPE MM04_items AS (
     name_member VARCHAR,
     name_convener VARCHAR,
     designation_member VARCHAR,
-    designation_convener VARCHAR
-);
-CREATE TABLE MM04 (
-    id INT PRIMARY KEY,
-    note VARCHAR,
-    submitter INT REFERENCES users (id),
-    receiver INT REFERENCES users (id),
-    date VARCHAR,
-    content MM04_items,
     intermediate_approval state,
     hod_approval state,
     reason VARCHAR[]
