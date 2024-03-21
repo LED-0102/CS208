@@ -45,19 +45,19 @@ pub struct SS04 {
     pub submitter: i32,
     pub receiver: i32,
     pub date: String, // Assuming the date could be null
-    pub custodian: String,
-    pub department: String,
-    pub location: String,
-    pub contact: String,
-    pub designation: String,
-    pub inventory_no: String,
-    pub room_no: String,
-    pub email: String,
-    pub items_receiving_date: String, // Assuming the date could be null
+    pub custodian: String, //
+    pub department: String,//
+    pub location: String,//
+    pub contact: String,//
+    pub designation: String,//
+    pub inventory_no: String,//
+    pub room_no: String,//
+    pub email: String,//
+    pub items_receiving_date: String, //
     pub list_orders: Vec<SS04Orders>,
     pub total_amount: i32,
     pub name_indenter: String,
-    pub sign_date_indenter: String, // Assuming the date could be null
+    pub sign_date_indenter: String, //
     pub name_head: String,
     pub sign_date_head: String, // Assuming the date could be null
     pub issued_approved_name: String,

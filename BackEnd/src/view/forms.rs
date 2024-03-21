@@ -1,7 +1,7 @@
 use std::error::Error;
 use actix_web::{HttpResponse};
 use serde::{Serialize, Serializer};
-use crate::db::structs::{ SS04};
+use crate::db::structs::{SS04, State};
 use crate::ws::server::{ChatServer, Identifier};
 use serde_json;
 use serde_json::Value;
@@ -182,7 +182,7 @@ impl FormTrait for Forms {
                     .bind(&ss04.items_issued_date)
                     .bind(&ss04.action_ledger_name)
                     .bind(&ss04.action_ledger_date)
-                    .bind(&ss04.approval_status)
+                    .bind(&State::Pending)
                     .fetch_one(pool)
                     .await;
                 match result {
