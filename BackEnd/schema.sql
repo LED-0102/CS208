@@ -142,7 +142,7 @@ CREATE TYPE SS01_items AS (
     designation VARCHAR,
     inventory_no VARCHAR,
     room_no VARCHAR,
-    item_purchase_info VARCHAR[],
+    item_purchase_info VARCHAR,
     name_head VARCHAR,
     list_orders jsonb,
     total_cost INT,
@@ -154,11 +154,11 @@ CREATE TYPE SS01_items AS (
     items_issued_date VARCHAR,
     action_ledger_name VARCHAR,
     action_ledger_date VARCHAR,
-    supplier VARCHAR,
-    po_no_date VARCHAR[],
+    supplier_name_address VARCHAR,
+    po_no_date VARCHAR,
     budget_head_account VARCHAR,
     challan_no_date VARCHAR,
-    invoice_no_date VARCHAR[],
+    invoice_no_date VARCHAR,
     invoice_amount INT,
     project_no VARCHAR,
     name_indenter VARCHAR,
@@ -174,7 +174,7 @@ CREATE TABLE SS01 (
     content jsonb,
     intermediate_approval state,
     hod_approval state,
-    reason VARCHAR[]
+    reason VARCHAR
 );
 CREATE TABLE students (
     roll_no VARCHAR PRIMARY KEY,
