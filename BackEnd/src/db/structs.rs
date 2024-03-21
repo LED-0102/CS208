@@ -72,6 +72,26 @@ pub struct SS04 {
 }
 
 #[derive(Debug, Serialize, Deserialize, FromRow)]
+pub struct MM04 {
+    pub id: i32,
+    pub note: String,
+    pub receiver_id: i32,
+    pub submitter_id: i32,
+    pub quotation_no: String,
+    pub date: String,
+    pub requester_name: String,
+    pub amount: i32,
+    pub amount_tax: i32,
+    pub amount_words: String,
+    pub name_member: String,
+    pub name_convener: String,
+    pub designation_member: String,
+    pub intermediate_approval: State,
+    pub hod_approval: State,
+    pub reason: String
+}
+
+#[derive(Debug, Serialize, Deserialize, FromRow)]
 pub struct Seeking {
     pub data: serde_json::Value
 }

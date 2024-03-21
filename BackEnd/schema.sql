@@ -75,7 +75,7 @@ CREATE TYPE E01_items AS(
     request_number VARCHAR
 );
 CREATE TABLE E01 (
-    id INT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     note VARCHAR,
     submitter INT REFERENCES users (id),
     receiver INT REFERENCES users (id),
@@ -90,7 +90,6 @@ CREATE TABLE MM04 (
     note VARCHAR,
     submitter INT REFERENCES users (id),
     receiver INT REFERENCES users (id),
-    date VARCHAR,
     quotation_no VARCHAR,
     date VARCHAR,
     requester_name VARCHAR,
@@ -102,7 +101,7 @@ CREATE TABLE MM04 (
     designation_member VARCHAR,
     intermediate_approval state,
     hod_approval state,
-    reason VARCHAR[]
+    reason VARCHAR
 );
 CREATE TYPE R1_items AS (
     purpose_of_expenditure VARCHAR,
