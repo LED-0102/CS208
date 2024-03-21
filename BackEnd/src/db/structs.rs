@@ -73,7 +73,6 @@ pub struct SS04 {
 
 #[derive(Debug, Serialize, Deserialize, FromRow)]
 pub struct MM04 {
-    pub id: i32,
     pub note: String,
     pub receiver_id: i32,
     pub submitter_id: i32,
@@ -152,6 +151,29 @@ impl SS04 {
         }
     }
 }
+
+impl MM04 {
+    pub fn default() -> Self {
+        MM04{
+            note: "".to_string(),
+            receiver_id: 0,
+            submitter_id: 0,
+            quotation_no: "".to_string(),
+            date: "".to_string(),
+            requester_name: "".to_string(),
+            amount: 0,
+            amount_tax: 0,
+            amount_words: "".to_string(),
+            name_member: "".to_string(),
+            name_convener: "".to_string(),
+            designation_member: "".to_string(),
+            intermediate_approval: "Pending".parse().unwrap(),
+            hod_approval: "Pending".parse().unwrap(),
+            reason: "".to_string()
+        }
+    }
+}
+
 impl FromStr for State {
     type Err = ();
     fn from_str(s: &str) -> Result<Self, Self::Err> {

@@ -35,7 +35,6 @@ pub async fn form_handler(jwt: JwToken, form_type: web::Path<String>, form_data:
         Ok(form) => form,
         Err(e) => {return e;}
     };
-
     match form.pg_insert(&pool.pool).await {
         Ok(s) => {
             println!("Inserted into db!");

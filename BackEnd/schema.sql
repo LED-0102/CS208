@@ -36,6 +36,12 @@ CREATE TABLE SS04_data (
     seeking INT[],
     previous INT[]
 );
+CREATE TABLE MM04_data (
+    id INT PRIMARY KEY REFERENCES users (id),
+    pending INT[],
+    seeking INT[],
+    previous INT[]
+);
 CREATE TABLE SS04 (
     id SERIAL PRIMARY KEY,
     note VARCHAR DEFAULT '',

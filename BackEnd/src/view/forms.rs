@@ -225,7 +225,7 @@ impl FormTrait for Forms {
                         hod_approval,
                         reason
                     )
-                    VALUES (&1, &2, &3, &4, &5, $6, $7, $8, $9, $10, $11, $12, &13, &14, &15)
+                    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
                     RETURNING id;
                 ").bind(&mm04.note)
                   .bind(&mm04.submitter_id)
@@ -261,11 +261,11 @@ impl FormTrait for Forms {
 impl Forms {
     pub fn from_str(s: &str, body: Value, jwt: &JwToken) -> Result<Self, HttpResponse> {
         match s {
-            "SS04" => {
-                match serde_json::from_value::<SS04>(body) {
+            "MM04" => {
+                match serde_json::from_value::<MM04>(body) {
                     Ok(mut s) => {
-                        s.submitter = jwt.id;
-                        Ok(Forms::SS04(s))
+                        s.submitter_id = jwt.id;
+                        Ok(Forms::MM04(s))
                     }
                     Err(_) => {
                         Err(HttpResponse::BadRequest().body("Incompatible structure"))
@@ -273,11 +273,11 @@ impl Forms {
                 }
             }
             _ => Err(HttpResponse::BadRequest().body("Invalid form type")),
-            "MM04" => {
-                match serde_json::from_value::<MM04>(body) {
+            "SS04" => {
+                match serde_json::from_value::<SS04>(body) {
                     Ok(mut s) => {
-                        s.submitter_id = jwt.id;
-                        Ok(Forms::MM04(s))
+                        s.submitter = jwt.id;
+                        Ok(Forms::SS04(s))
                     }
                     Err(_) => {
                         Err(HttpResponse::BadRequest().body("Incompatible structure"))
