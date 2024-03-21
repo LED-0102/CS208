@@ -13,7 +13,6 @@ const SS04form = () => {
   const navigate = useNavigate();
   const [search,setSearch]=useState('');
   const [searchdrop,setSearchdrop]=useState('');
-  const [selectedUserName, setSelectedUserName] = useState('');
 
   const addRow = (e) => {
     e.preventDefault();
@@ -52,18 +51,22 @@ const SS04form = () => {
    items_issued_date:"", // Assuming the date could be null
    action_ledger_name:"", 
    action_ledger_date:"",  // Assuming the date could be null
-   form_to_id:"",
+   receiver:"",
 
 
   });
 
   const handleUserSelect = (userId,userName) => {
+    console.log("aaaa",userName)
+    console.log("aaaa",userId)
     setFormData({
       ...formData,
-      form_to_id: userId
+      receiver: userId
     });
-    setSelectedUserName(userName); // Set the selected user's name
-    setSearch(''); // Clear the search input
+  
+    // setSearch(''); // Clear the search input
+    setSearch((userName.toLowerCase())); // Clear the search input
+    console.log("search+++",search)
   };
 
   const handleCustodianChange = (event) => {
@@ -442,7 +445,7 @@ const SS04form = () => {
             </div>
           </div>
           <div className='p-4'> 
-            <input type="text" onChange={(e)=>setSearch(e.target.value)} className="border-2 border-black"/>
+            <input type="text" onChange={(e)=>setSearch(e.target.value)} value={search}  className="border-2 border-black"/>
             {search.toLowerCase() !== '' && (
             <table>
               <thead>
