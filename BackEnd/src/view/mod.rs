@@ -1,6 +1,7 @@
 mod forms;
 
 use std::error::Error;
+use std::fmt::format;
 use std::str::FromStr;
 use actix_web::{post, web::{self, Data}, HttpResponse};
 use serde::{Deserialize, Serialize};
@@ -63,14 +64,13 @@ pub async fn accept_reject(pool: Data<AppState>, jwt: JwToken, data: web::Json<A
                 return HttpResponse::Unauthorized().finish();
             }
         }
-        Err(_) => {
-            return HttpResponse::BadRequest().finish();
+        Err(e) => {
+            return HttpResponse::BadRequest().body(e);
         }
     }
     return if data.decision {
-        let q = sqlx::query("UPDATE $1 SET approval_status = 'Accepted' WHERE id = $2")
-            .bind(&data.form_type)
-            .bind(&data.form_id)
+        let q = format!("UPDATE {} SET approval_status = 'Accepted' WHERE id = {}", &data.form_type, &data.form_id);
+        let q = sqlx::query(&q)
             .execute(pool)
             .await;
         match q {
@@ -82,9 +82,8 @@ pub async fn accept_reject(pool: Data<AppState>, jwt: JwToken, data: web::Json<A
             }
         }
     } else {
-        let q = sqlx::query("UPDATE $1 SET approval_status = 'Rejected' WHERE id = $2")
-            .bind(&data.form_type)
-            .bind(&data.form_id)
+        let q = format!("UPDATE {} SET approval_status = 'Rejected' WHERE id = {}", &data.form_type, &data.form_id);
+        let q = sqlx::query(&q)
             .execute(pool)
             .await;
         match q {
