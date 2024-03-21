@@ -29,8 +29,8 @@ const SS04form = () => {
     contact: "",
     items_receiving_date: "",
     designation: "",
-    inventoryNo: "",
-    roomNo: "",
+    inventory_no: "",
+    room_no: "",
     email: "",
     total_amount: "",
     list_order:[],
@@ -73,7 +73,8 @@ const SS04form = () => {
 
     const listOrders = tabledata.map(row => ({
       supplier: row.supplier,
-      billNo: row.billNo,
+      bill: row.bill,
+      and_date: row.and_date,
       item: row.item,
       quantity: row.quantity,
       con_n_con: row.con_n_con,
@@ -199,12 +200,12 @@ const SS04form = () => {
                       <td><input type="text" id="designation" name="designation" placeholder='designation' value={formData.designation} onChange={handleChange} className="border-2 border-black" /></td>
                     </tr>
                     <tr>
-                      <td><label for="inventoryNo" htmlFor='inventoryNo'>Inventory No :</label></td>
-                      <td><input type="number" id="inventoryNo" name="inventoryNo" value={formData.inventoryNo} onChange={handleChange} class="border-2 border-black" /></td>
+                      <td><label for="inventory_no" htmlFor='inventory_no'>Inventory No :</label></td>
+                      <td><input type="number" id="inventory_no" name="inventory_no" value={formData.inventory_no} onChange={handleChange} class="border-2 border-black" /></td>
                     </tr>
                     <tr>
-                      <td><label className='font-bold' htmlFor='roomNo'>Room No :</label></td>
-                      <td><input type="text" id="roomNo" name="roomNo" placeholder='room number' value={formData.roomNo} onChange={handleChange} className="border-2 border-black" /></td>
+                      <td><label className='font-bold' htmlFor='room_no'>Room No :</label></td>
+                      <td><input type="text" id="room_no" name="room_no" placeholder='room number' value={formData.room_no} onChange={handleChange} className="border-2 border-black" /></td>
                     </tr>
                     <tr>
                       <td><label className='font-bold' htmlFor='email'>Email id :</label></td>
@@ -242,7 +243,8 @@ const SS04form = () => {
                   <tr key={index}>
                     <td>{row.sno}</td>
                     <td><input type="text" id={`supplier_${index}`} name={`supplier_${index}`} value={row.supplier} onChange={(e) => handleChangeTable(e, index, 'supplier')} placeholder="Supplier Name" className="border-2 border-black" /></td>
-                    <td><input type="text" id={`billNo_${index}`} name={`billNo_${index}`} value={row.billNo} onChange={(e) => handleChangeTable(e, index, 'billNo')} placeholder="Bill No & Date" className="border-2 border-black" /></td>
+                    <td><input type="text" id={`bill${index}`} name={`bill${index}`} value={row.bill} onChange={(e) => handleChangeTable(e, index, 'bill')} placeholder="Bill No & Date" className="border-2 border-black" /></td>
+                    <td><input type="text" id={`and_date_${index}`} name={`and_date_${index}`} value={row.and_date} onChange={(e) => handleChangeTable(e, index, 'and_date')} placeholder="and_date No & Date" className="border-2 border-black" /></td>
                     <td><input type="text" id={`item_${index}`} name={`item_${index}`} value={row.item} onChange={(e) => handleChangeTable(e, index, 'item')} placeholder="Item Name and Specification" className="border-2 border-black" /></td>
                     <td><input type="text" id={`quantity_${index}`} name={`quantity_${index}`} value={row.quantity} onChange={(e) => handleChangeTable(e, index, 'quantity')} placeholder="Qty" className="border-2 border-black" /></td>
                     <td><input type="text" id={`con_n_con_${index}`} name={`con_n_con_${index}`} value={row.con_n_con} onChange={(e) => handleChangeTable(e, index, 'con_n_con')} placeholder="Con/Non-Con" className="border-2 border-black" /></td>
