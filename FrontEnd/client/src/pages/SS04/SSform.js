@@ -144,10 +144,11 @@ const SS04form = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${globalUrl}/list/receiver`);
-        // const response = await axios.get(`https://randomuser.me/api/`);
-        setUserData(response.data);
-        console.log(response.data)
+        // const response = await axios.get(`${globalUrl}/list/receiver`);
+        const response = await axios.get(`https://randomuser.me/api/`);
+        const datss=data
+        setUserData(datss);
+        console.log("dats",datss)
       } catch (error) {
         setError(error);
       } finally {
