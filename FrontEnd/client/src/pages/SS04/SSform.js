@@ -6,10 +6,14 @@ import "./ssform.css";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import globalUrl from "../../components/url";
+import {data} from "./data"
 
 const SS04form = () => {
   const [tabledata, setTabledata] = useState([]);
   const navigate = useNavigate();
+  const [search,setSearch]=useState('');
+  const [searchdrop,setSearchdrop]=useState('');
+  const [selectedUserName, setSelectedUserName] = useState('');
 
   const addRow = (e) => {
     e.preventDefault();
@@ -48,9 +52,19 @@ const SS04form = () => {
    items_issued_date:"", // Assuming the date could be null
    action_ledger_name:"", 
    action_ledger_date:"",  // Assuming the date could be null
+   form_to_id:"",
 
 
   });
+
+  const handleUserSelect = (userId,userName) => {
+    setFormData({
+      ...formData,
+      form_to_id: userId
+    });
+    setSelectedUserName(userName); // Set the selected user's name
+    setSearch(''); // Clear the search input
+  };
 
   const handleCustodianChange = (event) => {
     const newFormData = { ...formData, custodian: event.target.value };
@@ -427,6 +441,35 @@ const SS04form = () => {
 
             </div>
           </div>
+          <div className='p-4'> 
+            <input type="text" onChange={(e)=>setSearch(e.target.value)} className="border-2 border-black"/>
+            {search.toLowerCase() !== '' && (
+            <table>
+              <thead>
+                <tr>
+                  {/* <th>Sno</th> */}
+                  <th>Name of Supplier </th>
+                  <th>Designation</th>
+                 
+                </tr>
+              </thead>
+              <tbody>
+                {data.filter((item)=>
+                {
+                  return search.toLowerCase()===''? "" :(item.name.toLowerCase().includes(search)) 
+                  // || (item.designation.toLowerCase().includes(search))
+                }
+                ).map((item,ind) => (
+                  <tr key={ind} onClick={() => handleUserSelect(item.id,item.name)}>
+                    {/* <td>{row.sno}</td> */}
+                    <td>{item.name}</td>
+                    <td>{item.designation}</td>
+                    
+                  </tr>
+                ))}
+              </tbody>
+            </table>)}
+            </div>
           <div className='flex justify-center w-full mb-8'>
             <button onClick={(e) => handleSubmit(e)} >Submit</button>
           </div>
