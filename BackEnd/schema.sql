@@ -86,7 +86,7 @@ CREATE TABLE E01 (
     reason VARCHAR[]
 );
 CREATE TABLE MM04 (
-    id INT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     note VARCHAR,
     submitter INT REFERENCES users (id),
     receiver INT REFERENCES users (id),

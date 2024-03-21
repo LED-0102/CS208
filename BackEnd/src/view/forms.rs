@@ -1,7 +1,7 @@
 use std::error::Error;
 use actix_web::{HttpResponse};
 use serde::{Serialize, Serializer};
-use crate::db::structs::{SS04, State};
+use crate::db::structs::{SS04, State, MM04};
 use crate::ws::server::{ChatServer, Identifier};
 use serde_json;
 use serde_json::Value;
@@ -13,6 +13,7 @@ use crate::db::fetch_id::{identifier_id, verify_receiver};
 #[derive(Debug)]
 pub enum Forms {
     SS04(SS04),
+    MM04(MM04)
 }
 pub trait FormTrait: Serialize {
     async fn process (&self, pool: &PgPool, id: i32) -> Result<(), Box<dyn Error>>;
@@ -96,6 +97,9 @@ impl Serialize for Forms {
         match self {
             Forms::SS04(ss04) => {
                 ss04.serialize(serializer)
+            },
+            Forms::MM04(mm04) => {
+                mm04.serialize(serializer)
             }
         }
     }
@@ -107,6 +111,9 @@ impl FormTrait for Forms {
         match self {
             Forms::SS04(f) => {
                 let e = self.send_recv_update(pool, id, self.enum_to_str()).await?;
+            },
+            Forms::MM04(f) => {
+                let e = self.send_recv_update(pool, id, self.enum_to_str()).await?;
             }
         }
         Ok(())
@@ -116,6 +123,10 @@ impl FormTrait for Forms {
         match self {
             Forms::SS04(ss04) => {
                 let id = identifier_id(ss04.receiver, pool).await;
+                id
+            },
+            Forms::MM04(mm04) => {
+                let id = identifier_id(mm04.receiver_id, pool).await;
                 id
             }
         }
@@ -194,6 +205,54 @@ impl FormTrait for Forms {
                 }
                 let id: i32 = result.unwrap().try_get("id")?;
                 Ok(id)
+            },
+            Forms::MM04(mm04) => {
+                let result = sqlx::query("
+                    INSERT INTO MM04(
+                        note,
+                        submitter,
+                        receiver,
+                        quotation_no,
+                        date,
+                        requester_name,
+                        amount,
+                        amount_tax,
+                        amount_words,
+                        name_member,
+                        name_convener,
+                        designation_member,
+                        intermediate_approval,
+                        hod_approval,
+                        reason
+                    )
+                    VALUES (&1, &2, &3, &4, &5, $6, $7, $8, $9, $10, $11, $12, &13, &14, &15)
+                    RETURNING id;
+                ").bind(&mm04.note)
+                  .bind(&mm04.submitter_id)
+                  .bind(&mm04.receiver_id)
+                  .bind(&mm04.quotation_no)
+                  .bind(&mm04.date)
+                  .bind(&mm04.requester_name)
+                  .bind(&mm04.amount)
+                  .bind(&mm04.amount_tax)
+                  .bind(&mm04.amount_words)
+                  .bind(&mm04.name_member)
+                  .bind(&mm04.name_convener)
+                  .bind(&mm04.designation_member)
+                  .bind(&mm04.intermediate_approval)
+                  .bind(&mm04.hod_approval)
+                  .bind(&mm04.reason)
+                  .fetch_one(pool)
+                  .await;
+                match result {
+                    Ok(_) => {
+                    }
+                    Err(e) => {
+                        return Err(Box::try_from(e).unwrap());
+                    }
+                }
+                let id: i32 = result.unwrap().try_get("id")?;
+                Ok(id)
             }
         }
     }
@@ -213,13 +272,26 @@ impl Forms {
                     }
                 }
             }
+            _ => Err(HttpResponse::BadRequest().body("Invalid form type")),
+            "MM04" => {
+                match serde_json::from_value::<MM04>(body) {
+                    Ok(mut s) => {
+                        s.submitter_id = jwt.id;
+                        Ok(Forms::MM04(s))
+                    }
+                    Err(_) => {
+                        Err(HttpResponse::BadRequest().body("Incompatible structure"))
+                    }
+                }
+            }
             _ => Err(HttpResponse::BadRequest().body("Invalid form type"))
         }
 
     }
     pub fn enum_to_str(&self) -> &str {
         match self {
-            Forms::SS04(_) => {"SS04"}
+            Forms::SS04(_) => {"SS04"},
+            Forms::MM04(_) => {"MM04"}
         }
     }
 }
