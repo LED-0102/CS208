@@ -34,7 +34,25 @@ const SS04form = () => {
     email: "",
     total_amount: "",
     list_order:[],
+    name_indenter:"",
+    sign_date_indenter:"",
+    name_head:"",
+    sign_date_head:"",
+
   });
+
+  const handleCustodianChange = (event) => {
+    const newFormData = { ...formData, custodian: event.target.value };
+    // Assuming you're using the JavaScript Date object
+    const currentDate = new Date();
+    const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()}`;
+    newFormData.name_indenter = event.target.value; // Assigning custodian's value to name_indenter
+    newFormData.sign_date_indenter = formattedDate; // Assigning current date to sign_date_indenter
+
+    newFormData.name_head = "";
+    newFormData.sign_date_head = "";
+    setFormData(newFormData);
+  };
 
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
@@ -162,7 +180,7 @@ const SS04form = () => {
                     <td><label className='font-bold' htmlFor="custodian">Name of custodian of assets :</label></td>
                     <td>
                       {/* <!-- <span>Dr. Nisheeth K. Prasad</span> --> */}
-                      <input type="text" id="custodian" name="custodian" value={formData.custodian} placeholder='custodian name' onChange={handleChange} className="border-2 border-black" /></td>
+                      <input type="text" id="custodian" name="custodian" value={formData.custodian} placeholder='custodian name' onChange={handleCustodianChange} className="border-2 border-black" /></td>
                   </tr>
                   <tr>
                     <td><label className='font-bold' htmlFor="department">Department/Project No. :</label></td>
@@ -265,8 +283,21 @@ const SS04form = () => {
 
 
 
-          <div className='py-8'>
-            Signatures section left
+          <div className='py-8 flex-col w-full p-4'>
+            {/* Signatures section left */}
+            <div className='flex flex-col gap-4'>
+              <div className='flex flex-row justify-center'>
+              <h2 className='text-2xl font-semibold underline decoration-solid'>CERTIFICATION BY USER DEPARTMENT</h2>
+              </div>
+              <p>1.	Certified that the items mentioned in the form have been inspected and found acceptable by the undersigned in accordance with the quality and quantity and specification(s) and price. </p>
+              <p>2.	A demand for goods is not divided into small quantities to make piecemeal purchases to avoid the necessity of obtaining the sanction of higher authority required with reference to the estimated value of the total demand (As per GFR 2017 Rule No. 157)</p>
+            </div>
+            {/* <div className='flex flex-row '>
+              <div>
+
+              </div>
+              <div></div>
+            </div> */}
           </div>
           <div className='flex justify-center w-full mb-8'>
             <button onClick={(e) => handleSubmit(e)} >Submit</button>
