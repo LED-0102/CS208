@@ -1,0 +1,14 @@
+.setWidth{
+    width: calc( 0.35 * 100vw );
+}
+
+.active{
+    background-color: black;
+    font-weight: 600;
+}
+
+.makeSticky{
+    position: fixed;
+    top: 0;
+    width: 100%;
+}

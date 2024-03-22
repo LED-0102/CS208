@@ -52,6 +52,8 @@ body{
   color: #000;
 }
 
-.bgw{
-  /* background-color: #fff; */
+img{
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
