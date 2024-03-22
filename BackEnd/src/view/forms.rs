@@ -272,7 +272,6 @@ impl Forms {
                     }
                 }
             }
-            _ => Err(HttpResponse::BadRequest().body("Invalid form type")),
             "SS04" => {
                 match serde_json::from_value::<SS04>(body) {
                     Ok(mut s) => {
