@@ -42,6 +42,12 @@ CREATE TABLE MM04_data (
     seeking INT[],
     previous INT[]
 );
+CREATE TABLE SS01_data (
+    id INT PRIMARY KEY REFERENCES users (id),
+    pending INT[],
+    seeking INT[],
+    previous INT[]
+);
 CREATE TABLE SS04 (
     id SERIAL PRIMARY KEY,
     note VARCHAR DEFAULT '',
@@ -140,7 +146,12 @@ CREATE TYPE SS01_orders AS (
     issued VARCHAR,
     cost INT
 );
-CREATE TYPE SS01_items AS (
+CREATE TABLE SS01 (
+    id SERIAL PRIMARY KEY,
+    note VARCHAR,
+    submitter INT REFERENCES users (id),
+    receiver INT REFERENCES users (id),
+    date VARCHAR,
     name_of_custodian VARCHAR,
     department VARCHAR,
     location VARCHAR,
@@ -150,15 +161,7 @@ CREATE TYPE SS01_items AS (
     item_purchase_info VARCHAR,
     name_head VARCHAR,
     list_orders jsonb,
-    total_cost INT,
-    issued_approved_name VARCHAR,
-    issued_approved_date VARCHAR,
-    items_received_name VARCHAR,
-    items_received_date VARCHAR,
-    items_issued_name VARCHAR,
-    items_issued_date VARCHAR,
-    action_ledger_name VARCHAR,
-    action_ledger_date VARCHAR,
+    total_amount INT,
     supplier_name_address VARCHAR,
     po_no_date VARCHAR,
     budget_head_account VARCHAR,
@@ -168,17 +171,8 @@ CREATE TYPE SS01_items AS (
     project_no VARCHAR,
     name_indenter VARCHAR,
     sign_date_indenter VARCHAR,
-    sign_date_head VARCHAR
-);
-CREATE TABLE SS01 (
-    id INT PRIMARY KEY,
-    note VARCHAR,
-    submitter INT REFERENCES users (id),
-    receiver INT REFERENCES users (id),
-    date VARCHAR,
-    content jsonb,
-    intermediate_approval state,
-    hod_approval state,
+    sign_date_head VARCHAR,
+    approval_status state,
     reason VARCHAR
 );
 CREATE TABLE students (
