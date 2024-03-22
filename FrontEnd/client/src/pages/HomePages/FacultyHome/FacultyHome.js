@@ -9,17 +9,18 @@ import { RiArrowDropDownLine } from "react-icons/ri";
 import { IoIosNotifications , IoIosLogOut } from "react-icons/io";
 import { ImProfile } from "react-icons/im";
 import facultyOptions from '../../../components/Arrays/facultyOptions';
+import { Link } from 'react-router-dom';
 const FacultyHome = () => {
 
-  const handleNav = () =>{
-    const a=document.querySelector(".navbarC")
-    a.classList.toggle("navbarCHide")
-  }
+  // const handleNav = () =>{
+  //   const a=document.querySelector(".navbarC")
+  //   a.classList.toggle("navbarCHide")
+  // }
 
-  const handleD = () =>{
-    const a=document.querySelector(".fH_headUserDropDown")
-    a.classList.toggle("fH_headUserDropDownHide")
-  }
+  // const handleD = () =>{
+  //   const a=document.querySelector(".fH_headUserDropDown")
+  //   a.classList.toggle("fH_headUserDropDownHide")
+  // }
 
   const handleHide = (el) =>{
     const a=document.querySelector("."+el)
@@ -60,10 +61,10 @@ const FacultyHome = () => {
         <div className="optionsCont">
           {facultyOptions.map((option) => 
           <div className="fCard" key={option.id}>
-            <img src="https://via.placeholder.com/300" width={300} alt="Card Image" />
+            <img src={option.src} width={300} height={300} alt="Card Image" />
             <div className="fcard-content">
               <div className="fcard-title">{option.title}</div>
-              <a href="#" className="fbutton">Click Here</a>
+              <Link to={option.url} className="fbutton">Click Here</Link>
             </div>
           </div>)}
         </div>
