@@ -1,7 +1,7 @@
 use std::error::Error;
 use actix_web::{HttpResponse};
 use serde::{Serialize, Serializer};
-use crate::db::structs::{SS04, State, MM04};
+use crate::db::structs::{State, SS04, MM04, SS01};
 use crate::ws::server::{ChatServer, Identifier};
 use serde_json;
 use serde_json::Value;
@@ -13,7 +13,8 @@ use crate::db::fetch_id::{identifier_id, verify_receiver};
 #[derive(Debug)]
 pub enum Forms {
     SS04(SS04),
-    MM04(MM04)
+    MM04(MM04),
+    SS01(SS01)
 }
 pub trait FormTrait: Serialize {
     async fn process (&self, pool: &PgPool, id: i32) -> Result<(), Box<dyn Error>>;
@@ -100,6 +101,9 @@ impl Serialize for Forms {
             },
             Forms::MM04(mm04) => {
                 mm04.serialize(serializer)
+            },
+            Forms::SS01(ss01) => {
+                ss01.serialize(serializer)
             }
         }
     }
@@ -114,6 +118,9 @@ impl FormTrait for Forms {
             },
             Forms::MM04(f) => {
                 let e = self.send_recv_update(pool, id, self.enum_to_str()).await?;
+            },
+            Forms::SS01(f) => {
+                let e = self.send_recv_update(pool, id, self.enum_to_str()).await?;
             }
         }
         Ok(())
@@ -127,6 +134,10 @@ impl FormTrait for Forms {
             },
             Forms::MM04(mm04) => {
                 let id = identifier_id(mm04.receiver, pool).await;
+                id
+            },
+            Forms::SS01(ss01) => {
+                let id = identifier_id(ss01.receiver, pool).await;
                 id
             }
         }
@@ -251,6 +262,75 @@ impl FormTrait for Forms {
                 }
                 let id: i32 = result.unwrap().try_get("id")?;
                 Ok(id)
+            },
+            Forms::SS01(ss01) => {
+                let result = sqlx::query("
+                    INSERT INTO SS01 (
+                        note,
+                        submitter,
+                        receiver,
+                        date,
+                        name_of_custodian,
+                        department,
+                        location,
+                        designation,
+                        inventory_no,
+                        room_no,
+                        item_purchase_info,
+                        name_head,
+                        list_orders,
+                        total_amount,
+                        supplier_name_address,
+                        po_no_date,
+                        budget_head_account,
+                        challan_no_date,
+                        invoice_no_date,
+                        invoice_amount,
+                        project_no,
+                        name_indenter,
+                        sign_date_indenter,
+                        sign_date_head,
+                        approval_status,
+                        reason
+                    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26)
+                    RETURNING id;")
+                    .bind(&ss01.note)
+                    .bind(&ss01.submitter)
+                    .bind(&ss01.receiver)
+                    .bind(&ss01.date)
+                    .bind(&ss01.name_of_custodian)
+                    .bind(&ss01.department)
+                    .bind(&ss01.location)
+                    .bind(&ss01.designation)
+                    .bind(&ss01.inventory_no)
+                    .bind(&ss01.room_no)
+                    .bind(&ss01.item_purchase_info)
+                    .bind(&ss01.name_head)
+                    .bind(&serde_json::to_value(&ss01.list_orders).unwrap())
+                    .bind(&ss01.total_amount)
+                    .bind(&ss01.supplier_name_address)
+                    .bind(&ss01.po_no_date)
+                    .bind(&ss01.budget_head_account)
+                    .bind(&ss01.challan_no_date)
+                    .bind(&ss01.invoice_no_date)
+                    .bind(&ss01.invoice_amount)
+                    .bind(&ss01.project_no)
+                    .bind(&ss01.name_indenter)
+                    .bind(&ss01.sign_date_indenter)
+                    .bind(&ss01.sign_date_head)
+                    .bind(&ss01.approval_status)
+                    .bind(&ss01.reason)
+                    .fetch_one(pool)
+                    .await;
+                match result {
+                    Ok(_) => {
+                    }
+                    Err(e) => {
+                        return Err(Box::try_from(e).unwrap());
+                    }
+                }
+                let id: i32 = result.unwrap().try_get("id")?;
+                Ok(id)
             }
         }
     }
@@ -281,6 +361,17 @@ impl Forms {
                     }
                 }
             }
+            "SS01" => {
+                match serde_json::from_value::<SS01>(body) {
+                    Ok(mut s) => {
+                        s.submitter = jwt.id;
+                        Ok(Forms::SS01(s))
+                    }
+                    Err(_) => {
+                        Err(HttpResponse::BadRequest().body("Incompatible structure"))
+                    }
+                }
+            }
             _ => Err(HttpResponse::BadRequest().body("Invalid form type"))
         }
 
@@ -288,7 +379,8 @@ impl Forms {
     pub fn enum_to_str(&self) -> &str {
         match self {
             Forms::SS04(_) => {"SS04"},
-            Forms::MM04(_) => {"MM04"}
+            Forms::MM04(_) => {"MM04"},
+            Forms::SS01(_) => {"SS01"}
         }
     }
 }

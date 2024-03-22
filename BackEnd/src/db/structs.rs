@@ -89,6 +89,46 @@ pub struct MM04 {
     pub reason: String
 }
 
+#[derive(Debug, Serialize, Deserialize)]
+pub struct SS01Orders {
+    pub item_name: String,
+    pub item_specification: String,
+    pub con_n_con: String, // Have to change it to ENUM
+    pub required_number: i32,
+    pub issued: String,
+    pub cost: i32
+}
+
+#[derive(Debug, Serialize, Deserialize, FromRow)]
+pub struct SS01 {
+    pub note: String,
+    pub receiver: i32,
+    pub submitter: i32,
+    pub date: String, 
+    pub name_of_custodian: String,
+    pub department: String,
+    pub location: String,
+    pub designation: String,
+    pub inventory_no: String,
+    pub room_no: String,
+    pub item_purchase_info: String,
+    pub name_head: String,
+    pub list_orders: Vec<SS01Orders>,
+    pub total_amount: i32,
+    pub supplier_name_address: String,
+    pub po_no_date: String,
+    pub budget_head_account: String,
+    pub challan_no_date: String,
+    pub invoice_no_date: String,
+    pub invoice_amount: i32,
+    pub project_no: String,
+    pub name_indenter: String,
+    pub sign_date_indenter: String,
+    pub sign_date_head: String,
+    pub approval_status: State,
+    pub reason: String
+}
+
 #[derive(Debug, Serialize, Deserialize, FromRow)]
 pub struct Seeking {
     pub data: serde_json::Value
@@ -168,6 +208,38 @@ impl MM04 {
             designation_member: "".to_string(),
             approval_status: "Pending".parse().unwrap(),
             reason: "".to_string()
+        }
+    }
+}
+
+impl SS01 {
+    pub fn default() -> Self {
+        SS01 { 
+            note: "".to_string(),
+            receiver: 0, 
+            submitter: 0, 
+            date: "".to_string(), 
+            name_of_custodian: "".to_string(), 
+            department: "".to_string(), 
+            location: "".to_string(), 
+            designation: "".to_string(), 
+            inventory_no: "".to_string(), 
+            room_no: "".to_string(), 
+            item_purchase_info: "".to_string(), 
+            name_head: "".to_string(), 
+            list_orders: vec![], 
+            total_amount: 0, supplier_name_address: "".to_string(), 
+            po_no_date: "".to_string(), 
+            budget_head_account: "".to_string(), 
+            challan_no_date: "".to_string(), 
+            invoice_no_date: "".to_string(), 
+            invoice_amount: 0, 
+            project_no: "".to_string(), 
+            name_indenter: "".to_string(), 
+            sign_date_indenter: "".to_string(), 
+            sign_date_head: "".to_string(), 
+            approval_status: "Pending".parse().unwrap(),
+            reason: "".to_string() 
         }
     }
 }
