@@ -10,6 +10,7 @@ import SignUp from "./components/LoginSignup/SignUp"
 import SS01form from "./pages/SS01/SSform";
 import PfacultyHome from './pages/HomePages/FacultyHome/PfacultyHome';
 import Selectform from './pages/HomePages/FacultyHome/Selectform';
+import Search from './components/Search/search'
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           <Route exact path="/faculty/purchase/ff" element={ <FirstFormofPurchase /> } />
           <Route exact path="/SS04" element={ <SS04form /> } />
           <Route exact path="/SS01" element={ <SS01form /> } />
+          <Route exact path="/search" element={ <Search /> } />
           <Route exact path="/pfh" element={ <PfacultyHome /> } />
 
           <Route exact path="/availableForms" element={ <Selectform /> } />
