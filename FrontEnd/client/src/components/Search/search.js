@@ -5,9 +5,26 @@ import {data} from './data'
 const Search = () => {
 
     const [searchName, setSearchName] = useState("");
-    const [selectedDepartment, setSelectedDepartment] = useState("");
+    const [selectedDesignation, setSelectedDesignation] = useState("");
 
     console.log("reqdata+++",data)
+
+    const handleUserSelect = (userId,userName) => {
+        console.log("aaaa",userName)
+        console.log("aaaa",userId)
+        // setFormData({
+        //   ...formData,
+        //   receiver: userId
+        // });
+      
+        if (userName) {
+          setSearchName(userName);
+        } else {
+          setSearchName(''); // or any default value you prefer
+        }
+        console.log("search+++",searchName)
+      };
+    
 
     const filterUsers = () => {
         return data.filter(
@@ -15,7 +32,7 @@ const Search = () => {
             user.name.toLowerCase().includes(searchName.toLowerCase()) &&
             user.designation
               .toLowerCase()
-              .includes(selectedDepartment.toLowerCase())
+              .includes(selectedDesignation.toLowerCase())
             //   &&
             // user.roll_no.toLowerCase().includes(searchRollNo.toLowerCase())
         );
@@ -43,8 +60,8 @@ const Search = () => {
         </div>
         <div className="mb-4 lg:mb-0 lg:mr-4 lg:w-full">
           <select
-            value={selectedDepartment}
-            onChange={(e) => setSelectedDepartment(e.target.value)}
+            value={selectedDesignation}
+            onChange={(e) => setSelectedDesignation(e.target.value)}
             className="p-2 border w-full rounded-md text-white"
             style={{ backgroundColor: "rgb(30 41 59)" }}
           >
@@ -57,6 +74,7 @@ const Search = () => {
           </select>
         </div>
         </div>
+        {searchName.toLowerCase() !== '' && (
         <table className="w-full lg:w-full table-auto  border-collapse font-custom">
         <thead>
           <tr>
@@ -64,7 +82,7 @@ const Search = () => {
               Name
             </th>
             <th className="w-1/3 border-4 p-2 text-center font-bold text-purple-900">
-              Department
+              Designation
             </th>
           </tr>
         </thead>
@@ -73,10 +91,8 @@ const Search = () => {
             <tr
               key={user.id}
               className="bg-slate-950 hover:bg-slate-800 transition-all cursor-pointer"
-              onClick={(e) => {
-                e.preventDefault();
-              }}
-            >
+              onClick={() => handleUserSelect(user.id,user.name)}>
+
               <td className="w-1/3 border-4 p-4 bg-white subpixel-antialiased text-teal-500 ">
                 {user.name}
               </td>
@@ -87,6 +103,7 @@ const Search = () => {
           ))}
         </tbody>
       </table>
+        )}
         
         {/* <p className="text-black">hwlooooooooooooooooooooooooooooooooooooooooooo</p> */}
     </div>
