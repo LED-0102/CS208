@@ -9,6 +9,7 @@ import Login from "./components/LoginSignup/Login"
 import SignUp from "./components/LoginSignup/SignUp"
 import SS01form from "./pages/SS01/SSform";
 import PfacultyHome from './pages/HomePages/FacultyHome/PfacultyHome';
+import Selectform from './pages/HomePages/FacultyHome/Selectform';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <Route exact path="/SS01" element={ <SS01form /> } />
           <Route exact path="/pfh" element={ <PfacultyHome /> } />
 
+          <Route exact path="/availableForms" element={ <Selectform /> } />
   
         </Routes>
 
