@@ -27,9 +27,9 @@ const SS04form = () => {
   const [error, setError] = useState("");
   const [selectedDesignation, setSelectedDesignation] = useState("");
   const [formData, setFormData] = useState({
-    StoreNo: "",
-    financialyear: "",
-    reqdate: "",
+    // StoreNo: "",
+    // financialyear: "",
+    // reqdate: "",
     custodian: "",
     department: "",
     location: "",
@@ -40,7 +40,7 @@ const SS04form = () => {
     room_no: "",
     email: "",
     total_amount: "",
-    list_order: [],
+    list_orders: [],
     name_indenter: "",
     sign_date_indenter: "",
     name_head: "",
@@ -55,6 +55,11 @@ const SS04form = () => {
     action_ledger_date:"",  // Assuming the date could be null
     receiver:"",
     submitter:0,
+    note:"",
+    approval_status:"",
+    date:"",
+
+
 
 
   });
@@ -143,7 +148,7 @@ const designation = [
       total: row.total
     }));
 
-    const updatedFormData = { ...formData, list_order: listOrders };
+    const updatedFormData = { ...formData, list_orders: listOrders };
     console.log("update form data:", updatedFormData)
 
     try {
