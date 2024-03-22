@@ -136,7 +136,13 @@ const SS04form = () => {
     console.log("update form data:", updatedFormData)
 
     try {
-      const response = await axios.post(`${globalUrl}/v1/submit/SS04`, updatedFormData);
+      const token = localStorage.getItem('jwt');
+      const response = await axios.post(`${globalUrl}/v1/submit/SS04`, updatedFormData, {
+        headers: {
+          token: token
+        }
+          }
+      );
       // const { id } = response.data;
       // navigate(`/SS04/${id}`);
       console.log("Response from server:", response.data);
