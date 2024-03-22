@@ -144,11 +144,13 @@ const SS04form = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // const response = await axios.get(`${globalUrl}/list/receiver`);
-        const response = await axios.get(`https://randomuser.me/api/`);
-        const datss=data
-        setUserData(datss);
-        console.log("dats",datss)
+        const response = await axios.get(`${globalUrl}/list/receiver`);
+        // const response = await axios.get(`https://randomuser.me/api/`);
+        // const datss=data
+        // console.log("aadd",typeof(response.data))
+        // console.log("aadd",typeof(data))
+        setUserData(data);
+        // console.log("dats",datss)
       } catch (error) {
         setError(error);
       } finally {
@@ -458,7 +460,7 @@ const SS04form = () => {
                 </tr>
               </thead>
               <tbody>
-                {data.filter((item)=>
+                {userData.filter((item)=>
                 {
                   return search.toLowerCase()===''? "" :(item.name.toLowerCase().includes(search)) 
                   // || (item.designation.toLowerCase().includes(search))
