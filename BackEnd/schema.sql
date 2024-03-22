@@ -105,8 +105,7 @@ CREATE TABLE MM04 (
     name_member VARCHAR,
     name_convener VARCHAR,
     designation_member VARCHAR,
-    intermediate_approval state,
-    hod_approval state,
+    approval_status state,
     reason VARCHAR
 );
 CREATE TYPE R1_items AS (

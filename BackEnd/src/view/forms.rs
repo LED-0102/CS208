@@ -126,7 +126,7 @@ impl FormTrait for Forms {
                 id
             },
             Forms::MM04(mm04) => {
-                let id = identifier_id(mm04.receiver_id, pool).await;
+                let id = identifier_id(mm04.receiver, pool).await;
                 id
             }
         }
@@ -221,15 +221,14 @@ impl FormTrait for Forms {
                         name_member,
                         name_convener,
                         designation_member,
-                        intermediate_approval,
-                        hod_approval,
+                        approval_status,
                         reason
                     )
-                    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
+                    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
                     RETURNING id;
                 ").bind(&mm04.note)
-                  .bind(&mm04.submitter_id)
-                  .bind(&mm04.receiver_id)
+                  .bind(&mm04.submitter)
+                  .bind(&mm04.receiver)
                   .bind(&mm04.quotation_no)
                   .bind(&mm04.date)
                   .bind(&mm04.requester_name)
@@ -239,8 +238,7 @@ impl FormTrait for Forms {
                   .bind(&mm04.name_member)
                   .bind(&mm04.name_convener)
                   .bind(&mm04.designation_member)
-                  .bind(&mm04.intermediate_approval)
-                  .bind(&mm04.hod_approval)
+                  .bind(&mm04.approval_status)
                   .bind(&mm04.reason)
                   .fetch_one(pool)
                   .await;
@@ -264,7 +262,7 @@ impl Forms {
             "MM04" => {
                 match serde_json::from_value::<MM04>(body) {
                     Ok(mut s) => {
-                        s.submitter_id = jwt.id;
+                        s.submitter = jwt.id;
                         Ok(Forms::MM04(s))
                     }
                     Err(_) => {

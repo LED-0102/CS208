@@ -74,8 +74,8 @@ pub struct SS04 {
 #[derive(Debug, Serialize, Deserialize, FromRow)]
 pub struct MM04 {
     pub note: String,
-    pub receiver_id: i32,
-    pub submitter_id: i32,
+    pub receiver: i32,
+    pub submitter: i32,
     pub quotation_no: String,
     pub date: String,
     pub requester_name: String,
@@ -85,8 +85,7 @@ pub struct MM04 {
     pub name_member: String,
     pub name_convener: String,
     pub designation_member: String,
-    pub intermediate_approval: State,
-    pub hod_approval: State,
+    pub approval_status: State,
     pub reason: String
 }
 
@@ -156,8 +155,8 @@ impl MM04 {
     pub fn default() -> Self {
         MM04{
             note: "".to_string(),
-            receiver_id: 0,
-            submitter_id: 0,
+            receiver: 0,
+            submitter: 0,
             quotation_no: "".to_string(),
             date: "".to_string(),
             requester_name: "".to_string(),
@@ -167,8 +166,7 @@ impl MM04 {
             name_member: "".to_string(),
             name_convener: "".to_string(),
             designation_member: "".to_string(),
-            intermediate_approval: "Pending".parse().unwrap(),
-            hod_approval: "Pending".parse().unwrap(),
+            approval_status: "Pending".parse().unwrap(),
             reason: "".to_string()
         }
     }
