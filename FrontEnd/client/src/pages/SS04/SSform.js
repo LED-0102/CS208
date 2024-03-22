@@ -43,15 +43,16 @@ const SS04form = () => {
     sign_date_indenter: "",
     name_head: "",
     sign_date_head: "",
-   issued_approved_name:"",
-   issued_approved_date:"", // Assuming the date could be null
-   items_received_name:"" ,
-   items_received_date:"" ,
-   items_issued_name: "",
-   items_issued_date:"", // Assuming the date could be null
-   action_ledger_name:"", 
-   action_ledger_date:"",  // Assuming the date could be null
-   receiver:"",
+    issued_approved_name:"",
+    issued_approved_date:"", // Assuming the date could be null
+    items_received_name:"" ,
+    items_received_date:"" ,
+    items_issued_name: "",
+    items_issued_date:"", // Assuming the date could be null
+    action_ledger_name:"", 
+    action_ledger_date:"",  // Assuming the date could be null
+    receiver:"",
+    submitter:0,
 
 
   });
@@ -64,8 +65,11 @@ const SS04form = () => {
       receiver: userId
     });
   
-    // setSearch(''); // Clear the search input
-    setSearch((userName.toLowerCase())); // Clear the search input
+    if (userName) {
+      setSearch(userName.toLowerCase());
+    } else {
+      setSearch(''); // or any default value you prefer
+    }
     console.log("search+++",search)
   };
 
@@ -133,8 +137,8 @@ const SS04form = () => {
 
     try {
       const response = await axios.post(`${globalUrl}/v1/submit/SS04`, updatedFormData);
-      const { id } = response.data;
-      navigate(`/SS04/${id}`);
+      // const { id } = response.data;
+      // navigate(`/SS04/${id}`);
       console.log("Response from server:", response.data);
     } catch (error) {
       console.error("Error:", error);
@@ -149,8 +153,9 @@ const SS04form = () => {
         // const datss=data
         // console.log("aadd",typeof(response.data))
         // console.log("aadd",typeof(data))
-        setUserData(data);
-        // console.log("dats",datss)
+        setUserData(response.data);
+        // console.log("dats",response.data)
+        // console.log("dats++++++userData",userData)
       } catch (error) {
         setError(error);
       } finally {
@@ -387,7 +392,7 @@ const SS04form = () => {
                     <td><label className='font-bold' htmlFor="items_received_name">Name:</label></td>
                     <td>
                       {/* <!-- <span>Dr. Nisheeth K. Prasad</span> --> */}
-                      <input type="text" id="items_received_name" name="items_received_name" value={formData.items_received_name} placeholder='items_received_name name' onChange={handleCustodianChange} className="border-2 border-black" /></td>
+                      <input type="text" id="items_received_name" name="items_received_name" value={formData.items_received_name} placeholder='items_received_name name' onChange={handleChange} className="border-2 border-black" /></td>
                   </tr>
                   <tr>
                     <td><label className='font-bold' htmlFor="items_received_date">Date :</label></td>
@@ -410,7 +415,7 @@ const SS04form = () => {
                     <td><label className='font-bold' htmlFor="items_issued_name">Name  :</label></td>
                     <td>
                       {/* <!-- <span>Dr. Nisheeth K. Prasad</span> --> */}
-                      <input type="text" id="items_issued_name" name="items_issued_name" value={formData.items_issued_name} placeholder='items_issued_name name' onChange={handleCustodianChange} className="border-2 border-black" /></td>
+                      <input type="text" id="items_issued_name" name="items_issued_name" value={formData.items_issued_name} placeholder='items_issued_name name' onChange={handleChange} className="border-2 border-black" /></td>
                   </tr>
                   <tr>
                     <td><label className='font-bold' htmlFor="items_issued_date">Date :</label></td>
@@ -434,7 +439,7 @@ const SS04form = () => {
                     <td><label className='font-bold' htmlFor="action_ledger_name">Name:</label></td>
                     <td>
                       {/* <!-- <span>Dr. Nisheeth K. Prasad</span> --> */}
-                      <input type="text" id="action_ledger_name" name="action_ledger_name" value={formData.action_ledger_name} placeholder='action_ledger_name name' onChange={handleCustodianChange} className="border-2 border-black" /></td>
+                      <input type="text" id="action_ledger_name" name="action_ledger_name" value={formData.action_ledger_name} placeholder='action_ledger_name name' onChange={handleChange} className="border-2 border-black" /></td>
                   </tr>
                   <tr>
                     <td><label className='font-bold' htmlFor="action_ledger_date">Date :</label></td>
@@ -462,19 +467,21 @@ const SS04form = () => {
               <tbody>
                 {userData.filter((item)=>
                 {
-                  return search.toLowerCase()===''? "" :(item.name.toLowerCase().includes(search)) 
+                // console.log("itenall++++",item)
+                  return search.toLowerCase()===''? "" :(item.username.toLowerCase().includes(search)) 
                   // || (item.designation.toLowerCase().includes(search))
                 }
                 ).map((item,ind) => (
-                  <tr key={ind} onClick={() => handleUserSelect(item.id,item.name)}>
+                  <tr key={ind} onClick={() => handleUserSelect(item.id,item.username)}>
                     {/* <td>{row.sno}</td> */}
-                    <td>{item.name}</td>
+                    <td>{item.username}</td>
                     <td>{item.designation}</td>
                     
                   </tr>
                 ))}
               </tbody>
-            </table>)}
+            </table>
+            )}
             </div>
           <div className='flex justify-center w-full mb-8'>
             <button onClick={(e) => handleSubmit(e)} >Submit</button>
