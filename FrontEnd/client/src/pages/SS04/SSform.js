@@ -146,12 +146,13 @@ const SS04form = () => {
       });
       const headersObject = Object.fromEntries(customHeaders.entries());
       // const response = await fetch('https://jsonplaceholder.typicode.com/posts',{
-      const response = await fetch('${globalUrl}/v1/submit/SS04', {
+      const response = await fetch(`${globalUrl}/v1/submit/SS04`, {
         method: 'POST',
         credentials: 'include',  // Include credentials (cookies) in the request
         headers: headersObject,
         body: JSON.stringify(updatedFormData)
       });
+      console.log(response)
       if (response.statusCode === 401) {
         console.log("Failed");
       }
