@@ -91,6 +91,7 @@ pub struct MM04 {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct SS01Orders {
+    pub si: i32,
     pub item_name: String,
     pub item_specification: String,
     pub con_n_con: String, // Have to change it to ENUM
@@ -125,6 +126,27 @@ pub struct SS01 {
     pub name_indenter: String,
     pub sign_date_indenter: String,
     pub sign_date_head: String,
+    pub approval_status: State,
+    pub reason: String
+}
+
+#[derive(Debug, Serialize, Deserialize, FromRow)]
+pub struct R1 {
+    pub note: String,
+    pub receiver: i32,
+    pub submitter: i32,
+    pub date: String, 
+    pub purpose_of_expenditure: String,
+    pub name_of_applicant: String,
+    pub designation: String,
+    pub department: String,
+    pub payment_favour: String,
+    pub budget_head_expenditure: String,
+    pub project_sanction_no: String,
+    pub expenditure_head: String,
+    pub amount_claimed: i32,
+    pub recommending_authority_name: String,
+    pub approving_authority_name: String, 
     pub approval_status: State,
     pub reason: String
 }
@@ -241,6 +263,30 @@ impl SS01 {
             approval_status: "Pending".parse().unwrap(),
             reason: "".to_string() 
         }
+    }
+}
+
+impl R1 {
+    pub fn default() -> Self {
+        R1 { 
+            note: "".to_string(), 
+            receiver: 0, 
+            submitter: 0, 
+            date: "".to_string(), 
+            purpose_of_expenditure: "".to_string(), 
+            name_of_applicant: "".to_string(), 
+            designation: "".to_string(), 
+            department: "".to_string(), 
+            payment_favour: "".to_string(), 
+            budget_head_expenditure: "".to_string(), 
+            project_sanction_no: "".to_string(), 
+            expenditure_head: "".to_string(), 
+            amount_claimed: 0, 
+            recommending_authority_name: "".to_string(), 
+            approving_authority_name: "".to_string(), 
+            approval_status: "Pending".parse().unwrap(), 
+            reason: "".to_string() 
+        }      
     }
 }
 

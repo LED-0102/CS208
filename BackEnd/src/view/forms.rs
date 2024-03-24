@@ -1,7 +1,7 @@
 use std::error::Error;
 use actix_web::{HttpResponse};
 use serde::{Serialize, Serializer};
-use crate::db::structs::{State, SS04, MM04, SS01};
+use crate::db::structs::{State, SS04, MM04, SS01, R1};
 use crate::ws::server::{ChatServer, Identifier};
 use serde_json;
 use serde_json::Value;
@@ -14,7 +14,8 @@ use crate::db::fetch_id::{identifier_id, verify_receiver};
 pub enum Forms {
     SS04(SS04),
     MM04(MM04),
-    SS01(SS01)
+    SS01(SS01),
+    R1(R1)
 }
 pub trait FormTrait: Serialize {
     async fn process (&self, pool: &PgPool, id: i32) -> Result<(), Box<dyn Error>>;
@@ -104,6 +105,9 @@ impl Serialize for Forms {
             },
             Forms::SS01(ss01) => {
                 ss01.serialize(serializer)
+            },
+            Forms::R1(r1) => {
+                r1.serialize(serializer)
             }
         }
     }
@@ -120,6 +124,9 @@ impl FormTrait for Forms {
                 let e = self.send_recv_update(pool, id, self.enum_to_str()).await?;
             },
             Forms::SS01(f) => {
+                let e = self.send_recv_update(pool, id, self.enum_to_str()).await?;
+            },
+            Forms::R1(f) => {
                 let e = self.send_recv_update(pool, id, self.enum_to_str()).await?;
             }
         }
@@ -138,6 +145,10 @@ impl FormTrait for Forms {
             },
             Forms::SS01(ss01) => {
                 let id = identifier_id(ss01.receiver, pool).await;
+                id
+            },
+            Forms::R1(r1) => {
+                let id = identifier_id(r1.receiver, pool).await;
                 id
             }
         }
@@ -331,6 +342,57 @@ impl FormTrait for Forms {
                 }
                 let id: i32 = result.unwrap().try_get("id")?;
                 Ok(id)
+            },
+            Forms::R1(r1) => {
+                let result = sqlx::query("
+                    INSERT INTO R1 (
+                        note,
+                        submitter,
+                        receiver,
+                        date,
+                        purpose_of_expenditure,
+                        name_of_applicant,
+                        designation,
+                        department,
+                        payment_favour,
+                        budget_head_expenditure,
+                        project_sanction_no,
+                        expenditure_head,
+                        amount_claimed,
+                        recommending_authority_name,
+                        approving_authority_name,
+                        approval_status,
+                        reason
+                    ) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)
+                    RETURNING id;")
+                    .bind(&r1.note)
+                    .bind(&r1.submitter)
+                    .bind(&r1.receiver)
+                    .bind(&r1.date)
+                    .bind(&r1.purpose_of_expenditure)
+                    .bind(&r1.name_of_applicant)
+                    .bind(&r1.designation)
+                    .bind(&r1.department)
+                    .bind(&r1.payment_favour)
+                    .bind(&r1.budget_head_expenditure)
+                    .bind(&r1.project_sanction_no)
+                    .bind(&r1.expenditure_head)
+                    .bind(&r1.amount_claimed)
+                    .bind(&r1.recommending_authority_name)
+                    .bind(&r1.approving_authority_name)
+                    .bind(&r1.approval_status)
+                    .bind(&r1.reason)
+                    .fetch_one(pool)
+                    .await;
+                match result {
+                    Ok(_) => {
+                    }
+                    Err(e) => {
+                        return Err(Box::try_from(e).unwrap());
+                    }
+                }
+                let id: i32 = result.unwrap().try_get("id")?;
+                Ok(id)
             }
         }
     }
@@ -372,6 +434,17 @@ impl Forms {
                     }
                 }
             }
+            "R1" => {
+                match serde_json::from_value::<R1>(body) {
+                    Ok(mut s) => {
+                        s.submitter = jwt.id;
+                        Ok(Forms::R1(s))
+                    }
+                    Err(_) => {
+                        Err(HttpResponse::BadRequest().body("Incompatible structure"))
+                    }
+                }
+            }
             _ => Err(HttpResponse::BadRequest().body("Invalid form type"))
         }
 
@@ -380,7 +453,8 @@ impl Forms {
         match self {
             Forms::SS04(_) => {"SS04"},
             Forms::MM04(_) => {"MM04"},
-            Forms::SS01(_) => {"SS01"}
+            Forms::SS01(_) => {"SS01"},
+            Forms::R1(_) => {"R1"}
         }
     }
 }

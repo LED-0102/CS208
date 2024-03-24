@@ -48,6 +48,12 @@ CREATE TABLE SS01_data (
     seeking INT[],
     previous INT[]
 );
+CREATE TABLE R1_data (
+    id INT PRIMARY KEY REFERENCES users (id),
+    pending INT[],
+    seeking INT[],
+    previous INT[]
+);
 CREATE TABLE SS04 (
     id SERIAL PRIMARY KEY,
     note VARCHAR DEFAULT '',
@@ -114,37 +120,25 @@ CREATE TABLE MM04 (
     approval_status state,
     reason VARCHAR
 );
-CREATE TYPE R1_items AS (
+CREATE TABLE R1 (
+    id SERIAL PRIMARY KEY,
+    note VARCHAR,
+    submitter INT REFERENCES users (id),
+    receiver INT REFERENCES users (id),
+    date VARCHAR,
     purpose_of_expenditure VARCHAR,
     name_of_applicant VARCHAR,
     designation VARCHAR,
     department VARCHAR,
-    payment_favour claimant_enum,
+    payment_favour VARCHAR,
     budget_head_expenditure VARCHAR,
     project_sanction_no VARCHAR,
     expenditure_head VARCHAR,
     amount_claimed INT,
     recommending_authority_name VARCHAR,
-    approving_authority_name VARCHAR
-);
-CREATE TABLE R1 (
-    id INT PRIMARY KEY,
-    note VARCHAR,
-    submitter INT REFERENCES users (id),
-    receiver INT REFERENCES users (id),
-    date VARCHAR,
-    content R1_items,
-    intermediate_approval state,
-    hod_approval state,
-    reason VARCHAR[]
-);
-CREATE TYPE SS01_orders AS (
-    item_name VARCHAR,
-    item_specification VARCHAR,
-    con_n_con con_enum,
-    required_number INT,
-    issued VARCHAR,
-    cost INT
+    approving_authority_name VARCHAR,
+    approval_status state,
+    reason VARCHAR
 );
 CREATE TABLE SS01 (
     id SERIAL PRIMARY KEY,
