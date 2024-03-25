@@ -50,6 +50,7 @@ pub async fn form_handler(jwt: JwToken, form_type: web::Path<String>, form_data:
         }
         Err(e) => {
             println!("Error inserting into db!");
+            println!("{:?}", e);
             HttpResponse::InternalServerError().body(e.to_string())
         }
     }
