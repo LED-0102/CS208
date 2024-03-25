@@ -1,93 +1,51 @@
-/* A4Form.css */
-@page {
-    size: A4;
-    /* margin: 0; */
-}
-
-body {
-    margin: 0;
-    padding: 20px; /* Adjust as needed */
-    font-family: Arial, sans-serif; /* Adjust font as needed */
-}
-
-.container {
-    width: 100%;
-    max-width: 800px; /* Adjust as needed */
-    margin: 0 auto;
-    /* padding: 20px; */
-    background-color: #f2f2f2; /* Adjust as needed */
-}
-
-/* Add more styling for your form elements */
-/* A4Form.css */
-@media print {
-    body * {
-      visibility: hidden;
-    }
-  
-    .print-content,
-    .print-content * {
-      visibility: visible;
-    }
-  
-    .print-content {
-      position: absolute;
-      left: 0;
-      top: 0;
-    }
-  }
-
-  /* // A4Form.js
-import "./A4Form.css"; // Import CSS file
-import React, { useState, useEffect } from "react";
-import Navbar from "../../components/Navbar/Navbar";
-import Header from "../../components/Navbar/Header";
-import { Input } from "@nextui-org/react";
-// import "./ssform.css";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
 import globalUrl from "../../components/url";
-// import {data} from "./data"
-import SearchUserComp from "../../components/Search/search";
 
 const SS01form = () => {
-    const [userData, setUserData] = useState({});
-    const [searchName, setSearchName] = useState("");
-    const [error, setError] = useState("");
-    const [selectedDesignation, setSelectedDesignation] = useState("");
     const [formData, setFormData] = useState({
-        // StoreNo: "",
-        // financialyear: "",
-        // reqdate: "",
-        custodian: "",
-        department: "",
-        location: "",
-        contact: "",
-        items_receiving_date: "",
-        designation: "",
-        inventory_no: "",
-        room_no: "",
-        email: "",
-        total_amount: "",
-        list_orders: [],
-        name_indenter: "",
-        sign_date_indenter: "",
-        name_head: "",
-        sign_date_head: "",
-        issued_approved_name: "",
-        issued_approved_date: "", // Assuming the date could be null
-        items_received_name: "",
-        items_received_date: "",
-        items_issued_name: "",
-        items_issued_date: "", // Assuming the date could be null
-        action_ledger_name: "",
-        action_ledger_date: "", // Assuming the date could be null
-        receiver: "",
+        note: '',
         submitter: 0,
-        note: "",
-        approval_status: "",
-        date: "",
+        receiver: 2,
+        date: '',
+        name_of_custodian: '',
+        department: '',
+        location: '',
+        designation: '',
+        inventory_no: '',
+        room_no: '',
+        item_purchase_info: '',
+        name_head: '',
+        list_orders: [{
+            si: 0,
+            item_name: '',
+            item_specification: '',
+            con_n_con: '',
+            required_number: 0,
+            issued: '',
+            cost: 0,
+        }],
+        total_amount: 0,
+        supplier_name_address: '',
+        po_no_date: '',
+        budget_head_account: '',
+        challan_no_date: '',
+        invoice_no_date: '',
+        invoice_amount: 0,
+        project_no: '',
+        name_indenter: '',
+        sign_date_indenter: '',
+        sign_date_head: '',
+        approval_status: 'Pending',
+        reason: ''
     });
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
 
     const handleCustodianChange = (event) => {
         const newFormData = { ...formData, custodian: event.target.value };
@@ -103,16 +61,31 @@ const SS01form = () => {
         setFormData(newFormData);
     };
 
-    const handleChange = (evt) => {
-        const changedField = evt.target.name;
-        const newValue = evt.target.value;
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-        setFormData((currData) => {
-            currData[changedField] = newValue;
-            return {
-                ...currData,
-            };
-        });
+        try {
+            const storedCookie = document.cookie;
+            console.log(storedCookie);
+// Create a custom set of headers
+            const customHeaders = new Headers({
+                'Content-Type': 'application/json', // You may need to adjust the content type based on your request
+                'Cookie': storedCookie, // Include the retrieved cookie in the 'Cookie' header
+            });
+            const headersObject = Object.fromEntries(customHeaders.entries());
+            const response = await fetch(`${globalUrl}/v1/submit/SS01`, {
+                method: 'POST',
+                credentials: 'include',  // Include credentials (cookies) in the request
+                headers: headersObject,
+                body: JSON.stringify(formData)
+            });
+            console.log(response)
+            if (response.statusCode === 401) {
+                console.log("Failed");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+        }
     };
 
     return (
@@ -120,7 +93,20 @@ const SS01form = () => {
             <Navbar />
             <Header />
 
-          
+            {/* <div className="container print-content">
+        <h1>My A4 Sized Form</h1>
+        <form>
+         
+          <label htmlFor="name">Name:</label>
+          <input type="text" id="name" name="name" required />
+          <br />
+          <label htmlFor="email">Email:</label>
+          <input type="email" id="email" name="email" required />
+          <br />
+       
+          <button type="submit">Submit</button>
+        </form>
+      </div> */}
             <div className="ml-56 ">
                 <form>
                     <div className="  px-4 py-2 print-content  ">
@@ -135,7 +121,7 @@ const SS01form = () => {
                                                 </label>
                                             </td>
                                             <td  className="border-none">
-                                               
+                                                {/* <!-- <span>Dr. Nisheeth K. Prasad</span> --> */}
                                                 <input
                                                     type="text"
                                                     id="custodian"
@@ -154,7 +140,7 @@ const SS01form = () => {
                                                 </label>
                                             </td>
                                             <td className="border-none">
-                                            
+                                                {/* <!-- <span>MEMS</span> --> */}
                                                 <input
                                                     type="text"
                                                     id="department"
@@ -191,7 +177,8 @@ const SS01form = () => {
                                 <table>
                                     <thead>
                                         <tr>
-                                         
+                                            {/* Table headers */}
+                                            {/* Fill the Info */}
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -267,4 +254,4 @@ const SS01form = () => {
     );
 };
 
-export default SS01form; */
+export default SS01form;

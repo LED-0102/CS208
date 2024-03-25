@@ -39,7 +39,7 @@ const SS04form = () => {
     inventory_no: "",
     room_no: "",
     email: "",
-    total_amount: "",
+    total_amount: 0,
     list_orders: [],
     name_indenter: "",
     sign_date_indenter: "",
@@ -53,10 +53,10 @@ const SS04form = () => {
     items_issued_date:"", // Assuming the date could be null
     action_ledger_name:"", 
     action_ledger_date:"",  // Assuming the date could be null
-    receiver:"",
+    receiver:0,
     submitter:0,
     note:"",
-    approval_status:"",
+    approval_status:"Pending",
     date:"",
 
 

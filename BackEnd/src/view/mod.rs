@@ -30,11 +30,13 @@ pub fn view_config (cfg: &mut web::ServiceConfig) {
 
 #[post("/submit/{form_type}")]
 pub async fn form_handler(jwt: JwToken, form_type: web::Path<String>, form_data: web::Json<Value>, pool: Data<AppState>) -> HttpResponse{
+    println!("Inside for a while!");
     let form_type = form_type.into_inner();
     let form = match Forms::from_str(&form_type, form_data.into_inner(), &jwt){
         Ok(form) => form,
         Err(e) => {return e;}
     };
+    println!("Oh reached here!");
     match form.pg_insert(&pool.pool).await {
         Ok(s) => {
             println!("Inserted into db!");
@@ -48,6 +50,7 @@ pub async fn form_handler(jwt: JwToken, form_type: web::Path<String>, form_data:
         }
         Err(e) => {
             println!("Error inserting into db!");
+            println!("{:?}", e);
             HttpResponse::InternalServerError().body(e.to_string())
         }
     }

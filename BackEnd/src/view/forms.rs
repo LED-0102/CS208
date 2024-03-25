@@ -418,7 +418,8 @@ impl Forms {
                         s.submitter = jwt.id;
                         Ok(Forms::SS04(s))
                     }
-                    Err(_) => {
+                    Err(e) => {
+                        println!("{:?}", e);
                         Err(HttpResponse::BadRequest().body("Incompatible structure"))
                     }
                 }
