@@ -54,6 +54,12 @@ CREATE TABLE R1_data (
     seeking INT[],
     previous INT[]
 );
+CREATE TABLE E01_data (
+    id INT PRIMARY KEY REFERENCES users (id),
+    pending INT[],
+    seeking INT[],
+    previous INT[]
+);
 CREATE TABLE SS04 (
     id SERIAL PRIMARY KEY,
     note VARCHAR DEFAULT '',
@@ -85,23 +91,21 @@ CREATE TABLE SS04 (
     action_ledger_date VARCHAR,
     approval_status state
 );
-CREATE TYPE E01_items AS(
-    employee_id VARCHAR,
-    hod_signature_date VARCHAR,
-    jr_signature_date VARCHAR,
-    type_of_work VARCHAR,
-    request_number VARCHAR
-);
 CREATE TABLE E01 (
     id SERIAL PRIMARY KEY,
     note VARCHAR,
     submitter INT REFERENCES users (id),
     receiver INT REFERENCES users (id),
     date VARCHAR,
-    content E01_items,
-    intermediate_approval state,
-    hod_approval state,
-    reason VARCHAR[]
+    employee_id VARCHAR,
+    hod_name VARCHAR,
+    hod_signature_date VARCHAR,
+    jr_name VARCHAR,
+    jr_signature_date VARCHAR,
+    type_of_work VARCHAR,
+    request_number VARCHAR,
+    approval_status state,
+    reason VARCHAR
 );
 CREATE TABLE MM04 (
     id SERIAL PRIMARY KEY,

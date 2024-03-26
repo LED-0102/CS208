@@ -152,6 +152,23 @@ pub struct R1 {
 }
 
 #[derive(Debug, Serialize, Deserialize, FromRow)]
+pub struct E01 {
+    pub note: String,
+    pub receiver: i32,
+    pub submitter: i32,
+    pub date: String, 
+    pub employee_id: String,
+    pub hod_name: String,
+    pub hod_signature_date: String,
+    pub jr_name: String,
+    pub jr_signature_date: String,
+    pub type_of_work: String,
+    pub request_number: String, 
+    pub approval_status: State,
+    pub reason: String
+}
+
+#[derive(Debug, Serialize, Deserialize, FromRow)]
 pub struct Seeking {
     pub data: serde_json::Value
 }
@@ -287,6 +304,26 @@ impl R1 {
             approval_status: "Pending".parse().unwrap(), 
             reason: "".to_string() 
         }      
+    }
+}
+
+impl E01 {
+    pub fn default() -> Self {
+        E01 { 
+            note: "".to_string(), 
+            receiver: 0, 
+            submitter: 0, 
+            date: "".to_string(), 
+            employee_id: "".to_string(), 
+            hod_name: "".to_string(), 
+            hod_signature_date: "".to_string(), 
+            jr_name: "".to_string(), 
+            jr_signature_date: "".to_string(), 
+            type_of_work: "".to_string(), 
+            request_number: "".to_string(), 
+            approval_status: "Pending".parse().unwrap(), 
+            reason: "".to_string() 
+        }
     }
 }
 
