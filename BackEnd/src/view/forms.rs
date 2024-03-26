@@ -1,7 +1,7 @@
 use std::error::Error;
 use actix_web::{HttpResponse};
 use serde::{Serialize, Serializer};
-use crate::db::structs::{State, SS04, MM04, SS01, R1, E01};
+use crate::db::structs::{State, SS04, MM04, SS01, R1, E01, Furniture};
 use crate::ws::server::{ChatServer, Identifier};
 use serde_json;
 use serde_json::Value;
@@ -16,7 +16,8 @@ pub enum Forms {
     MM04(MM04),
     SS01(SS01),
     R1(R1),
-    E01(E01)
+    E01(E01),
+    Furniture(Furniture)
 }
 pub trait FormTrait: Serialize {
     async fn process (&self, pool: &PgPool, id: i32) -> Result<(), Box<dyn Error>>;
@@ -112,6 +113,9 @@ impl Serialize for Forms {
             },
             Forms::E01(e01) => {
                 e01.serialize(serializer)
+            },
+            Forms::Furniture(f) => {
+                f.serialize(serializer)
             }
         }
     }
@@ -134,6 +138,9 @@ impl FormTrait for Forms {
                 let e = self.send_recv_update(pool, id, self.enum_to_str()).await?;
             },
             Forms::E01(f) => {
+                let e = self.send_recv_update(pool, id, self.enum_to_str()).await?;
+            },
+            Forms::Furniture(f) => {
                 let e = self.send_recv_update(pool, id, self.enum_to_str()).await?;
             }
         }
@@ -160,6 +167,10 @@ impl FormTrait for Forms {
             },
             Forms::E01(e01) => {
                 let id = identifier_id(e01.receiver, pool).await;
+                id
+            },
+            Forms::Furniture(f) => {
+                let id = identifier_id(f.receiver, pool).await;
                 id
             }
         }
@@ -447,6 +458,55 @@ impl FormTrait for Forms {
                 }
                 let id: i32 = result.unwrap().try_get("id")?;
                 Ok(id)
+            },
+            Forms::Furniture(f) => {
+                let result = sqlx::query("
+                    INSERT INTO Furniture (
+                        note,
+                        submitter,
+                        receiver,
+                        date,
+                        name_indenter,
+                        designation,
+                        discipline,
+                        budget_head,
+                        room_no,
+                        building,
+                        purpose,
+                        nature,
+                        present_availability,
+                        sign_date,
+                        approval_status,
+                        reason
+                    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
+                    RETURNING id;")
+                    .bind(&f.note)
+                    .bind(&f.submitter)
+                    .bind(&f.receiver)
+                    .bind(&f.date)
+                    .bind(&f.name_indenter)
+                    .bind(&f.designation)
+                    .bind(&f.discipline)
+                    .bind(&f.budget_head)
+                    .bind(&f.room_no)
+                    .bind(&f.building)
+                    .bind(&f.purpose)
+                    .bind(&f.nature)
+                    .bind(&f.present_availability)
+                    .bind(&f.sign_date)
+                    .bind(&f.approval_status)
+                    .bind(&f.reason)
+                    .fetch_one(pool)
+                    .await;
+                match result {
+                    Ok(_) => {
+                    }
+                    Err(e) => {
+                        return Err(Box::try_from(e).unwrap());
+                    }
+                }
+                let id: i32 = result.unwrap().try_get("id")?;
+                Ok(id)
             }
         }
     }
@@ -511,6 +571,17 @@ impl Forms {
                     }
                 }
             }
+            "Furniture" => {
+                match serde_json::from_value::<Furniture>(body) {
+                    Ok(mut s) => {
+                        s.submitter = jwt.id;
+                        Ok(Forms::Furniture(s))
+                    }
+                    Err(_) => {
+                        Err(HttpResponse::BadRequest().body("Incompatible structure"))
+                    }
+                }
+            }
             _ => Err(HttpResponse::BadRequest().body("Invalid form type"))
         }
 
@@ -521,7 +592,8 @@ impl Forms {
             Forms::MM04(_) => {"MM04"},
             Forms::SS01(_) => {"SS01"},
             Forms::R1(_) => {"R1"},
-            Forms::E01(_) => {"E01"}
+            Forms::E01(_) => {"E01"},
+            Forms::Furniture(_) => {"Furniture"}
         }
     }
 }
