@@ -8,11 +8,13 @@ import Login from "./components/LoginSignup/Login"
 import SignUp from "./components/LoginSignup/SignUp"
 import SS01form from "./pages/SS01/SSform";
 import MM04form from "./pages/MM04/MM04";
+import Furnitureform from "./pages/Furniture/furniture";
 import PfacultyHome from './pages/HomePages/FacultyHome/PfacultyHome';
 import Selectform from './pages/HomePages/FacultyHome/Selectform';
 import Search from './components/Search/search'
 import NewFh from './pages/HomePages/FacultyHome/NewFh';
 import Home from './pages/HomePages/Home';
+
 
 function App() {
   return (
@@ -33,6 +35,7 @@ function App() {
           <Route exact path="/SS04" element={ <SS04form /> } />
           <Route exact path="/SS01" element={ <SS01form /> } />
           <Route exact path="/MM04" element={ <MM04form /> } />
+          <Route exact path="/Furniture" element={ <Furnitureform /> } />
           <Route exact path="/search" element={ <Search /> } />
           <Route exact path="/pfh" element={ <PfacultyHome /> } />
           <Route exact path="/nfh" element={ <Home /> } />
