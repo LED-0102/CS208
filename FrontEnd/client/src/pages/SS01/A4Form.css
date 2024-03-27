@@ -21,6 +21,21 @@ body {
 
 /* Add more styling for your form elements */
 /* A4Form.css */
+
+/* A4Form.css */
+.light-bg {
+    background-color: #f0f8ff; /* Light blue background */
+}
+
+.input-field {
+    background-color: #d4e3f8; /* Lighter blue background for input fields */
+    color: #333333; /* Dark gray text color for input fields */
+    border: 1px solid #a9c8f7; /* Border color to separate input fields */
+    padding: 8px; /* Add padding for better spacing */
+    /* Add any additional styling you need */
+}
+
+
 @media print {
     body * {
       visibility: hidden;
@@ -38,6 +53,12 @@ body {
       position: absolute;
       left: 0;
       top: 0;
+    }
+    .input-field{
+        background-color: white;
+    }
+    .light-bg{
+        background-color: white;
     }
   }
 

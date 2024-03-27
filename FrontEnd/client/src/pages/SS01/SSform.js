@@ -113,13 +113,13 @@ const SS01form = () => {
         </form>
       </div> */}
             <div className="ml-56 ">
-                <div className="border border-black print-content">
+                <div className="border border-black print-content light-bg">
                     <form>
                         {/* //custodian section  */}
                         <div className="  px-4 py-2   ">
                             <div className="flex flex-row  justify-center  py-2 w-full ">
                                 <div className="flex-col  px-20">
-                                    <table className="bg-white border-collapse">
+                                    <table className="">
                                         <tbody>
                                             <tr>
                                                 <td className="border-none">
@@ -231,7 +231,7 @@ const SS01form = () => {
                                                         Room No:
                                                     </label>
                                                 </td>
-                                                <td className="border-none">
+                                                <td className="border-none ">
                                                     <input
                                                         type="text"
                                                         id="room_no"
@@ -239,7 +239,7 @@ const SS01form = () => {
                                                         placeholder="room number"
                                                         value={formData.room_no}
                                                         onChange={handleChange}
-                                                    // className="border-2 border-black"
+                                                        className="input-field"
                                                     />
                                                 </td>
                                             </tr>
