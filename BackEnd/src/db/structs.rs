@@ -162,8 +162,6 @@ pub struct E01 {
     pub hod_signature_date: String,
     pub jr_name: String,
     pub jr_signature_date: String,
-    pub type_of_work: String,
-    pub request_number: String, 
     pub approval_status: State,
     pub reason: String
 }
@@ -339,8 +337,6 @@ impl E01 {
             hod_signature_date: "".to_string(), 
             jr_name: "".to_string(), 
             jr_signature_date: "".to_string(), 
-            type_of_work: "".to_string(), 
-            request_number: "".to_string(), 
             approval_status: "Pending".parse().unwrap(), 
             reason: "".to_string() 
         }

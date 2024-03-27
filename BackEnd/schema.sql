@@ -108,8 +108,6 @@ CREATE TABLE E01 (
     hod_signature_date VARCHAR,
     jr_name VARCHAR,
     jr_signature_date VARCHAR,
-    type_of_work VARCHAR,
-    request_number VARCHAR,
     approval_status state,
     reason VARCHAR
 );

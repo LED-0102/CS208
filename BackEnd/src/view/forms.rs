@@ -428,11 +428,9 @@ impl FormTrait for Forms {
                         hod_signature_date,
                         jr_name,
                         jr_signature_date,
-                        type_of_work,
-                        request_number,
                         approval_status,
                         reason
-                    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
+                    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
                     RETURNING id;")
                     .bind(&e01.note)
                     .bind(&e01.submitter)
@@ -443,8 +441,6 @@ impl FormTrait for Forms {
                     .bind(&e01.hod_signature_date)
                     .bind(&e01.jr_name)
                     .bind(&e01.jr_signature_date)
-                    .bind(&e01.type_of_work)
-                    .bind(&e01.request_number)
                     .bind(&e01.approval_status)
                     .bind(&e01.reason)
                     .fetch_one(pool)
