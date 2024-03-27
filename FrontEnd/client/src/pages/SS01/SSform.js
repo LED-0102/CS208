@@ -14,6 +14,7 @@ import SearchUserComp from "../../components/Search/search";
 const SS01form = () => {
     const [tabledata, setTabledata] = useState([]);
     const [userData, setUserData] = useState({});
+    const [totalCost, setTotalCost] = useState(0);
     const [searchName, setSearchName] = useState("");
     const [error, setError] = useState("");
     const [selectedDesignation, setSelectedDesignation] = useState("");
@@ -51,6 +52,22 @@ const SS01form = () => {
         date: "",
     });
 
+    const handleUserSelect = (userId, userName) => {
+        console.log("aaaa", userName)
+        console.log("aaaa", userId)
+        setFormData({
+            ...formData,
+            receiver: userId
+        });
+
+        if (userName) {
+            setSearchName(userName);
+        } else {
+            setSearchName(''); // or any default value you prefer
+        }
+        console.log("search+++", searchName)
+    };
+
     const handleCustodianChange = (event) => {
         const newFormData = { ...formData, custodian: event.target.value };
         // Assuming you're using the JavaScript Date object
@@ -77,7 +94,24 @@ const SS01form = () => {
         });
     };
 
-
+    const filterUsers = () => {
+        return userData.filter(
+            (user) =>
+                user.username.toLowerCase().includes(searchName.toLowerCase()) &&
+                user.designation
+                    .toLowerCase()
+                    .includes(selectedDesignation.toLowerCase())
+            //   &&
+            // user.roll_no.toLowerCase().includes(searchRollNo.toLowerCase())
+        );
+    };
+    const designation = [
+        "HOD",
+        "Staff",
+        "Professor",
+        "Office",
+        "Student",
+    ];
     const addRow = (e) => {
         e.preventDefault();
         // Create a new row with a unique ID and serial number
@@ -91,29 +125,94 @@ const SS01form = () => {
         const updatedListOrders = [...tabledata];
         updatedListOrders[index][key] = value;
         setTabledata(updatedListOrders);
+
+        // Calculate the total cost for the entire table
+        let totalCost = 0;
+        updatedListOrders.forEach(row => {
+            const cost = parseFloat(row.cost) || 0;
+            totalCost += cost;
+        });
+
+        setTotalCost(totalCost);
+        setTabledata(updatedListOrders);
     };
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const listOrders = tabledata.map(row => ({
+            supplier: row.supplier,
+            bill: row.bill,
+            and_date: row.and_date,
+            item: row.item,
+            quantity: row.quantity,
+            con_n_con: row.con_n_con,
+            unit_price: row.unit_price,
+            total: row.total
+        }));
+
+        const updatedFormData = { ...formData, list_orders: listOrders };
+        console.log("update form data:", updatedFormData)
+
+        try {
+
+            const storedCookie = document.cookie;
+            console.log(storedCookie);
+            // Create a custom set of headers
+            const customHeaders = new Headers({
+                'Content-Type': 'application/json', // You may need to adjust the content type based on your request
+                'Cookie': storedCookie, // Include the retrieved cookie in the 'Cookie' header
+            });
+            const headersObject = Object.fromEntries(customHeaders.entries());
+            // const response = await fetch('https://jsonplaceholder.typicode.com/posts',{
+            const response = await fetch(`${globalUrl}/v1/submit/SS04`, {
+                method: 'POST',
+                credentials: 'include',  // Include credentials (cookies) in the request
+                headers: headersObject,
+                body: JSON.stringify(updatedFormData)
+            });
+            console.log(response)
+            if (response.statusCode === 401) {
+                console.log("Failed");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(`${globalUrl}/list/receiver`);
+                // const response = await axios.get(`https://randomuser.me/api/`);
+                // const datss=data
+                // console.log("aadd",typeof(response.data))
+                // console.log("aadd",typeof(data))
+                setUserData(response.data);
+                // console.log("dats",response.data)
+                // console.log("dats++++++userData",userData)
+            } catch (error) {
+                setError(error);
+            } finally {
+                // setLoading(false);
+            }
+        };
+
+        fetchData();
+
+
+        return () => {
+
+        };
+    }, []);
+
     return (
-        <div>
+        <div className="maxcbackground">
             <Navbar />
             <Header />
 
-            {/* <div className="container print-content">
-        <h1>My A4 Sized Form</h1>
-        <form>
-         
-          <label htmlFor="name">Name:</label>
-          <input type="text" id="name" name="name" required />
-          <br />
-          <label htmlFor="email">Email:</label>
-          <input type="email" id="email" name="email" required />
-          <br />
-       
-          <button type="submit">Submit</button>
-        </form>
-      </div> */}
-            <div className="ml-56 ">
-                <div className="border border-black print-content light-bg">
+            <div className=" ml-56 my-4  flex flex-row justify-center">
+                <div className="w-11/12 border border-black print-content light-bg">
                     <form>
                         {/* //custodian section  */}
                         <div className="  px-4 py-2   ">
@@ -247,7 +346,7 @@ const SS01form = () => {
                                     </table>
                                 </div>
                             </div>
-                            <span className="flex flex-col justify">
+                            <span className="flex flex-col justify text-xl">
                                 <span className="font-bold ">
                                     Item purchased under buy-back (No):- Item purchase information (GeM contract orders):
                                 </span>
@@ -266,7 +365,7 @@ const SS01form = () => {
                                         <th rowspan="2">Item Name</th>
                                         <th rowspan="2">Item Specification</th>
                                         <th rowspan="2">Con/N-Con</th>
-                                        <th rowspan="2">Item Name and Specification</th>
+                                        {/* <th rowspan="2">Item Name and Specification</th> */}
                                         <th className="text-center" colspan="2">Quantity</th>
                                         <th rowspan="2">Total</th>
                                     </tr>
@@ -282,33 +381,195 @@ const SS01form = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-    {tabledata.map((row, index) => (
-        <tr key={index}>
-            <td>{row.sno}</td>
-            <td><input type="text" id={`supplier_${index}`} name={`supplier_${index}`} value={row.supplier} onChange={(e) => handleChangeTable(e, index, 'supplier')} placeholder="Supplier Name" className="border-2 border-black" /></td>
-            <td><input type="text" id={`and_date_${index}`} name={`and_date_${index}`} value={row.and_date} onChange={(e) => handleChangeTable(e, index, 'and_date')} placeholder="and_date No & Date" className="border-2 border-black" /></td>
-            <td><input type="text" id={`item_${index}`} name={`item_${index}`} value={row.item} onChange={(e) => handleChangeTable(e, index, 'item')} placeholder="Item Name and Specification" className="border-2 border-black" /></td>
-            <td><input type="text" id={`quantity_${index}`} name={`quantity_${index}`} value={row.quantity} onChange={(e) => handleChangeTable(e, index, 'quantity')} placeholder="Qty" className="border-2 border-black" /></td>
-            <td><input type="text" id={`con_n_con_${index}`} name={`con_n_con_${index}`} value={row.con_n_con} onChange={(e) => handleChangeTable(e, index, 'con_n_con')} placeholder="Con/Non-Con" className="border-2 border-black" /></td>
-            <td><input type="text" id={`unit_price_${index}`} name={`unit_price_${index}`} value={row.unit_price} onChange={(e) => handleChangeTable(e, index, 'unit_price')} placeholder="Unit Price" className="border-2 border-black" /></td>
-            <td><input type="text" id={`total_${index}`} name={`total_${index}`} value={row.total} onChange={(e) => handleChangeTable(e, index, 'total')} placeholder="Total" className="border-2 border-black" /></td>
-        </tr>
-    ))}
-    <tr>
-        <td colSpan="7"></td>
-        <td>hlo</td> 
-    </tr>
-</tbody>
+                                    {tabledata.map((row, index) => (
+                                        <tr key={index}>
+                                            <td>{row.sno}</td>
+                                            <td><input type="text" id={`item_name_${index}`} name={`item_name_${index}`} value={row.item_name} onChange={(e) => handleChangeTable(e, index, 'item_name')} placeholder="Item Name and Specification" className="border-2 border-black" /></td>
+                                            <td><input type="text" id={`item_specification_${index}`} name={`item_specification_${index}`} value={row.item_specification} onChange={(e) => handleChangeTable(e, index, 'item_specification')} placeholder="Supplier Name" className="border-2 border-black" /> </td>
+                                            <td><input type="text" id={`con_n_con_${index}`} name={`con_n_con_${index}`} value={row.con_n_con} onChange={(e) => handleChangeTable(e, index, 'con_n_con')} placeholder="Con/Non-Con" className="border-2 border-black" /></td>
+                                            {/* <td><input type="text" id={`and_date_${index}`} name={`and_date_${index}`} value={row.and_date} onChange={(e) => handleChangeTable(e, index, 'and_date')} placeholder="and_date No & Date" className="border-2 border-black" /></td> */}
+                                            <td><input type="text" id={`required_number_${index}`} name={`required_number_${index}`} value={row.required_number} onChange={(e) => handleChangeTable(e, index, 'required_number')} placeholder="Qty" className="border-2 border-black" /></td>
+                                            <td><input type="text" id={`issued_${index}`} name={`issued_${index}`} value={row.issued} onChange={(e) => handleChangeTable(e, index, 'issued')} placeholder="Unit Price" className="border-2 border-black" /></td>
+                                            <td><input type="text" id={`cost_${index}`} name={`cost_${index}`} value={row.cost} onChange={(e) => handleChangeTable(e, index, 'cost')} placeholder="Total" className="border-2 border-black" /></td>
+                                        </tr>
+                                    ))}
+                                    <tr>
+                                        <td colSpan="6" className="font-bold ">Total incl. GST@18%</td>
+                                        <td>{totalCost}</td>
+                                        {/* <td>{totalCost}</td> */}
+                                    </tr>
+                                </tbody>
                             </table>
                             <div className='flex w-full gap-80 '>
-                                <div className='w-1/2 p-4'>
+                                {/* <div className='w-1/2 p-4'>
                                     <p className='text-2xl'>Total Amount (incl. 18% GST) :	<input type="number" id="total_amount" name="total_amount" value={formData.total_amount} onChange={handleChange} className="border-2 border-black" /></p>
-                                </div>
+                                </div> */}
                                 <div>
                                     <button onClick={addRow} id="addarowbtn">Add Row</button></div>
                             </div>
                         </div>
+                        <div className='flex flex-wrap w-full px-4 py-2  '>
+                            <div className='flex-col w-1/2 px-12 py-12'>
+                                <div className='flex flex-row justify-center text-xl font-semibold'>
+                                    <h2>Issue Approved</h2>
+                                </div>
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <td><label className='font-bold' htmlFor="issued_approved_name">Name :</label></td>
+                                            <td>
+                                                {/* <!-- <span>Dr. Nisheeth K. Prasad</span> --> */}
+                                                <input type="text" id="issued_approved_name" name="issued_approved_name" value={formData.issued_approved_name} placeholder='issued_approved_name ' onChange={handleCustodianChange} className="border-2 border-black" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label className='font-bold' htmlFor="issued_approved_date">Date :</label></td>
+                                            <td>
+                                                {/* <!-- <span>MEMS</span> --> */}
+                                                <input type="text" id="issued_approved_date" name="issued_approved_date" value={formData.issued_approved_date} placeholder='issued_approved_date ' onChange={handleChange} className="border-2 border-black" /></td>
+                                        </tr>
 
+                                    </tbody>
+                                </table>
+
+                            </div>
+                            <div className='flex-col w-1/2 px-12 py-12'>
+                                <div className='flex flex-row justify-center text-xl font-semibold'>
+                                    <h2>Items Recieved</h2>
+                                </div>
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <td><label className='font-bold' htmlFor="items_received_name">Name:</label></td>
+                                            <td>
+                                                {/* <!-- <span>Dr. Nisheeth K. Prasad</span> --> */}
+                                                <input type="text" id="items_received_name" name="items_received_name" value={formData.items_received_name} placeholder='items_received_name name' onChange={handleChange} className="border-2 border-black" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label className='font-bold' htmlFor="items_received_date">Date :</label></td>
+                                            <td>
+                                                {/* <!-- <span>MEMS</span> --> */}
+                                                <input type="text" id="items_received_date" name="items_received_date" value={formData.items_received_date} placeholder='items_received_date name' onChange={handleChange} className="border-2 border-black" /></td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+                            <div className='flex-col w-1/2 px-12 py-12'>
+                                <div className='flex flex-row justify-center text-xl font-semibold'>
+                                    <h2>Items Issued</h2>
+                                </div>
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <td><label className='font-bold' htmlFor="items_issued_name">Name  :</label></td>
+                                            <td>
+                                                {/* <!-- <span>Dr. Nisheeth K. Prasad</span> --> */}
+                                                <input type="text" id="items_issued_name" name="items_issued_name" value={formData.items_issued_name} placeholder='items_issued_name name' onChange={handleChange} className="border-2 border-black" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label className='font-bold' htmlFor="items_issued_date">Date :</label></td>
+                                            <td>
+                                                {/* <!-- <span>MEMS</span> --> */}
+                                                <input type="text" id="items_issued_date" name="items_issued_date" value={formData.items_issued_date} placeholder='items_issued_date name' onChange={handleChange} className="border-2 border-black" /></td>
+                                        </tr>
+
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+                            <div className='flex-col w-1/2 px-12 py-12'>
+                                <div className='flex flex-row justify-center text-xl font-semibold'>
+                                    <h2>Actioned in Ledger</h2>
+                                </div>
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <td><label className='font-bold' htmlFor="action_ledger_name">Name:</label></td>
+                                            <td>
+                                                {/* <!-- <span>Dr. Nisheeth K. Prasad</span> --> */}
+                                                <input type="text" id="action_ledger_name" name="action_ledger_name" value={formData.action_ledger_name} placeholder='action_ledger_name name' onChange={handleChange} className="border-2 border-black" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label className='font-bold' htmlFor="action_ledger_date">Date :</label></td>
+                                            <td>
+                                                {/* <!-- <span>MEMS</span> --> */}
+                                                <input type="text" id="action_ledger_date" name="action_ledger_date" value={formData.action_ledger_date} placeholder='action_ledger_date name' onChange={handleChange} className="border-2 border-black" /></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+
+                        <div className='p-4'>
+                            <div>
+                                <div className="flex flex-col lg:flex-row mb-4 lg:mb-8 font-custom">
+                                    <div className="mb-4 lg:mb-0 lg:mr-4 lg:w-full">
+                                        <input
+                                            type="text"
+                                            placeholder="Search by name"
+                                            value={searchName}
+                                            onChange={(e) => setSearchName(e.target.value)}
+                                            className="p-2 border w-full rounded-md search-input hover:bg-gray-200"
+                                        />
+                                    </div>
+                                    <div className="mb-4 lg:mb-0 lg:mr-4 lg:w-full">
+                                        <select
+                                            value={selectedDesignation}
+                                            onChange={(e) => setSelectedDesignation(e.target.value)}
+                                            className="p-2 border w-full rounded-md text-white"
+                                            style={{ backgroundColor: "rgb(30 41 59)" }}
+                                        >
+                                            <option value="">Select Department</option>
+                                            {designation.map((department) => (
+                                                <option key={department} value={department}>
+                                                    {department}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                </div>
+                                {searchName.toLowerCase() !== '' && (
+                                    <table className="w-full lg:w-full table-auto  border-collapse font-custom">
+                                        <thead>
+                                            <tr>
+                                                <th className="w-1/3 border-4 p-2 text-center font-bold text-purple-900">
+                                                    Name
+                                                </th>
+                                                <th className="w-1/3 border-4 p-2 text-center font-bold text-purple-900">
+                                                    Designation
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {filterUsers().map((user, index) => (
+                                                <tr
+                                                    key={user.id}
+                                                    className="bg-slate-950 hover:bg-slate-800 transition-all cursor-pointer"
+                                                    onClick={() => handleUserSelect(user.id, user.username)}>
+
+                                                    <td className="w-1/3 border-4 p-4 bg-white subpixel-antialiased text-teal-500 ">
+                                                        {user.username}
+                                                    </td>
+                                                    <td className="w-1/3 border-4 p-4 bg-white text-center text-cyan-500">
+                                                        {user.designation}
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                )}
+
+
+                            </div>
+
+
+                        </div>
+                        <div className='flex justify-center w-full mb-8'>
+                            <button onClick={(e) => handleSubmit(e)} >Submit</button>
+                        </div>
 
                     </form>
                 </div>

@@ -23,15 +23,22 @@ body {
 /* A4Form.css */
 
 /* A4Form.css */
+.maxcbackground{
+    /* background-color:violet; */
+}
 .light-bg {
-    background-color: #f0f8ff; /* Light blue background */
+
+    /* background-color: #E6FFF2; */
+    /* background-color: #F0E6FF; */
+    /* background-color:#CF9FFF; */
 }
 
 .input-field {
-    background-color: #d4e3f8; /* Lighter blue background for input fields */
-    color: #333333; /* Dark gray text color for input fields */
-    border: 1px solid #a9c8f7; /* Border color to separate input fields */
-    padding: 8px; /* Add padding for better spacing */
+    /* background-color: #145da6;  */
+    /* color: #632626;  */
+    /* color:white;  */
+    /* border: 1px solid #a9c8f7;  */
+    /* padding:auto  8px;  */
     /* Add any additional styling you need */
 }
 
