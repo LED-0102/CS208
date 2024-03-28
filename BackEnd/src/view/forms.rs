@@ -58,10 +58,10 @@ pub trait FormTrait: Serialize {
             BEGIN
                 IF EXISTS (SELECT 1 FROM {} WHERE id = {submitter}) THEN
                     UPDATE {}
-                    SET pending = array_append(pending, {id})
+                    SET seeking = array_append(seeking, {id})
                     WHERE id = {submitter};
                 ELSE
-                    INSERT INTO {} (id, pending, seeking, previous)
+                    INSERT INTO {} (id, seeking, pending, previous)
                     VALUES ({submitter}, ARRAY[{id}], ARRAY[]::integer[], ARRAY[]::integer[]);
                 END IF;
             END $$;
@@ -76,10 +76,10 @@ pub trait FormTrait: Serialize {
             BEGIN
                 IF EXISTS (SELECT 1 FROM {} WHERE id = {receiver}) THEN
                     UPDATE {}
-                    SET seeking = array_append(seeking, {id})
+                    SET pending = array_append(pending, {id})
                     WHERE id = {receiver};
                 ELSE
-                    INSERT INTO {} (id, pending, seeking, previous)
+                    INSERT INTO {} (id, seeking, pending, previous)
                     VALUES ({receiver}, ARRAY[]::integer[], ARRAY[{id}], ARRAY[]::integer[]);
                 END IF;
             END $$;
