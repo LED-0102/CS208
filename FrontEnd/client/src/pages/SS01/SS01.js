@@ -90,8 +90,8 @@ const SS01form = () => {
 
     return (
         <div>
-            <Navbar />
-            <Header />
+            {/* <Navbar />
+            <Header /> */}
 
             {/* <div className="container print-content">
         <h1>My A4 Sized Form</h1>

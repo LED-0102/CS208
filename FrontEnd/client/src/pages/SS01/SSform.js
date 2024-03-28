@@ -22,34 +22,43 @@ const SS01form = () => {
         // StoreNo: "",
         // financialyear: "",
         // reqdate: "",
-        custodian: "",
+        note: "",
+        receiver: 0,
+        submitter: 0,
+        date: "",
+        name_of_custodian: "",
         department: "",
         location: "",
-        contact: "",
-        items_receiving_date: "",
+        // contact: "",
+        // items_receiving_date: "",
         designation: "",
         inventory_no: "",
         room_no: "",
-        email: "",
-        total_amount: "",
+        // email: "",
+        item_purchase_info: "",
+        name_head: "",
         list_orders: [],
+        total_amount: "",
+        supplier_name_address: "",
+        po_no_date:"",
+        budget_head_account:"",
+        challan_no_date:"",
+        invoice_no_date:"",
+        invoice_amount:"",
+        project_no:"",
         name_indenter: "",
         sign_date_indenter: "",
-        name_head: "",
         sign_date_head: "",
-        issued_approved_name: "",
-        issued_approved_date: "", // Assuming the date could be null
-        items_received_name: "",
-        items_received_date: "",
-        items_issued_name: "",
-        items_issued_date: "", // Assuming the date could be null
-        action_ledger_name: "",
-        action_ledger_date: "", // Assuming the date could be null
-        receiver: "",
-        submitter: 0,
-        note: "",
-        approval_status: "",
-        date: "",
+        // issued_approved_name: "",
+        // issued_approved_date: "", // Assuming the date could be null
+        // items_received_name: "",
+        // items_received_date: "",
+        // items_issued_name: "",
+        // items_issued_date: "", 
+        // action_ledger_name: "",
+        // action_ledger_date: "", 
+        approval_status: "Pending",
+        reason:""
     });
 
     const handleUserSelect = (userId, userName) => {
@@ -69,13 +78,14 @@ const SS01form = () => {
     };
 
     const handleCustodianChange = (event) => {
-        const newFormData = { ...formData, custodian: event.target.value };
+        const newFormData = { ...formData, name_of_custodian: event.target.value };
         // Assuming you're using the JavaScript Date object
         const currentDate = new Date();
         const formattedDate = `${currentDate.getFullYear()}/${currentDate.getMonth() + 1
             }/${currentDate.getDate()}`;
         newFormData.name_indenter = event.target.value; // Assigning custodian's value to name_indenter
         newFormData.sign_date_indenter = formattedDate; // Assigning current date to sign_date_indenter
+        newFormData.date=formattedDate;
 
         newFormData.name_head = "";
         newFormData.sign_date_head = "";
@@ -139,16 +149,19 @@ const SS01form = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        // Calculate total cost
+        const totalAmount = parseFloat(totalCost) || 0;
+        const updatedFormData1 = { ...formData, total_amount: totalAmount };
 
         const listOrders = tabledata.map(row => ({
-            supplier: row.supplier,
-            bill: row.bill,
-            and_date: row.and_date,
-            item: row.item,
-            quantity: row.quantity,
+            si: row.sno,
+            item_name: row.item_name,
+            item_specification: row.item_specification,
             con_n_con: row.con_n_con,
-            unit_price: row.unit_price,
-            total: row.total
+            // and_date: row.and_date,
+            required_number: row.required_number,
+            issued: row.issued,
+            cost: row.cost
         }));
 
         const updatedFormData = { ...formData, list_orders: listOrders };
@@ -208,10 +221,10 @@ const SS01form = () => {
 
     return (
         <div className="maxcbackground">
-            <Navbar />
-            <Header />
+          
+          
             <div className="">
-                <div className=" ml-56 my-4  print-content">
+                <div className="my-4  print-content">
                     <form>
                         <div className="w-11/12 border border-black  light-bg mx-auto">
                             {/* //custodian section  */}
@@ -222,7 +235,7 @@ const SS01form = () => {
                                             <tbody>
                                                 <tr>
                                                     <td className="border-none">
-                                                        <label className="font-bold" htmlFor="custodian">
+                                                        <label className="font-bold" htmlFor="name_of_custodian">
                                                             Name of custodian of assets:
                                                         </label>
                                                     </td>
@@ -230,9 +243,9 @@ const SS01form = () => {
                                                         {/* <!-- <span>Dr. Nisheeth K. Prasad</span> --> */}
                                                         <input
                                                             type="text"
-                                                            id="custodian"
-                                                            name="custodian"
-                                                            value={formData.custodian}
+                                                            id="name_of_custodian"
+                                                            name="name_of_custodian"
+                                                            value={formData.name_of_custodian}
                                                             placeholder="custodian name"
                                                             onChange={handleCustodianChange}
                                                         // className="border-2 border-black"
@@ -350,7 +363,16 @@ const SS01form = () => {
                                     <span className="font-bold ">
                                         Item purchased under buy-back (No):- Item purchase information (GeM contract orders):
                                     </span>
-                                    <span>GEMC-511687721925229, 511687798475376, 511687730521965, 511687713303241, 511687711267628, 511687759904295, 511687756904666 dt. 05-12-2023.</span>
+                                    {/* <span>GEMC-511687721925229, 511687798475376, 511687730521965, 511687713303241, 511687711267628, 511687759904295, 511687756904666 dt. 05-12-2023.</span> */}
+                                    <textarea
+                                        placeholder="Fill the item puerchase information"
+                                        type="text"
+                                        id="item_purchase_info"
+                                        name="item_purchase_info"
+                                        value={formData.item_purchase_info}
+                                        onChange={handleChange}
+                                        className="input-field"
+                                    ></textarea>
                                     <span>Please issue following items for my office use to me the bearer Mr./Ms. NA whom I authorize to receive the stores on my behalf.</span>
                                 </span>
                             </div>
@@ -394,7 +416,8 @@ const SS01form = () => {
                                             </tr>
                                         ))}
                                         <tr>
-                                            <td colSpan="6" className="font-bold ">Total incl. GST@18%</td>
+
+                                            <td colSpan="6" className="font-bold text-right ">Total incl. GST@18%</td>
                                             <td>{totalCost}</td>
                                             {/* <td>{totalCost}</td> */}
                                         </tr>
@@ -568,9 +591,7 @@ const SS01form = () => {
 
                             </div>
                             <div></div>
-                            <div className='flex justify-center w-full mb-8'>
-                                <button onClick={(e) => handleSubmit(e)} >Submit</button>
-                            </div>
+                            
 
                         </div>
                         <div className="w-11/12 border border-black my-4 light-bg mx-auto">
@@ -582,29 +603,88 @@ const SS01form = () => {
                                     <thead>
                                         <tr>
                                             <th>1. Supplier's Name & Address:</th>
-                                            <td><textarea></textarea></td>
+                                            {/* supplier_name_address */}
+                                            <td><textarea
+                                                placeholder="Fill the Supplier's Name & Address"
+                                                type="text"
+                                                id="supplier_name_address"
+                                                name="supplier_name_address"
+                                                value={formData.supplier_name_address}
+                                                onChange={handleChange}
+                                                className="input-field"></textarea></td>
                                             <th>2. PO No. & Date:</th>
-                                            <td><textarea></textarea></td>
+                                            <td><textarea
+                                            placeholder="Fill the PO No. & Date"
+                                            type="text"
+                                            id="po_no_date"
+                                            name="po_no_date"
+                                            value={formData.po_no_date}
+                                            onChange={handleChange}
+                                            className="input-field"
+                                            ></textarea></td>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
                                             <th>3. Budget Head of Account:</th>
-                                            <td><input type='text' /></td>
+                                            <td><input 
+                                            placeholder=" Budget Head of Account"
+                                            type="text"
+                                            id="budget_head_account"
+                                            name="budget_head_account"
+                                            value={formData.budget_head_account}
+                                            onChange={handleChange}
+                                            className="input-field" /></td>
                                             <th>4. Challan No. & Date:</th>
-                                            <td><input type='text' /></td>
+                                            <td><input 
+                                             placeholder=" Challan No. & Date"
+                                             type="text"
+                                             id="challan_no_date"
+                                             name="challan_no_date"
+                                             value={formData.challan_no_date}
+                                             onChange={handleChange}
+                                             className="input-field" /></td>
                                         </tr>
                                         <tr>
                                             <th>5. Invoice No. & Date:</th>
-                                            <td><textarea></textarea></td>
+                                            <td><textarea
+                                            placeholder=" Invoice No. & Date"
+                                            type="text"
+                                            id="invoice_no_date"
+                                            name="invoice_no_date"
+                                            value={formData.invoice_no_date}
+                                            onChange={handleChange}
+                                            className="input-field"
+                                            ></textarea></td>
                                             <th>6. Invoice amount:</th>
-                                            <td><input type='text' /></td>
+                                            <td><input 
+                                            placeholder=" Invoice amount"
+                                            type="text"
+                                            id="invoice_amount"
+                                            name="invoice_amount"
+                                            value={formData.invoice_amount}
+                                            onChange={handleChange}
+                                            className="input-field"/></td>
                                         </tr>
                                         <tr>
                                             <th>7. Project No. (if applicable):</th>
-                                            <td><input type='text' /></td>
+                                            <td><input 
+                                            placeholder="Project No."
+                                            type="text"
+                                            id="project_no"
+                                            name="project_no"
+                                            value={formData.project_no}
+                                            onChange={handleChange}
+                                            className="input-field" /></td>
                                             <th>8. Name of Indenter:</th>
-                                            <td><input type='text' /></td>
+                                            <td><input 
+                                            placeholder="Name of Indenter"
+                                            type="text"
+                                            id="name_indenter"
+                                            name="name_indenter"
+                                            value={formData.name_indenter}
+                                            onChange={handleChange}
+                                            className="input-field"/></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -615,6 +695,9 @@ const SS01form = () => {
                             </div>
 
                         </div>
+                        <div className='flex justify-center w-full mb-8'>
+                                <button onClick={(e) => handleSubmit(e)} >Submit</button>
+                            </div>
                     </form>
                 </div>
             </div>
