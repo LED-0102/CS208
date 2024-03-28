@@ -6,7 +6,7 @@ import FirstFormofPurchase from './pages/PurchasePages/FirstFormofPurchase';
 import SS04form from './pages/SS04/SSform';
 import Login from "./components/LoginSignup/Login"
 import SignUp from "./components/LoginSignup/SignUp"
-import SS01form from "./pages/SS01/SS01";
+import SS01form from "./pages/SS01/SSform";
 import MM04form from "./pages/MM04/MM04";
 import Furnitureform from "./pages/Furniture/furniture";
 import PfacultyHome from './pages/HomePages/FacultyHome/PfacultyHome';
