@@ -1,6 +1,5 @@
 import './App.css';
 import { Routes, Route } from "react-router-dom";
-import LandingPage from './pages/LandingPage/LandingPage';
 import FacultyHome from './pages/HomePages/FacultyHome/FacultyHome';
 import StudentHome from './pages/HomePages/StudentHome/StudentHome';
 import FirstFormofPurchase from './pages/PurchasePages/FirstFormofPurchase';
@@ -8,9 +7,14 @@ import SS04form from './pages/SS04/SSform';
 import Login from "./components/LoginSignup/Login"
 import SignUp from "./components/LoginSignup/SignUp"
 import SS01form from "./pages/SS01/SS01";
+import MM04form from "./pages/MM04/MM04";
+import Furnitureform from "./pages/Furniture/furniture";
 import PfacultyHome from './pages/HomePages/FacultyHome/PfacultyHome';
 import Selectform from './pages/HomePages/FacultyHome/Selectform';
 import Search from './components/Search/search'
+import NewFh from './pages/HomePages/FacultyHome/NewFh';
+import Home from './pages/HomePages/Home';
+
 
 function App() {
   return (
@@ -18,7 +22,7 @@ function App() {
     <>
       
         <Routes>
-        <Route exact path="/" element={ <LandingPage /> } />
+        <Route exact path="/" element={ <Login/> } />
 
           <Route exact path="/login" element={ <Login/> } />
           <Route exact path="/signup" element={ <SignUp/> } />
@@ -30,8 +34,11 @@ function App() {
           <Route exact path="/faculty/purchase/ff" element={ <FirstFormofPurchase /> } />
           <Route exact path="/SS04" element={ <SS04form /> } />
           <Route exact path="/SS01" element={ <SS01form /> } />
+          <Route exact path="/MM04" element={ <MM04form /> } />
+          <Route exact path="/Furniture" element={ <Furnitureform /> } />
           <Route exact path="/search" element={ <Search /> } />
           <Route exact path="/pfh" element={ <PfacultyHome /> } />
+          <Route exact path="/nfh" element={ <Home /> } />
 
           <Route exact path="/availableForms" element={ <Selectform /> } />
   

@@ -1,0 +1,45 @@
+.bootcontainer {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  @media (min-width: 768px) {
+    .bootcontainer {
+      width: 750px;
+    }
+  }
+  @media (min-width: 992px) {
+    .bootcontainer {
+      width: 970px;
+    }
+  }
+  @media (min-width: 1200px) {
+    .bootcontainer {
+      width: 1170px;
+    }
+  }
+
+.cssFlex{
+    display: flex;
+}
+
+.cssJustifyCenter{
+    justify-content: center;
+}
+
+.cssAlignItemsCenter{
+    align-items: center;
+}
+
+.cssJustifyBetween{
+    justify-content: space-between;
+}
+
+.cssFlexWrap{
+    flex-wrap: wrap;
+}
+
+.cssSpaceAround{
+    justify-content: space-around;
+}

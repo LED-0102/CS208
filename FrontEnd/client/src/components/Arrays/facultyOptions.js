@@ -13,37 +13,33 @@ const facultyOptions = [
         title: "Generate forms",
         url:"/login",
         src:form    
-    }
-    // {
-    //     id:3,
-    //     title: "CPDA",
-    //     url:"/faculty/cpda",   
-    // },
-    // {
-    //     id:4,
-    //     title: "Leave",
-    //     url:"/faculty/leave",      
-    // },
-    // {
-    //     id:5,
-    //     title: "Request Approval",
-    //     url:"/faculty/requestapproval",      
-    // },
-    // {
-    //     id:6,
-    //     title: "Lab Details",
-    //     url:"/faculty/labdetails",      
-    // },
-    // {
-    //     id:7,
-    //     title: "Indent Record",
-    //     url:"/faculty/indentrecord",      
-    // },
-    // {
-    //     id:8,
-    //     title: "MEMS Student Details",
-    //     url:"/faculty/studentdetails",      
-    // },
+    },
+    {
+        id:3,
+        title: "Leave Application",
+        url:"/leave",   
+    },
+    {
+        id:4,
+        title: "Leave Application Recommended",
+        url:"/recommendedLeave",      
+    },
+    {
+        id:5,
+        title: "Leave Application Approved",
+        url:"/approvedLeave",      
+    },
+    {
+        id:6,
+        title: "Leave Application Rejected",
+        url:"/rejectedLeave",      
+    },
+    {
+        id:7,
+        title: "Approved Leave Cancel Request",
+        url:"/cancelLeaveReq",      
+    },
+    
     // {
     //     id:9,
     //     title: "Personal Inventory",

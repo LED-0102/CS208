@@ -1,0 +1,129 @@
+.hp{
+    background-color: #F9FAFA;
+}
+
+.hpExtend{
+    height: 100vh;
+}
+
+.homeCssLeftWidth{
+    min-width: 250px;
+    height : ;
+}
+
+@media (max-width: 992px){
+    .homeCssLeftWidth{
+        display:none;
+    }
+}
+
+.hpLeftFlexGap{
+    gap: 10px;
+}
+
+.homehamberger{
+    color: grey;
+}
+
+.hpHeader{
+    font-size: 1.2em;
+    font-weight: 700;
+}
+
+.hpTopRightButtonsDiv > a{
+    margin: 0 5px;
+}
+
+.hpTopRightButtonsDiv button{
+    color: #1F272E;
+    height: 38px;
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0px 0px 8px 0 rgba(0, 0, 0, 0.2), 0px 0px 20px 0 rgba(0, 0, 0, 0.19);
+    background-color: #fff;
+}
+
+.hpDivPublicSpan{
+    margin-bottom: 10px;
+}
+
+.hpPublicSpan{
+    font-weight: 300;
+}
+
+.hpPublicSpan2{
+    font-size: 0.8em;
+}
+
+.hpLeftIcons{
+    margin-left: 5px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.hpLeftFirstIcon{
+    margin-top: 15px;
+}
+
+.hpLeftIconsactive{
+    background-color: #EBEEF0;
+}
+
+.hpContentContainer{
+    background-color: #fff;
+    margin: 10px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 8px 0 rgba(0, 0, 0, 0.2), 0px 0px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+
+.hpContentOptions {
+    flex: 1 0 calc(33.33% - 20px);
+    max-width: calc(33.33% - 20px); 
+    margin: 10px 0;
+    border-right: 1px solid black;
+  }
+  
+  @media (max-width: 768px) {
+    .hpContentOptions {
+      flex: 1 0 calc(50% - 20px); 
+      max-width: calc(50% - 20px);
+    }
+  }
+  
+  
+  /* @media (max-width: 480px) {
+    .hpContentOptions {
+      flex: 1 0 100%; 
+      max-width: 100%;
+    }
+  } */
+
+.hpContentOptionsText{
+    margin-left: 7px;
+    gap: 3px;
+}
+
+.hpLuDot{
+    background-color: rgb(239, 249, 245);
+    margin: 0 5px;
+    padding: 4px;
+    padding-left: 6px;
+    padding-right: 6px;
+    justify-content: center;
+    align-items: center;
+}
+
+@media (max-width: 768px) {
+    .hpWorksFlexRev{
+        flex-direction: column;
+    }
+    .hpContentOptions{
+        width: 100%;
+    }
+}
+
+.hplast_contents{
+    margin-top: 25px;
+}
