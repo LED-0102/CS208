@@ -204,10 +204,8 @@ const designation = [
 
   return (
     <div>
-      <Navbar />
-      <Header />
       {/* <div></div> */}
-      <div className='ml-56 border-2 border-black h-full'>
+      <div className='border-2 border-black h-full'>
         <form>
           <div className='flex w-full p-4 '>
             <div className='w-2/3'>IITI logo and header left</div>

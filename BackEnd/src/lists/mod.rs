@@ -1,46 +1,12 @@
+mod fetch_forms;
+
 use actix_web::{web::{Data}, HttpResponse, Responder, web};
 use sqlx::{Error, Row};
 use crate::db::structs::{Student, Instrument, Receivers, Seeking};
 
 use crate::AppState;
 use crate::auth::jwt::JwToken;
-
-pub async fn get_pending(app_state: Data<AppState>, jwt: JwToken) -> HttpResponse {
-    let id = jwt.id;
-    let result = sqlx::query_as::<_, Seeking>(
-        "SELECT seeking FROM users WHERE id = $1"
-    ).bind(id)
-        .fetch_one(&app_state.pool)
-        .await;
-    let _ = match result {
-        Ok(s) => {s}
-        Err(e) => {
-            return HttpResponse::InternalServerError().body(e.to_string());
-        }
-    };
-    let todo = sqlx::query("SELECT DISTINCT form from forms;")
-        .fetch_all(&app_state.pool)
-        .await;
-    match todo {
-        Ok(_) => {}
-        Err(e) => {
-            return HttpResponse::InternalServerError().body(e.to_string());
-        }
-    }
-    let p: Vec<String> = todo.unwrap().iter()
-        .map(|row| row.get("form"))
-        .collect();
-
-    let seeking = sqlx::query("SELECT seeking from users where id=$1")
-        .bind(id)
-        .fetch_one(&app_state.pool)
-        .await;
-    //Have some work to do here
-
-
-
-    HttpResponse::Ok().finish()
-}
+use crate::lists::fetch_forms::get_pending;
 
 pub async fn get_students(app_state: Data<AppState>) -> impl Responder{
     match sqlx::query_as::<_, Student>(
@@ -89,6 +55,6 @@ pub fn list_config (cfg: &mut web::ServiceConfig) {
             .route("/students", web::get().to(get_students))
             .route("/inventory", web::get().to(get_inventory))
             .route("/receiver", web::get().to(get_receiver))
-            .route("/pending", web::post().to(get_pending))
+            .route("/forms/{fetch_type}", web::get().to(get_pending))
     );
 }

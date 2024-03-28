@@ -6,7 +6,7 @@ import FirstFormofPurchase from './pages/PurchasePages/FirstFormofPurchase';
 import SS04form from './pages/SS04/SSform';
 import Login from "./components/LoginSignup/Login"
 import SignUp from "./components/LoginSignup/SignUp"
-import SS01form from "./pages/SS01/SSform";
+import SS01form from "./pages/SS01/SS01";
 import MM04form from "./pages/MM04/MM04";
 import Furnitureform from "./pages/Furniture/furniture";
 import PfacultyHome from './pages/HomePages/FacultyHome/PfacultyHome';
@@ -14,6 +14,7 @@ import Selectform from './pages/HomePages/FacultyHome/Selectform';
 import Search from './components/Search/search'
 import NewFh from './pages/HomePages/FacultyHome/NewFh';
 import Home from './pages/HomePages/Home';
+import E01 from './pages/E01/E01';
 
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
           <Route exact path="/search" element={ <Search /> } />
           <Route exact path="/pfh" element={ <PfacultyHome /> } />
           <Route exact path="/nfh" element={ <Home /> } />
+          <Route exact path="/e01" element={ <E01 /> } />
 
           <Route exact path="/availableForms" element={ <Selectform /> } />
   
