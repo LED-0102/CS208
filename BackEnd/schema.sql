@@ -19,7 +19,7 @@ CREATE TABLE users (
 CREATE TABLE forms (
     form VARCHAR PRIMARY KEY
 );
-INSERT INTO forms(form) VALUES ('SS04'), ('MM04'), ('E01');
+INSERT INTO forms(form) VALUES ('SS04'), ('MM04'), ('E01'), ('Furniture'), ('R1'), ('SS01');
 CREATE TYPE SS04_orders AS (
     supplier VARCHAR,
     bill VARCHAR,
