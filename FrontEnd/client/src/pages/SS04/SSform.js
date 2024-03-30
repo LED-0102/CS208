@@ -8,6 +8,7 @@ import globalUrl from "../../components/url";
 
 const SS04form = () => {
   const [tabledata, setTabledata] = useState([]);
+  const [totalCost, setTotalCost] = useState(0);
   const navigate = useNavigate();
   
 
@@ -124,15 +125,29 @@ const designation = [
 "Student",
 ];
 
-  const handleChangeTable = (event, index, key) => {
-    const { value } = event.target;
-    const updatedListOrders = [...tabledata];
-    updatedListOrders[index][key] = value;
-    setTabledata(updatedListOrders);
-  };
+const handleChangeTable = (event, index, key) => {
+  const { value } = event.target;
+  const updatedListOrders = [...tabledata];
+  updatedListOrders[index][key] = value;
+  setTabledata(updatedListOrders);
+
+  // Calculate the total cost for the entire table
+  let totalCost = 0;
+  updatedListOrders.forEach(row => {
+      const cost = parseFloat(row.total) || 0;
+      totalCost += cost;
+  });
+
+  setTotalCost(totalCost);
+  setTabledata(updatedListOrders);
+};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const totalAmount = parseFloat(totalCost) || 0;
+    const updatedFormData1 = { ...formData, total_amount: totalAmount };
+
 
     const listOrders = tabledata.map(row => ({
       supplier: row.supplier,
@@ -356,12 +371,18 @@ const designation = [
                     <td><input type="text" id={`total_${index}`} name={`total_${index}`} value={row.total} onChange={(e) => handleChangeTable(e, index, 'total')} placeholder="Total" className="border-2 border-black" /></td>
                   </tr>
                 ))}
+                <tr>
+
+            <td colSpan="8" className="font-bold text-right ">Total incl. GST@18%</td>
+            <td>{totalCost}</td>
+            {/* <td>{totalCost}</td> */}
+              </tr>
               </tbody>
             </table>
             <div className='flex w-full gap-80 '>
-              <div className='w-1/2 p-4'>
+              {/* <div className='w-1/2 p-4'>
                 <p className='text-2xl'>Total Amount (incl. 18% GST) :	<input type="number" id="total_amount" name="total_amount" value={formData.total_amount} onChange={handleChange} className="border-2 border-black" /></p>
-              </div>
+              </div> */}
               <div>
                 <button onClick={addRow}>Add Row</button></div>
             </div>
