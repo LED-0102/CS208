@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import globalUrl from "../../components/url";
+import Navbar from '../../components/Navbar/Navbar';
+import Header from '../../components/Navbar/Header';
+
 
 const SS01form = () => {
     const [formData, setFormData] = useState({

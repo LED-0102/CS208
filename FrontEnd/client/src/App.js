@@ -15,6 +15,7 @@ import Search from './components/Search/search'
 import NewFh from './pages/HomePages/FacultyHome/NewFh';
 import Home from './pages/HomePages/Home';
 import E01 from './pages/E01/E01';
+import R1 from './pages/R1/R1';
 
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
           <Route exact path="/pfh" element={ <PfacultyHome /> } />
           <Route exact path="/nfh" element={ <Home /> } />
           <Route exact path="/e01" element={ <E01 /> } />
+          <Route exact path="/r1" element={ <R1 /> } />
 
           <Route exact path="/availableForms" element={ <Selectform /> } />
   
