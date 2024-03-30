@@ -28,17 +28,21 @@ const SS04form = () => {
     // StoreNo: "",
     // financialyear: "",
     // reqdate: "",
+    note:"",
+    receiver:0,
+    submitter:0,
+    date:"",
     custodian: "",
     department: "",
     location: "",
     contact: "",
-    items_receiving_date: "",
     designation: "",
     inventory_no: "",
     room_no: "",
     email: "",
-    total_amount: 0,
+    items_receiving_date: "",
     list_orders: [],
+    total_amount: 0,
     name_indenter: "",
     sign_date_indenter: "",
     name_head: "",
@@ -51,11 +55,7 @@ const SS04form = () => {
     items_issued_date:"", // Assuming the date could be null
     action_ledger_name:"", 
     action_ledger_date:"",  // Assuming the date could be null
-    receiver:0,
-    submitter:0,
-    note:"",
     approval_status:"Pending",
-    date:"",
 
 
 

@@ -178,7 +178,7 @@ const SS01form = () => {
             });
             const headersObject = Object.fromEntries(customHeaders.entries());
             // const response = await fetch('https://jsonplaceholder.typicode.com/posts',{
-            const response = await fetch(`${globalUrl}/v1/submit/SS04`, {
+            const response = await fetch(`${globalUrl}/v1/submit/SS01`, {
                 method: 'POST',
                 credentials: 'include',  // Include credentials (cookies) in the request
                 headers: headersObject,
