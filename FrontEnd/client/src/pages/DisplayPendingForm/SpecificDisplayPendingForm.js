@@ -17,11 +17,11 @@ const SS04form = () => {
   
 
   const addRow = (e) => {
-    e.preventDefault();
-    // Create a new row with a unique ID and serial number
-    const newRow = { id: tabledata.length + 1, sno: tabledata.length + 1 };
-    // Update the state to include the new row
-    setTabledata([...tabledata, newRow]);
+    // e.preventDefault();
+    // // Create a new row with a unique ID and serial number
+    // const newRow = { id: tabledata.length + 1, sno: tabledata.length + 1 };
+    // // Update the state to include the new row
+    // setTabledata([...tabledata, newRow]);
   };
 
   const [userData,setUserData]=useState({})
@@ -32,81 +32,83 @@ const SS04form = () => {
     // StoreNo: "",
     // financialyear: "",
     // reqdate: "",
-    note:"",
-    receiver:0,
-    submitter:0,
-    date:"",
-    custodian: "",
-    department: "",
-    location: "",
-    contact: "",
-    designation: "",
-    inventory_no: "",
-    room_no: "",
-    email: "",
-    items_receiving_date: "",
-    list_orders: [],
-    total_amount: 0,
-    name_indenter: "",
-    sign_date_indenter: "",
-    name_head: "",
-    sign_date_head: "",
-    issued_approved_name:"",
-    issued_approved_date:"", // Assuming the date could be null
-    items_received_name:"" ,
-    items_received_date:"" ,
-    items_issued_name: "",
-    items_issued_date:"", // Assuming the date could be null
-    action_ledger_name:"", 
-    action_ledger_date:"",  // Assuming the date could be null
-    approval_status:"Pending",
+    // note:"",
+    // receiver:0,
+    // submitter:0,
+    // date:"",
+    // custodian: "",
+    // department: "",
+    // location: "",
+    // contact: "",
+    // designation: "",
+    // inventory_no: "",
+    // room_no: "",
+    // email: "",
+    // items_receiving_date: "",
+    // list_orders: [],
+    // total_amount: 0,
+    // name_indenter: "",
+    // sign_date_indenter: "",
+    // name_head: "",
+    // sign_date_head: "",
+    // issued_approved_name:"",
+    // issued_approved_date:"", // Assuming the date could be null
+    // items_received_name:"" ,
+    // items_received_date:"" ,
+    // items_issued_name: "",
+    // items_issued_date:"", // Assuming the date could be null
+    // action_ledger_name:"", 
+    // action_ledger_date:"",  // Assuming the date could be null
+    // approval_status:"Pending",
 
 
 
 
   });
 
+  // const [formData, setFormData] = useState(null);
+
   const handleUserSelect = (userId,userName) => {
-    console.log("aaaa",userName)
-    console.log("aaaa",userId)
-    setFormData({
-      ...formData,
-      receiver: userId
-    });
+    // console.log("aaaa",userName)
+    // console.log("aaaa",userId)
+    // setFormData({
+    //   ...formData,
+    //   receiver: userId
+    // });
   
-    if (userName) {
-      setSearchName(userName);
-    } else {
-      setSearchName(''); // or any default value you prefer
-    }
-    console.log("search+++",searchName)
+    // if (userName) {
+    //   setSearchName(userName);
+    // } else {
+    //   setSearchName(''); // or any default value you prefer
+    // }
+    // console.log("search+++",searchName)
   };
 
   const handleCustodianChange = (event) => {
-    const newFormData = { ...formData, custodian: event.target.value };
-    // Assuming you're using the JavaScript Date object
-    const currentDate = new Date();
-    const formattedDate = `${currentDate.getFullYear()}/${currentDate.getMonth() + 1}/${currentDate.getDate()}`;
-    newFormData.name_indenter = event.target.value; // Assigning custodian's value to name_indenter
-    newFormData.sign_date_indenter = formattedDate; // Assigning current date to sign_date_indenter
+    // const newFormData = { ...formData, custodian: event.target.value };
+    // // Assuming you're using the JavaScript Date object
+    // const currentDate = new Date();
+    // const formattedDate = `${currentDate.getFullYear()}/${currentDate.getMonth() + 1}/${currentDate.getDate()}`;
+    // newFormData.name_indenter = event.target.value; // Assigning custodian's value to name_indenter
+    // newFormData.sign_date_indenter = formattedDate; // Assigning current date to sign_date_indenter
 
-    newFormData.name_head = "";
-    newFormData.sign_date_head = "";
-    setFormData(newFormData);
+    // newFormData.name_head = "";
+    // newFormData.sign_date_head = "";
+    // setFormData(newFormData);
   };
 
 
 
   const handleChange = (evt) => {
-    const changedField = evt.target.name;
-    const newValue = evt.target.value;
+    // const changedField = evt.target.name;
+    // const newValue = evt.target.value;
 
-    setFormData((currData) => {
-      currData[changedField] = newValue;
-      return {
-        ...currData,
-      };
-    });
+    // setFormData((currData) => {
+    //   currData[changedField] = newValue;
+    //   return {
+    //     ...currData,
+    //   };
+    // });
   };
 
   
@@ -130,103 +132,117 @@ const designation = [
 ];
 
 const handleChangeTable = (event, index, key) => {
-  const { value } = event.target;
-  const updatedListOrders = [...tabledata];
-  updatedListOrders[index][key] = value;
-  setTabledata(updatedListOrders);
+//   const { value } = event.target;
+//   const updatedListOrders = [...tabledata];
+//   updatedListOrders[index][key] = value;
+//   setTabledata(updatedListOrders);
 
-  // Calculate the total cost for the entire table
-  let totalCost = 0;
-  updatedListOrders.forEach(row => {
-      const cost = parseFloat(row.total) || 0;
-      totalCost += cost;
-  });
+//   // Calculate the total cost for the entire table
+//   let totalCost = 0;
+//   updatedListOrders.forEach(row => {
+//       const cost = parseFloat(row.total) || 0;
+//       totalCost += cost;
+//   });
 
-  setTotalCost(totalCost);
-  setTabledata(updatedListOrders);
+//   setTotalCost(totalCost);
+//   setTabledata(updatedListOrders);
 };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+//     e.preventDefault();
 
-    const totalAmount = parseFloat(totalCost) || 0;
-    const updatedFormData1 = { ...formData, total_amount: totalAmount };
+//     const totalAmount = parseFloat(totalCost) || 0;
+//     const updatedFormData1 = { ...formData, total_amount: totalAmount };
 
 
-    const listOrders = tabledata.map(row => ({
-      supplier: row.supplier,
-      bill: row.bill,
-      and_date: row.and_date,
-      item: row.item,
-      quantity: row.quantity,
-      con_n_con: row.con_n_con,
-      unit_price: row.unit_price,
-      total: row.total
-    }));
+//     const listOrders = tabledata.map(row => ({
+//       supplier: row.supplier,
+//       bill: row.bill,
+//       and_date: row.and_date,
+//       item: row.item,
+//       quantity: row.quantity,
+//       con_n_con: row.con_n_con,
+//       unit_price: row.unit_price,
+//       total: row.total
+//     }));
 
-    const updatedFormData = { ...formData, list_orders: listOrders };
-    console.log("update form data:", updatedFormData)
+//     const updatedFormData = { ...formData, list_orders: listOrders };
+//     console.log("update form data:", updatedFormData)
 
-    try {
+//     try {
 
-      const storedCookie = document.cookie;
-      console.log(storedCookie);
-// Create a custom set of headers
-      const customHeaders = new Headers({
-        'Content-Type': 'application/json', // You may need to adjust the content type based on your request
-        'Cookie': storedCookie, // Include the retrieved cookie in the 'Cookie' header
-      });
-      const headersObject = Object.fromEntries(customHeaders.entries());
-      // const response = await fetch('https://jsonplaceholder.typicode.com/posts',{
-      const response = await fetch(`${globalUrl}/v1/${formName}/${formId}`, {
-        method: 'GET',
-        credentials: 'include',  // Include credentials (cookies) in the request
-        headers: headersObject,
-        // body: JSON.stringify(updatedFormData)
-      });
-      console.log(response)
-      if (response.statusCode === 401) {
-        console.log("Failed");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
+//       const storedCookie = document.cookie;
+//       console.log(storedCookie);
+// // Create a custom set of headers
+//       const customHeaders = new Headers({
+//         'Content-Type': 'application/json', // You may need to adjust the content type based on your request
+//         'Cookie': storedCookie, // Include the retrieved cookie in the 'Cookie' header
+//       });
+//       const headersObject = Object.fromEntries(customHeaders.entries());
+//       // const response = await fetch('https://jsonplaceholder.typicode.com/posts',{
+//       const response = await fetch(`${globalUrl}/v1/${formName}/${formId}`, {
+//         method: 'GET',
+//         credentials: 'include',  // Include credentials (cookies) in the request
+//         headers: headersObject,
+//         // body: JSON.stringify(updatedFormData)
+//       });
+//       console.log(response)
+//       if (response.statusCode === 401) {
+//         console.log("Failed");
+//       }
+//     } catch (error) {
+//       console.error("Error:", error);
+//     }
   };
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const storedCookie = document.cookie;
-        console.log(storedCookie);
-  // Create a custom set of headers
-        const customHeaders = new Headers({
-          'Content-Type': 'application/json', // You may need to adjust the content type based on your request
-          'Cookie': storedCookie, // Include the retrieved cookie in the 'Cookie' header
-        });
-        const headersObject = Object.fromEntries(customHeaders.entries());
-        const response = await axios.get(`${globalUrl}/v1/${formName}/${formId}`);
+        try {
+            const storedCookie = document.cookie;
+            console.log(storedCookie);
+      // Create a custom set of headers
+            const customHeaders = new Headers({
+              'Content-Type': 'application/json', // You may need to adjust the content type based on your request
+              'Cookie': storedCookie, // Include the retrieved cookie in the 'Cookie' header
+            });
+            const headersObject = Object.fromEntries(customHeaders.entries());
   
-                     // Parsing JSON response
-    const responseData = await response.json();
-    // console.log('Parsed JSON response:', typeof(responseData));
-    console.log('Parsed JSON response:', (responseData));
-    setFormData(responseData);
-        
-      } catch (error) {
-        setError(error);
-      } finally {
-        // setLoading(false);
-      }
+            //  const response = await fetch('https://jsonplaceholder.typicode.com/posts',{
+            const response = await fetch(`${globalUrl}/v1/${formName}/${formId}`, {
+                method: 'GET',
+                credentials: 'include',  // Include credentials (cookies) in the request
+                headers: headersObject,
+                // body: JSON.stringify(updatedFormData)
+              });
+            //   console.log(response)
+            // console.log("aadd",typeof(data))
+            // setPendingFormData(response.data);
+            // console.log("aadd",typeof(pendingFormData))
+            // console.log("aadd",pendingFormData)
+            // console.log("aadd++++",response)
+               // Parsing JSON response
+const responseData = await response.json();
+// console.log('Parsed JSON response:', typeof(responseData));
+console.log('Parsed JSON response:', (responseData));
+setFormData(responseData);
+            //   console.log()
+              if (response.statusCode === 401) {
+                console.log("Failed");
+              }
+            } catch (error) {
+              console.error("Error:", error);
+            }
     };
 
     fetchData();
 
-  
-    return () => {
-      
-    };
-  }, []); 
 
+    return () => {
+
+    };
+}, []);
+
+console.log("formData++++",formData)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -265,43 +281,7 @@ const handleChangeTable = (event, index, key) => {
             <div className='w-2/3'>IITI logo and header left</div>
             <div>
               <div className=' border-2 border-black'>
-                <div className='flex-col p-4'>
-                  <h2>FORM NO:SS04</h2>
-                  <table>
-                    <thead>
-                      <tr>
-                        {/* Table headers */}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>
-                          <label htmlFor="StoreNo">Store Number/IN/IV/DP/NO. : </label>
-                        </td>
-                        <td>
-                          <input type="text" id="StoreNo" name="StoreNo" placeholder="Store No" value={formData.StoreNo} onChange={handleChange} className="border-2 border-black" />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <label htmlFor="financialyear">Financial year : </label>
-                        </td>
-                        <td>
-                          <input type="number" id="financialyear" name="financialyear" placeholder='financialyear' value={formData.financialyear} onChange={handleChange} className="border-2 border-black" />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <label htmlFor="reqdate">Date : </label>
-                        </td>
-                        <td>
-                          <input type="date" id="reqdate" name="reqdate" value={formData.reqdate} onChange={handleChange} className="border-2 border-black" />
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <p>(to be filled by store assistant)</p>
-                </div>
+              
               </div>
 
             </div>
@@ -319,7 +299,7 @@ const handleChangeTable = (event, index, key) => {
                       <td><label className='font-bold' htmlFor="custodian">Name of custodian of assets :</label></td>
                       <td>
                         {/* <!-- <span>Dr. Nisheeth K. Prasad</span> --> */}
-                        <input type="text" id="custodian" name="custodian" value={formData.custodian} placeholder='custodian name' onChange={handleCustodianChange} className="border-2 border-black" /></td>
+                        <input type="text" id="custodian" name="custodian" value={formData.custodian} placeholder='custodian name' onChange={handleCustodianChange} className="border-2 border-black" readOnly /></td>
                     </tr>
                     <tr>
                       <td><label className='font-bold' htmlFor="department">Department/Project No. :</label></td>
