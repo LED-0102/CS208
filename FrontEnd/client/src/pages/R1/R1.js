@@ -29,7 +29,7 @@ const R1 = () => {
     const [error, setError] = useState("");
     const [formData, setFormData] = useState({
         note: "",
-        receiver: 0,
+        receiver: 2,
         submitter: 0,
         date:"",
         purpose_of_expenditure: "",
