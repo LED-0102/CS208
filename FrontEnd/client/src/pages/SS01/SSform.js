@@ -153,14 +153,14 @@ const SS01form = () => {
         const updatedFormData1 = { ...formData, total_amount: totalAmount };
 
         const listOrders = tabledata.map(row => ({
-            si: row.sno,
+            si: parseInt(row.sno),
             item_name: row.item_name,
             item_specification: row.item_specification,
             con_n_con: row.con_n_con,
             // and_date: row.and_date,
-            required_number: row.required_number,
+            required_number: parseInt(row.required_number),
             issued: row.issued,
-            cost: row.cost
+            cost: parseInt(row.cost)
         }));
 
         const updatedFormData = { ...formData, list_orders: listOrders };
@@ -409,9 +409,9 @@ const SS01form = () => {
                                                 <td><input type="text" id={`item_specification_${index}`} name={`item_specification_${index}`} value={row.item_specification} onChange={(e) => handleChangeTable(e, index, 'item_specification')} placeholder="Supplier Name" className="border-2 border-black" /> </td>
                                                 <td><input type="text" id={`con_n_con_${index}`} name={`con_n_con_${index}`} value={row.con_n_con} onChange={(e) => handleChangeTable(e, index, 'con_n_con')} placeholder="Con/Non-Con" className="border-2 border-black" /></td>
                                                 {/* <td><input type="text" id={`and_date_${index}`} name={`and_date_${index}`} value={row.and_date} onChange={(e) => handleChangeTable(e, index, 'and_date')} placeholder="and_date No & Date" className="border-2 border-black" /></td> */}
-                                                <td><input type="text" id={`required_number_${index}`} name={`required_number_${index}`} value={row.required_number} onChange={(e) => handleChangeTable(e, index, 'required_number')} placeholder="Qty" className="border-2 border-black" /></td>
+                                                <td><input type="number" id={`required_number_${index}`} name={`required_number_${index}`} value={row.required_number} onChange={(e) => handleChangeTable(e, index, 'required_number')} placeholder="Qty" className="border-2 border-black" /></td>
                                                 <td><input type="text" id={`issued_${index}`} name={`issued_${index}`} value={row.issued} onChange={(e) => handleChangeTable(e, index, 'issued')} placeholder="Unit Price" className="border-2 border-black" /></td>
-                                                <td><input type="text" id={`cost_${index}`} name={`cost_${index}`} value={row.cost} onChange={(e) => handleChangeTable(e, index, 'cost')} placeholder="Total" className="border-2 border-black" /></td>
+                                                <td><input type="number" id={`cost_${index}`} name={`cost_${index}`} value={row.cost} onChange={(e) => handleChangeTable(e, index, 'cost')} placeholder="Total" className="border-2 border-black" /></td>
                                             </tr>
                                         ))}
                                         <tr>
