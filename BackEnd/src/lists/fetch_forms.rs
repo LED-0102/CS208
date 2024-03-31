@@ -1,15 +1,25 @@
 use std::collections::HashMap;
 use actix_web::{HttpResponse, web};
 use actix_web::web::Path;
-use serde_json::{json, Value};
-use sqlx::{Column, FromRow, Row, TypeInfo};
+use serde::Serialize;
+use sqlx::{Column, Error, FromRow, Row};
 use crate::AppState;
 use crate::auth::jwt::JwToken;
 use crate::db::structs::State;
+
 #[derive(FromRow)]
 pub struct PendingKeys {
     pending: Vec<i32>
 }
+
+#[derive(Serialize, FromRow)]
+pub struct ResData {
+    id: i32,
+    submitter: String,
+    receiver: String,
+    approval_status: State
+}
+
 pub async fn get_pending(app_state: web::Data<AppState>, jwt: JwToken, fetch_type: Path<String>) -> HttpResponse {
     let id = jwt.id;
     let fetch_type = fetch_type.into_inner();
@@ -21,7 +31,7 @@ pub async fn get_pending(app_state: web::Data<AppState>, jwt: JwToken, fetch_typ
     match forms_result {
         Ok(forms) => {
             println!("main inside");
-            let mut forms_data: HashMap<String, Vec<Value>> = HashMap::new();
+            let mut forms_data: HashMap<String, Vec<ResData>> = HashMap::new();
 
             // Iterate over each form
             for form_row in forms {
@@ -37,70 +47,27 @@ pub async fn get_pending(app_state: web::Data<AppState>, jwt: JwToken, fetch_typ
 
                 match pending_keys_result {
                     Ok(pending_keys_rows) => {
-                        let mut form_data: Vec<Value> = Vec::new();
                         let keys: Vec<i32> = pending_keys_rows.get(0);
-                        // Iterate over each pending key
-                        for pending_key in keys {
-                            // Fetch form data for the current pending key
-                            let form_data_query = format!(
-                                "SELECT * FROM {} WHERE id = $1",
-                                form_name
-                            );
-
-                            let form_data_result = sqlx::query(&form_data_query)
-                                .bind(pending_key)
+                        for i in keys {
+                            let query = format!("SELECT id, \
+                              (SELECT username from users where id=submitter) AS submitter,\
+                              (SELECT username from users where id=receiver) AS receiver, \
+                              approval_status FROM {} WHERE id = $1", &form_name);
+                            let res: Result<ResData, Error> = sqlx::query_as(&query)
+                                .bind(i)
                                 .fetch_one(&app_state.pool)
                                 .await;
-
-                            match form_data_result {
+                            match res {
                                 Ok(row) => {
-                                    let mut json_row = json!({});
-
-                                    // Construct JSON object for form data
-                                    for (i, column) in row.columns().iter().enumerate() {
-                                        let value = match column.type_info().name() {
-                                            "JSONB" => {
-                                                match row.try_get::<Value, _>(i) {
-                                                    Ok(val) => val,
-                                                    Err(e) => return HttpResponse::InternalServerError().body(e.to_string()),
-                                                }
-                                            }
-                                            "VARCHAR" => {
-                                                match row.try_get::<String, _>(i) {
-                                                    Ok(string_value) => Value::String(string_value),
-                                                    Err(e) => return HttpResponse::InternalServerError().body(e.to_string()),
-                                                }
-                                            }
-                                            "INT4" => {
-                                                match row.try_get::<i32, _>(i) {
-                                                    Ok(int_value) => Value::Number(serde_json::Number::from(int_value)),
-                                                    Err(e) => return HttpResponse::InternalServerError().body(e.to_string()),
-                                                }
-                                            }
-                                            "state" => {
-                                                // Assuming `State` is your custom enum
-                                                match row.try_get::<State, _>(i) {
-                                                    Ok(state_value) => Value::String(format!("{:?}", state_value)), // Convert enum variant to string
-                                                    Err(e) => return HttpResponse::InternalServerError().body(e.to_string()),
-                                                }
-                                            }
-                                            _ => {
-                                                return HttpResponse::InternalServerError().body(format!("Unsupported column type: {}", column.type_info().name()));
-                                            }
-                                        };
-                                        json_row[column.name()] = value;
-                                    }
-
-
-                                    form_data.push(json_row);
+                                    forms_data.entry(form_name.clone()).or_insert(vec![]).push(row);
                                 }
                                 Err(e) => {
-                                    println!("This is the one!");
-                                    return HttpResponse::InternalServerError().body(e.to_string());
+                                    println!("{:?}", e);
+                                    continue;
                                 }
+
                             }
                         }
-                        forms_data.insert(form_name, form_data);
                     }
                     Err(e) => {
                         println!("{:?}", e);

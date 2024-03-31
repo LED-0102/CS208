@@ -1,4 +1,5 @@
 mod forms;
+mod get_form;
 
 use std::error::Error;
 use std::fmt::format;
@@ -10,6 +11,7 @@ use crate::auth::jwt::JwToken;
 use forms::{Forms, FormTrait};
 use crate::AppState;
 use crate::db::fetch_id::verify_receiver;
+use get_form::get_form;
 
 #[derive(Deserialize, Debug, Serialize)]
 pub struct ApprovalData {
@@ -24,6 +26,7 @@ pub fn view_config (cfg: &mut web::ServiceConfig) {
         web::scope("/v1")
             .service(form_handler)
             .service(accept_reject)
+            .route("/{form_name}/{form_id}", web::get().to(get_form))
 
     );
 }
