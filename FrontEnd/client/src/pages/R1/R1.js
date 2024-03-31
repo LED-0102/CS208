@@ -6,29 +6,57 @@ import "./r1.css";
 
 const R1 = () => {
 
+    // pub struct R1 {
+    //     pub note: String,
+    //     pub receiver: i32,
+    //     pub submitter: i32,
+    //     pub date: String, 
+    //     pub purpose_of_expenditure: String,
+    //     pub name_of_applname_of_applicant
+    //     pub designation: String,
+    //     pub department: String,
+    //     pub payment_favour: String,
+    //     pub budget_head_expenditure: String,
+    //     pub project_sanction_no: String,
+    //     pub expenditure_head: String,
+    //     pub amount_claimed: i32,
+    //     pub recommending_authority_name: String,
+    //     pub approving_authority_name: String, 
+    //     pub approval_status: State,
+    //     pub reason: String
+    // }
+    const [userData,setUserData]=useState({})
+    const [error, setError] = useState("");
     const [formData, setFormData] = useState({
-        purpose: "",
-        applicant_name: "",
+        note: "",
+        receiver: 0,
+        submitter: 0,
+        date:"",
+        purpose_of_expenditure: "",
+        name_of_applicant: "",
         designation: "",
         department: "",
-        paymentForParty: "",
-        budgetHead: "",
-        otherBudgetHead: "",
+        payment_favour: "",
+        budget_head_expenditure: "",
+        // otherBudgetHead: "",
         project_sanction_no: "",
-        expenditureHead: "",
-        otherexpenditureHead: "",
-        amount_claimed: "",
-        recommending_authority: "",
-        note:"",
+        expenditure_head: "",
+        // otherexpenditureHead: "",
+        amount_claimed: 0,
+        recommending_authority_name: "",
+        approving_authority_name: "",
         approval_status:"Pending",
-        date:"",
+        reason: "",
     });   
            
     const handleChange = (evt) => {
         const changedField = evt.target.name;
-        const newValue = evt.target.value;
+        let newValue = evt.target.value;
     
         setFormData((currData) => {
+        if(changedField === "amount_claimed"){
+            newValue=parseInt(newValue);
+        }
         currData[changedField] = newValue;
         return {
             ...currData,
@@ -78,6 +106,33 @@ const R1 = () => {
     };
 
 
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const response = await axios.get(`${globalUrl}/list/receiver`);
+            // const response = await axios.get(`https://randomuser.me/api/`);
+            // const datss=data
+            // console.log("aadd",typeof(response.data))
+            // console.log("aadd",typeof(data))
+            setUserData(response.data);
+            // console.log("dats",response.data)
+            // console.log("dats++++++userData",userData)
+          } catch (error) {
+            setError(error);
+          } finally {
+            // setLoading(false);
+          }
+        };
+    
+        fetchData();
+        
+  
+    return () => {
+      
+    };
+  }, []); 
+
+
   return (
     <div>
       <div className="">
@@ -91,11 +146,11 @@ const R1 = () => {
             <tbody>
                 <tr>
                     <th>1. Purpose of the Expenditure</th>
-                    <td colSpan="5"><input type="text" name="purpose" id="purpose" onChange={handleChange} required /></td>
+                    <td colSpan="5"><input type="text" name="purpose_of_expenditure" id="_of_expenditure" onChange={handleChange} required /></td>
                 </tr>
                 <tr>
-                    <th><label htmlFor='applicant_name'>2. Name of the Applicant</label></th>
-                    <td><input type="text" name="applicant_name" id="applicant_name" onChange={handleChange} required /></td>
+                    <th><label htmlFor='name_of_applicant'>2. Name of the Applicant</label></th>
+                    <td><input type="text" name="name_of_applicant" id="name_of_applicant" onChange={handleChange} required /></td>
                     <th><label htmlFor='designation'>3. Designation</label></th>
                     <td><input type="text" name="designation" id='designation' onChange={handleChange} required /></td>
                     <th><label className='department'>4. Department</label></th>
@@ -104,30 +159,30 @@ const R1 = () => {
                 <tr>
                     <th>5. Payment to be made in favor of</th>
                     <td colSpan="5">
-                        <label htmlFor='paymentForParty' >Party</label>
-                        <input type="checkbox" name="paymentForParty" id='paymentForParty' onChange={handleChange} required />
+                        <label htmlFor='payment_favour' >Party</label>
+                        <input type="checkbox" name="payment_favour" id='payment_favour' onChange={handleChange} required />
                     </td>
                 </tr>
                 <tr>
-                    <th><label htmlFor='budgetHead'>6. Please specify the budget head for expenditure</label></th>
+                    <th><label htmlFor='budget_head_expenditure'>6. Please specify the budget head for expenditure</label></th>
                     <td colSpan="5">
-                        <select id="budgetHead" name="budgetHead" onChange={handleChange}>
+                        <select id="budget_head_expenditure" name="budget_head_expenditure" onChange={handleChange}>
                             <option value="RDF">RDF</option>
                             <option value="DDF">DDF</option>
                             <option value="Others">Others</option>
                         </select>
                     </td>
                 </tr>
-                <tr>
+                {/* <tr>
                     <th><label htmlFor='otherBudgetHead'>7. If Other please specify (else leave blank)</label></th>
                     <td colSpan="5"><input type="text" name="otherBudgetHead" id='otherBudgetHead' defaultValue="" onChange={handleChange} /></td>
-                </tr>
+                </tr> */}
                 <tr>
                     <th><label htmlFor='project_sanction_no'>8. Project Sanction No.</label></th>
                     <td><input type="text" name="project_sanction_no" id='project_sanction_no' onChange={handleChange} /></td>
-                    <th><label htmlFor='expenditureHead'>9. Expenditure Head</label></th>
+                    <th><label htmlFor='expenditure_head'>9. Expenditure Head</label></th>
                     <td colSpan="3">
-                        <select id="expenditureHead" name="expenditureHead" onChange={handleChange}>
+                        <select id="expenditure_head" name="expenditure_head" onChange={handleChange}>
                             <option value="Equipment">Equipment</option>
                             <option value="Consumable">Consumable</option>
                             <option value="Contingency">Contingency</option>
@@ -135,17 +190,17 @@ const R1 = () => {
                         </select>
                     </td>
                 </tr>
-                <tr>
+                {/* <tr>
                     <th><label htmlFor='otherexpenditureHead'>10. If Other please specify (else leave blank)</label></th>
                     <td colSpan="5"><input type="text" name="otherexpenditureHead" id='otherexpenditureHead' defaultValue="" onChange={handleChange} /></td>
-                </tr>
+                </tr> */}
                 <tr>
                     <th><label htmlFor='amount_claimed'>11. Amount Claimed (Rs)</label></th>
-                    <td colSpan="5"><input type="text" name="amount_claimed" onChange={handleChange} required /></td>
+                    <td colSpan="5"><input type="number" name="amount_claimed" onChange={handleChange} required /></td>
                 </tr>
                 <tr>
-                    <th><label htmlFor='recommending_authority'>12. Name of Recommending Authority:</label></th>
-                    <td colSpan="5"><input type="text" name="recommending_authority" id="recommending_authority" onChange={handleChange} required /></td>
+                    <th><label htmlFor='_name'>12. Name of Recommending Authority:</label></th>
+                    <td colSpan="5"><input type="text" name="recommending_authority_name" id="recommending_authority_name" onChange={handleChange} required /></td>
                 </tr>
             </tbody>
         </table>
