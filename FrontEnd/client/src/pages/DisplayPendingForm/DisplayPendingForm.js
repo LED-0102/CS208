@@ -55,7 +55,7 @@ const DisplayPendingForm = () => {
 
     const handleItemClick = (id) => {
         // Perform navigation when item is clicked, for example:
-        navigate(`${globalUrl}/list/forms/pending/${id}`); // Navigate to a route with the item's id
+        navigate(`${globalUrl}/displayPendingForm/SS04/${id}`); // Navigate to a route with the item's id
       };
 
   return (

@@ -16,7 +16,7 @@ import Home from './pages/HomePages/Home';
 import E01 from './pages/E01/E01';
 import R1 from './pages/R1/R1';
 import DisplayPendingForm from './pages/DisplayPendingForm/DisplayPendingForm';
-import SS04SpecificDisplayPendingForm from './pages/DisplayPendingForm/SS04SpecificDisplayPendingForm'
+import SpecificDisplayPendingForm from './pages/DisplayPendingForm/SpecificDisplayPendingForm'
 
 
 function App() {
@@ -45,7 +45,7 @@ function App() {
           <Route exact path="/e01" element={ <E01 /> } />
           <Route exact path="/r1" element={ <R1 /> } />
           <Route exact path="/displayPendingForm" element={ <DisplayPendingForm /> } />
-          <Route exact path="/displayPendingForm/SS04/:id" element={ <SS04SpecificDisplayPendingForm /> } />
+          <Route exact path="/displayPendingForm/:formName/:formId" element={ <SpecificDisplayPendingForm /> } />
 
           <Route exact path="/availableForms" element={ <Selectform /> } />
   
