@@ -196,6 +196,41 @@ const handleChangeTable = (event, index, key) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const storedCookie = document.cookie;
+        console.log(storedCookie);
+  // Create a custom set of headers
+        const customHeaders = new Headers({
+          'Content-Type': 'application/json', // You may need to adjust the content type based on your request
+          'Cookie': storedCookie, // Include the retrieved cookie in the 'Cookie' header
+        });
+        const headersObject = Object.fromEntries(customHeaders.entries());
+        const response = await axios.get(`${globalUrl}/v1/${formName}/${formId}`);
+  
+                     // Parsing JSON response
+    const responseData = await response.json();
+    // console.log('Parsed JSON response:', typeof(responseData));
+    console.log('Parsed JSON response:', (responseData));
+    setFormData(responseData);
+        
+      } catch (error) {
+        setError(error);
+      } finally {
+        // setLoading(false);
+      }
+    };
+
+    fetchData();
+
+  
+    return () => {
+      
+    };
+  }, []); 
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
         const response = await axios.get(`${globalUrl}/list/receiver`);
         // const response = await axios.get(`https://randomuser.me/api/`);
         // const datss=data

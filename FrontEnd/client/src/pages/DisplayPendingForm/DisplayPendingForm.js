@@ -7,7 +7,7 @@ import {data} from "../../components/Search/data";
 // import { useNavigate } from 'react-router-dom';
 
 const DisplayPendingForm = () => {
-    const [pendingFormData,setPendingFormData]=useState([])
+    const [pendingFormData,setPendingFormData]=useState(null)
     const [error, setError] = useState("");
     // console.log("datais++++",data[0].name)
     const navigate = useNavigate();
@@ -32,9 +32,15 @@ const DisplayPendingForm = () => {
                   });
                 //   console.log(response)
                 // console.log("aadd",typeof(data))
-                setPendingFormData(response.data);
-                console.log("aadd",typeof(pendingFormData))
-                console.log("aadd++++",response.data)
+                // setPendingFormData(response.data);
+                // console.log("aadd",typeof(pendingFormData))
+                // console.log("aadd",pendingFormData)
+                // console.log("aadd++++",response)
+                   // Parsing JSON response
+    const responseData = await response.json();
+    // console.log('Parsed JSON response:', typeof(responseData));
+    console.log('Parsed JSON response:', (responseData));
+    setPendingFormData(responseData);
                 //   console.log()
                   if (response.statusCode === 401) {
                     console.log("Failed");
@@ -59,9 +65,30 @@ const DisplayPendingForm = () => {
         navigate(`${globalUrl}/displayPendingForm/SS04/${id}`); // Navigate to a route with the item's id
       };
 
+      const handleFormClick = (formId,formName) => {
+        // console.log('Clicked form with ID:', formId);
+        navigate(`/displayPendingForm/${formName}/${formId}`);
+        // Add your navigation or other logic here
+      };
+
   return (
     <div>
-    
+    {pendingFormData && Object.entries(pendingFormData).map(([formName, forms]) => (
+      <div key={formName}>
+        <h2>{formName}</h2>
+        <ul>
+          {forms.map(form => (
+            <li key={form.id}>
+              <p>ID: {form.id}</p>
+              <p>Submitter: {form.submitter}</p>
+              <p>Receiver: {form.receiver}</p>
+              <p>Approval Status: {form.approval_status}</p>
+              <button onClick={() => handleFormClick(form.id,formName)}>Proceed</button>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
   </div>
   )
 }
