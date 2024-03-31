@@ -112,12 +112,12 @@ const LoginSignup = () => {
             Sign in
           </button>
           </form>
-          <button
+          {/* <button
             className="w-full border border-gray-300 text-md p-2 rounded-lg mb-6 hover:bg-black hover:text-white"
           >
             <img src={google_icon} alt="img" className="w-6 h-6 inline mr-2" />
             Sign in with Google
-          </button>
+          </button> */}
           <div className="text-center text-gray-400">
             Dont'have an account?
             <Link to="/signup"><span className="font-bold text-black">Sign up for free</span></Link>

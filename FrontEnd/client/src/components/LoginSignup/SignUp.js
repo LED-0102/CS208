@@ -7,7 +7,7 @@ import google_icon from '../../images/LoginSignup/google.svg'
 import globalUrl from "../url";
 import Cookies from 'js-cookie';
 import axios from "axios";
-
+import { Link } from 'react-router-dom'
 
 const LoginSignup = () => {
   const [action,setAction]=useState("Sign Up");
@@ -150,15 +150,16 @@ const deleteCookie = () => {
           >
             Sign Up
           </button>
-          <button
+          {/* <button
             className="w-full border border-gray-300 text-md p-2 rounded-lg mb-6 hover:bg-black hover:text-white"
           >
             <img src={google_icon} alt="img" className="w-6 h-6 inline mr-2" />
             Sign in with Google
-          </button>
+          </button> */}
           <div className="text-center text-gray-400">
-            Dont'have an account?
-            <span className="font-bold text-black">Sign up for free</span>
+            Already have an account?
+            {/* <span className="font-bold text-black">Log in</span> */}
+            <Link to="/login"><span className="font-bold text-black">Login</span></Link>
           </div>
         </div>
         {/* right side */}
