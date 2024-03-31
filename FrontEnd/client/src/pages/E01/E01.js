@@ -2,20 +2,79 @@ import React from 'react';
 import "./e01.css";
 
 const E01 = () => {
+//   const [formData, setFormData] = useState({
+//     purpose: "",
+//     applicant_name: "",
+//     designation: "",
+//     department: "",
+//     paymentForParty: "",
+//     budgetHead: "",
+//     otherBudgetHead: "",
+//     project_sanction_no: "",
+//     expenditureHead: "",
+//     otherexpenditureHead: "",
+//     amount_claimed: "",
+//     recommending_authority: "",
+//     note:"",
+//     approval_status:"Pending",
+//     date:"",
+// });   
+       
+// const handleChange = (evt) => {
+//     const changedField = evt.target.name;
+//     const newValue = evt.target.value;
 
+//     setFormData((currData) => {
+//     currData[changedField] = newValue;
+//     return {
+//         ...currData,
+//     };
+//     });
+// };
+  
+//   const designation = [
+//   "HOD",
+//   "Staff",
+//   "Professor",
+//   "Office",
+//   "Student",
+//   ];
+  
+// const handleSubmit = async (e) => {
+//     e.preventDefault();
+
+//     const dataToBeSub={...formData};
+//     const date1=new Date();
+//     const formattedDate=`${date1.getFullYear()}/${date1.getMonth()+1}/${date1.getDate()}`;
+//     dataToBeSub.date=formattedDate;
+
+//     try {
+
+//         const storedCookie = document.cookie;
+//         console.log(storedCookie);
+//     // Create a custom set of headers
+//         const customHeaders = new Headers({
+//             'Content-Type': 'application/json', // You may need to adjust the content type based on your request
+//             'Cookie': storedCookie, // Include the retrieved cookie in the 'Cookie' header
+//         });
+//         const headersObject = Object.fromEntries(customHeaders.entries());
+//         const response = await fetch(`${globalUrl}/v1/submit/R1`, {
+//             method: 'POST',
+//             credentials: 'include',  // Include credentials (cookies) in the request
+//             headers: headersObject,
+//             body: JSON.stringify(dataToBeSub)
+//         });
+//         console.log(response)
+//         if (response.statusCode === 401) {
+//             console.log("Failed");
+//         }
+//         } catch (error) {
+//         console.error("Error:", error);
+//         }
+// };
 
 
   return (
-    
-    // <div className='border-2 border-black h-full'>
-    //   <form>
-    //     <p className='text-center font-bold text-lg'>Civil/Electrical/Air Conditioning Work Requisition Form (E: 01)</p>
-    //     <p className='text-center'>(For regular maintenance, do not use this form; instead use ticket generation service)</p>
-    //     <p className='mt-4 ml-3'><span className='font-bold'>Requisition submitted by</span> [must be an employee (other than project employee) of the Institute]</p>
-    //     <label></label>
-    //     <input></input>
-    //   </form>
-    // </div>
 
     <div className="border-2 border-black h-full">
         <h1 className='text-center font-bold text-3xl'>Indian Institute of Technology Indore - Estate Section</h1>

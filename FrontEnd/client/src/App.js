@@ -12,7 +12,6 @@ import Furnitureform from "./pages/Furniture/furniture";
 import PfacultyHome from './pages/HomePages/FacultyHome/PfacultyHome';
 import Selectform from './pages/HomePages/FacultyHome/Selectform';
 import Search from './components/Search/search'
-import NewFh from './pages/HomePages/FacultyHome/NewFh';
 import Home from './pages/HomePages/Home';
 import E01 from './pages/E01/E01';
 import R1 from './pages/R1/R1';
