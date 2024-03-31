@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from 'react';
 import Navbar from '../../components/Navbar/Navbar';
 import Header from '../../components/Navbar/Header';
-import "./ssform.css";
+// import "./ssform.css";
 import axios from 'axios';
 import { useNavigate,useParams } from 'react-router-dom';
 import globalUrl from "../../components/url";
@@ -11,8 +11,8 @@ const SS04form = () => {
   const [totalCost, setTotalCost] = useState(0);
   const navigate = useNavigate();
 
-  const { id } = useParams();
-  const formId = id;
+  const { formName,formId } = useParams();
+  // const formId = id;
 
   
 
@@ -178,11 +178,11 @@ const handleChangeTable = (event, index, key) => {
       });
       const headersObject = Object.fromEntries(customHeaders.entries());
       // const response = await fetch('https://jsonplaceholder.typicode.com/posts',{
-      const response = await fetch(`${globalUrl}/v1//${formId}`, {
-        method: 'POST',
+      const response = await fetch(`${globalUrl}/v1/${formName}/${formId}`, {
+        method: 'GET',
         credentials: 'include',  // Include credentials (cookies) in the request
         headers: headersObject,
-        body: JSON.stringify(updatedFormData)
+        // body: JSON.stringify(updatedFormData)
       });
       console.log(response)
       if (response.statusCode === 401) {

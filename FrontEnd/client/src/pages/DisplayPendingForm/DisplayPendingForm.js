@@ -4,7 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import globalUrl from "../../components/url";
 import {data} from "../../components/Search/data";
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
 const DisplayPendingForm = () => {
     const [pendingFormData,setPendingFormData]=useState([])
@@ -23,17 +23,18 @@ const DisplayPendingForm = () => {
                 });
                 const headersObject = Object.fromEntries(customHeaders.entries());
       
-                 const response = await fetch('https://jsonplaceholder.typicode.com/posts',{
-                // const response = await fetch(`${globalUrl}/list/forms/pending`, {
+                //  const response = await fetch('https://jsonplaceholder.typicode.com/posts',{
+                const response = await fetch(`${globalUrl}/list/forms/pending`, {
                     method: 'GET',
                     credentials: 'include',  // Include credentials (cookies) in the request
                     headers: headersObject,
                     // body: JSON.stringify(updatedFormData)
                   });
                 //   console.log(response)
-                console.log("aadd",typeof(data))
-                setPendingFormData(data);
+                // console.log("aadd",typeof(data))
+                setPendingFormData(response.data);
                 console.log("aadd",typeof(pendingFormData))
+                console.log("aadd++++",response.data)
                 //   console.log()
                   if (response.statusCode === 401) {
                     console.log("Failed");
@@ -60,12 +61,7 @@ const DisplayPendingForm = () => {
 
   return (
     <div>
-    {pendingFormData.map((formData, index) => (
-      <div key={index} onClick={() => handleItemClick(formData.id)}>
-        {/* Render your form data here */}
-        <p>{formData.name}</p> {/* Example */}
-      </div>
-    ))}
+    
   </div>
   )
 }
