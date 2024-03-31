@@ -15,6 +15,7 @@ import Search from './components/Search/search'
 import Home from './pages/HomePages/Home';
 import E01 from './pages/E01/E01';
 import R1 from './pages/R1/R1';
+import DisplayPendingForm from './pages/DisplayPendingForm/DisplayPendingForm';
 
 
 function App() {
@@ -42,6 +43,7 @@ function App() {
           <Route exact path="/nfh" element={ <Home /> } />
           <Route exact path="/e01" element={ <E01 /> } />
           <Route exact path="/r1" element={ <R1 /> } />
+          <Route exact path="/displayPendingForm" element={ <DisplayPendingForm /> } />
 
           <Route exact path="/availableForms" element={ <Selectform /> } />
   
