@@ -9,7 +9,78 @@ import globalUrl from "../../components/url";
 // import {data} from "./data"
 import SearchUserComp from "../../components/Search/search";
 
+
+
 const FurnitureRequirementForm = () => {
+
+  
+  const [userData,setUserData]=useState({})
+  const [error, setError] = useState("");
+  const [formData, setFormData] = useState({
+    indenter_name: "",
+    designamtion: "",
+    discipline: "",
+    budget: "",
+    space: "",
+    specification: "",
+    purpose: "",
+    material_nature: "",
+    present_availability: "",
+    date: "",
+  });
+  const handleChange = (evt) => {
+    const changedField = evt.target.name;
+    const newValue = evt.target.value;
+
+    setFormData((currData) => {
+    currData[changedField] = newValue;
+    return {
+        ...currData,
+    };
+    });
+};
+  
+  const designation = [
+  "HOD",
+  "Staff",
+  "Professor",
+  "Office",
+  "Student",
+  ];
+  
+const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const dataToBeSub={...formData};
+    const date1=new Date();
+    const formattedDate=`${date1.getFullYear()}/${date1.getMonth()+1}/${date1.getDate()}`;
+    dataToBeSub.date=formattedDate;
+
+    try {
+
+        const storedCookie = document.cookie;
+        console.log(storedCookie);
+    // Create a custom set of headers
+        const customHeaders = new Headers({
+            'Content-Type': 'application/json', // You may need to adjust the content type based on your request
+            'Cookie': storedCookie, // Include the retrieved cookie in the 'Cookie' header
+        });
+        const headersObject = Object.fromEntries(customHeaders.entries());
+        const response = await fetch(`${globalUrl}/v1/submit/R1`, {
+            method: 'POST',
+            credentials: 'include',  // Include credentials (cookies) in the request
+            headers: headersObject,
+            body: JSON.stringify(dataToBeSub)
+        });
+        console.log(response)
+        if (response.statusCode === 401) {
+            console.log("Failed");
+        }
+        } catch (error) {
+        console.error("Error:", error);
+        }
+};
+
   return (
     <div>
         <Navbar />
@@ -20,32 +91,32 @@ const FurnitureRequirementForm = () => {
         <h2 className="text-lg"><b>Form for Furniture Requirement</b></h2>
         <div className="font-bold underline" style={{ borderBottom: '1px solid black' }}></div>
       </div>
-      
+      <form>
       <div className="mt-4">
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-2"><b>Name of the Indenter:</b></label>
-            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" />
+            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="indenter_name" onChange = {handleChange}/>
           </div>
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-2"><b>Designation:</b></label>
-            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" />
+            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="designamtion" onChange = {handleChange}/>
           </div>
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-2"><b>Discipline/Center/Office:</b></label>
-            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" />
+            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="discipline" onChange = {handleChange}/>
           </div>
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-2"><b>Budget head: (a) Institute/(b) Department/(c) Project (specify) (d) Other (Specify): </b></label>
-            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" />
+            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="budget" onChange = {handleChange}/>
           </div>
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-2"><b>Space availability:</b>Location such as Room No. and Building: </label>
-            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" />
+            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="space" onChange = {handleChange}/>
           </div>
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-2"><b>Specification/s: </b></label>
-            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" />
+            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="specification" onChange = {handleChange} />
           </div>
         </div>
 
@@ -90,17 +161,17 @@ const FurnitureRequirementForm = () => {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-2"><b>Purpose/ justification of the requirement: </b></label>
-            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" />
+            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="purpose" onChange = {handleChange} />
           </div>
           <br/><br/>
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-2"><b>Nature of the material indented*: (a) Proprietary / (b) Single Source / (c) LPC / (d) Other:  </b></label>
-            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" />
+            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="material_nature" onChange = {handleChange} />
           </div>
           <br/><br/>
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-2"><b>Present availability of similar items with the Indenter:</b></label>
-            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" />
+            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text"  name="present_availability"  onChange = {handleChange}/>
           </div>
           </div>
            <br/><br/><br/><br/>
@@ -116,12 +187,14 @@ const FurnitureRequirementForm = () => {
             <div className="border-t border-gray-300 w-64 text-center pt-2">
             Head, MEMS Department<br/>Name: Dr. Ajay K. Kushwaha
             <label className="block text-gray-700 text-sm font-bold mb-2">Date:</label>
-            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="date" />
+            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="date" name="date" onChange = {handleChange}/>
             </div>
           </div>
         </div><br/><br/>
         <b><h4 classname="block text-black-900 font-bold increased-font-size">To,<br/>Furniture Committee</h4></b>
       </div>
+      <button onClick={(e) => handleSubmit(e)} className='text-white bg-black'>Submit</button>
+      </form>
     </div>
     </div>
   );
