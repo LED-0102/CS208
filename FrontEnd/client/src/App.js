@@ -17,6 +17,7 @@ import E01 from './pages/E01/E01';
 import R1 from './pages/R1/R1';
 import DisplayPendingForm from './pages/DisplayPendingForm/DisplayPendingForm';
 import SpecificDisplayPendingForm from './pages/DisplayPendingForm/SpecificDisplayPendingForm'
+import Forms from './pages/Forms/Forms';
 
 
 function App() {
@@ -26,7 +27,8 @@ function App() {
       
         <Routes>
         <Route exact path="/" element={ <Home/> } />
-
+          <Route exact path="/home" element={ <Home/> } />
+          <Route exact path="/Forms" element={ <Forms /> } />
           <Route exact path="/login" element={ <Login/> } />
           <Route exact path="/signup" element={ <SignUp/> } />
   

@@ -1,12 +1,11 @@
 import React from 'react'
-import Pnavbar from '../../../components/Navbar/Pnavbar';
-import HeroSec from '../../../components/PagesComponents/FacultyHomePage/HeroSec';
+import Anavbar from '../../../components/Navbar/Anavbar';
 
 const PfacultyHome = () => {
   return (
     <div>
-      <Pnavbar />
-      <HeroSec />
+      <Anavbar />
+
     </div>
   )
 }
