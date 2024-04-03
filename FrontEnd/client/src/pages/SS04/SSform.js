@@ -220,7 +220,7 @@ const handleChangeTable = (event, index, key) => {
   return (
     <div>
       {/* <div></div> */}
-      <div className='border-2 border-black h-full'>
+      <div className='border-2 border-black h-full bg-blue-50'>
         <form>
           <div className='flex w-full p-4 '>
             <div className='w-2/3'>IITI logo and header left</div>
@@ -277,28 +277,28 @@ const handleChangeTable = (event, index, key) => {
                 <table>
                   <tbody>
                     <tr>
-                      <td><label className='font-bold' htmlFor="custodian">Name of custodian of assets :</label></td>
-                      <td>
+                      <td className="border-none"><label className='font-bold' htmlFor="custodian">Name of custodian of assets :</label></td>
+                      <td className="border-none">
                         {/* <!-- <span>Dr. Nisheeth K. Prasad</span> --> */}
-                        <input type="text" id="custodian" name="custodian" value={formData.custodian} placeholder='custodian name' onChange={handleCustodianChange} className="border-2 border-black" /></td>
+                        <input type="text" id="custodian" name="custodian" value={formData.custodian} placeholder='custodian name' onChange={handleCustodianChange} className="" /></td>
                     </tr>
                     <tr>
-                      <td><label className='font-bold' htmlFor="department">Department/Project No. :</label></td>
-                      <td>
+                      <td className="border-none"><label className='font-bold' htmlFor="department">Department/Project No. :</label></td>
+                      <td className="border-none">
                         {/* <!-- <span>MEMS</span> --> */}
-                        <input type="text" id="department" name="department" value={formData.department} placeholder='department name' onChange={handleChange} className="border-2 border-black" /></td>
+                        <input type="text" id="department" name="department" value={formData.department} placeholder='department name' onChange={handleChange} className="" /></td>
                     </tr>
                     <tr>
-                      <td><label className='font-bold' htmlFor="location">Location :</label></td>
-                      <td><input type="text" id="location" name="location" placeholder='location' value={formData.location} onChange={handleChange} className="border-2 border-black" /></td>
+                      <td className="border-none"><label className='font-bold' htmlFor="location">Location :</label></td>
+                      <td className="border-none"><input type="text" id="location" name="location" placeholder='location' value={formData.location} onChange={handleChange} className="" /></td>
                     </tr>
                     <tr>
-                      <td><label className='font-bold' htmlFor="contact">Contact No :</label></td>
-                      <td><input type="number" id="contact" name="contact" placeholder='contact' value={formData.contact} onChange={handleChange} className="border-2 border-black" /></td>
+                      <td className="border-none"><label className='font-bold' htmlFor="contact">Contact No :</label></td>
+                      <td className="border-none"><input type="number" id="contact" name="contact" placeholder='contact' value={formData.contact} onChange={handleChange} className="" /></td>
                     </tr>
                     <tr>
-                      <td><label className='font-bold' htmlFor="items_receiving_date">Item Receiving Date: </label></td>
-                      <td><input type="date" id="items_receiving_date" name="items_receiving_date" placeholder='date' value={formData.items_receiving_date} onChange={handleChange} className="border-2 border-black" /></td>
+                      <td className="border-none"><label className='font-bold' htmlFor="items_receiving_date">Item Receiving Date: </label></td>
+                      <td className="border-none"><input type="date" id="items_receiving_date" name="items_receiving_date" placeholder='date' value={formData.items_receiving_date} onChange={handleChange} className="" /></td>
                     </tr>
                   </tbody>
                 </table>
@@ -314,20 +314,20 @@ const handleChangeTable = (event, index, key) => {
                   </thead>
                   <tbody>
                     <tr>
-                      <td><label className='font-bold' htmlFor='designation'>Designation :</label></td>
-                      <td><input type="text" id="designation" name="designation" placeholder='designation' value={formData.designation} onChange={handleChange} className="border-2 border-black" /></td>
+                      <td className="border-none"><label className='font-bold' htmlFor='designation'>Designation :</label></td>
+                      <td className="border-none"><input type="text" id="designation" name="designation" placeholder='designation' value={formData.designation} onChange={handleChange} className="" /></td>
                     </tr>
                     <tr>
-                      <td><label for="inventory_no" htmlFor='inventory_no'>Inventory No :</label></td>
-                      <td><input type="number" id="inventory_no" name="inventory_no" value={formData.inventory_no} onChange={handleChange} class="border-2 border-black" /></td>
+                      <td className="border-none"><label for="inventory_no" htmlFor='inventory_no'>Inventory No :</label></td>
+                      <td className="border-none"><input type="number" id="inventory_no" name="inventory_no" value={formData.inventory_no} placeholder='inventory_no' onChange={handleChange} className="" /></td>
                     </tr>
                     <tr>
-                      <td><label className='font-bold' htmlFor='room_no'>Room No :</label></td>
-                      <td><input type="text" id="room_no" name="room_no" placeholder='room number' value={formData.room_no} onChange={handleChange} className="border-2 border-black" /></td>
+                      <td className="border-none"><label className='font-bold' htmlFor='room_no'>Room No :</label></td>
+                      <td className="border-none"><input type="text" id="room_no" name="room_no" placeholder='room number' value={formData.room_no} onChange={handleChange} className="" /></td>
                     </tr>
                     <tr>
-                      <td><label className='font-bold' htmlFor='email'>Email id :</label></td>
-                      <td><input type="email" id="email" name="email" placeholder='email' value={formData.email} onChange={handleChange} className="border-2 border-black" /></td>
+                      <td className="border-none"><label className='font-bold' htmlFor='email'>Email id :</label></td>
+                      <td className="border-none"><input type="email" id="email" name="email" placeholder='email' value={formData.email} onChange={handleChange} className="" /></td>
                     </tr>
                   </tbody>
                 </table>
