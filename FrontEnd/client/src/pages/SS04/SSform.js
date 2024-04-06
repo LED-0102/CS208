@@ -6,6 +6,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import globalUrl from "../../components/url";
 
+
 const SS04form = () => {
   const [tabledata, setTabledata] = useState([]);
   const [totalCost, setTotalCost] = useState(0);
@@ -219,6 +220,9 @@ const handleChangeTable = (event, index, key) => {
 
   return (
     <div>
+        {/* <div className="main">
+            <div className="gradient" />
+          </div> */}
       {/* <div></div> */}
       <div className='border-2 border-black h-full bg-blue-50'>
         <form>
