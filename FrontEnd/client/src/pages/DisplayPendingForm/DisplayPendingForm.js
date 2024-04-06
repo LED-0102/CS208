@@ -58,12 +58,12 @@ const DisplayPendingForm = () => {
         };
     }, []);
 
-    // console.log("++++++",pendingFormData)
+    console.log("++++++",pendingFormData)
 
-    const handleItemClick = (id) => {
-        // Perform navigation when item is clicked, for example:
-        navigate(`${globalUrl}/displayPendingForm/SS04/${id}`); // Navigate to a route with the item's id
-      };
+    // const handleItemClick = (id) => {
+    //     // Perform navigation when item is clicked, for example:
+    //     navigate(`${globalUrl}/displayPendingForm/SS04/${id}`); // Navigate to a route with the item's id
+    //   };
 
       const handleFormClick = (formId,formName) => {
         // console.log('Clicked form with ID:', formId);

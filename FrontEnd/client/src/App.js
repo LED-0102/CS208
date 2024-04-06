@@ -54,8 +54,10 @@ function App() {
           <Route exact path="/r1" element={ <R1 /> } />
           <Route exact path="/displayPendingForm" element={ <DisplayPendingForm /> } />
           <Route exact path="/displaySeekingForm" element={ <DisplaySeekingForm /> } />
-          <Route exact path="/displayPendingForm" element={ <DisplayPendingForm /> } />
+          <Route exact path="/displayPreviousForm" element={ <DisplayPreviousForm /> } />
           <Route exact path="/displayPendingForm/:formName/:formId" element={ <SpecificDisplayPendingForm /> } />
+          <Route exact path="/displaySeekingForm/:formName/:formId" element={ <SpecificDisplaySeekingForm /> } />
+          <Route exact path="/displayPreviousForm/:formName/:formId" element={ <SpecificDisplayPreviousForm /> } />
 
           <Route exact path="/availableForms" element={ <Selectform /> } />
   
