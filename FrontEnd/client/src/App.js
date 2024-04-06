@@ -24,6 +24,7 @@ import SpecificDisplayPreviousForm from './pages/DisplayPreviousForm/SpecificDis
 import Forms from './pages/Forms/Forms';
 import Anavbar from './components/Navbar/Anavbar';
 import CompleteProfile from './pages/ProfileRelated/CompleteProfile';
+import DisplayProfile from './pages/ProfileRelated/DisplayProfile';
 
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
           <Route exact path="/Forms" element={ <Forms /> } />
           <Route exact path="/login" element={ <Login/> } />
           <Route exact path="/completeprofile" element={ <CompleteProfile /> } />
+          <Route exact path="/displayprofile" element={ <DisplayProfile /> } />
           <Route exact path="/signup" element={ <SignUp/> } />
   
           <Route exact path="/facultyHome" element={ <FacultyHome /> } />
