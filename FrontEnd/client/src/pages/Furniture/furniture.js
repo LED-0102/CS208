@@ -83,10 +83,9 @@ const handleSubmit = async (e) => {
 
   return (
     <>
-    <Header/>
+    
     <div className ="grid grid-cols-6">
-      <div className="col-span-1"><Navbar /></div>
-    <div className="col-span-5">
+    <div className="col-span-6">
       <div className="text-center">
         <h1 className="text-2xl font-semibold mb-2">INDIAN INSTITUTE OF TECHNOLOGY INDORE</h1><br/>
         <h2 className="text-lg"><b>Form for Furniture Requirement</b></h2>

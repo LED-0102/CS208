@@ -142,13 +142,7 @@ const R1 = () => {
         const fetchData = async () => {
           try {
             const response = await axios.get(`${globalUrl}/list/receiver`);
-            // const response = await axios.get(`https://randomuser.me/api/`);
-            // const datss=data
-            // console.log("aadd",typeof(response.data))
-            // console.log("aadd",typeof(data))
             setUserData(response.data);
-            // console.log("dats",response.data)
-            // console.log("dats++++++userData",userData)
           } catch (error) {
             setError(error);
           } finally {

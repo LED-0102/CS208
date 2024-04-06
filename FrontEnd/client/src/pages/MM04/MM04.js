@@ -88,8 +88,6 @@ const handleSubmit = async (e) => {
 
     return (
         <div>
-        <Navbar />
-        <Header />
         <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 max-w-lg mx-auto">
           <img src="/path-to-your-header-image.jpg" alt="Header" className="mx-auto mb-4" />
     

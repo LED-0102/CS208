@@ -42,8 +42,7 @@ const PlanCard = ({ plan }) => (
 
 const Forms = () => (
     <div>
-        <Anavbar />
-        <div className="bg-blue-100 text-blue-900 min-h-screen p-10 mt-28">
+        <div className="bg-blue-100 text-blue-900 min-h-screen p-10">
     <div className="max-w-7xl mx-auto">
       
       <main>
