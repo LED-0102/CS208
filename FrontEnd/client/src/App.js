@@ -16,7 +16,11 @@ import Home from './pages/HomePages/Home';
 import E01 from './pages/E01/E01';
 import R1 from './pages/R1/R1';
 import DisplayPendingForm from './pages/DisplayPendingForm/DisplayPendingForm';
+import DisplaySeekingForm from './pages/DisplaySeekingForm/DisplaySeekingForm';
+import DisplayPreviousForm from './pages/DisplayPreviousForm/DisplayPreviousForm';
 import SpecificDisplayPendingForm from './pages/DisplayPendingForm/SpecificDisplayPendingForm'
+import SpecificDisplaySeekingForm from './pages/DisplaySeekingForm/SpecificDisplaySeekingForm'
+import SpecificDisplayPreviousForm from './pages/DisplayPreviousForm/SpecificDisplayPreviousForm'
 import Forms from './pages/Forms/Forms';
 import Anavbar from './components/Navbar/Anavbar';
 
@@ -48,6 +52,8 @@ function App() {
           <Route exact path="/nfh" element={ <Home /> } />
           <Route exact path="/e01" element={ <E01 /> } />
           <Route exact path="/r1" element={ <R1 /> } />
+          <Route exact path="/displayPendingForm" element={ <DisplayPendingForm /> } />
+          <Route exact path="/displaySeekingForm" element={ <DisplaySeekingForm /> } />
           <Route exact path="/displayPendingForm" element={ <DisplayPendingForm /> } />
           <Route exact path="/displayPendingForm/:formName/:formId" element={ <SpecificDisplayPendingForm /> } />
 
