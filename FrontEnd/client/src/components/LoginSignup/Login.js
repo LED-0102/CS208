@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState , useEffect} from 'react'
 // import user_icon from '../../images/LoginSignup/person.png'
 // import email_icon from '../../images/LoginSignup/email.png'
 // import password_icon from '../../images/LoginSignup/password.png'
@@ -36,7 +36,7 @@ const LoginSignup = () => {
       });
       console.log("Here");
       console.log("Response.headers", response.headers);
-
+      
         if (response.headers['set-cookie']){
             console.log("Inside");
             const cookieValue = response.headers['set-cookie'][0];
@@ -61,6 +61,10 @@ const LoginSignup = () => {
     const deleteCookie = () => {
         Cookies.remove('userToken'); // Remove the cookie
     };
+
+    useEffect(() => {
+      console.log("a")
+    }, [document.cookie.length]); 
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-blue-100">

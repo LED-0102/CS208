@@ -18,13 +18,15 @@ import R1 from './pages/R1/R1';
 import DisplayPendingForm from './pages/DisplayPendingForm/DisplayPendingForm';
 import SpecificDisplayPendingForm from './pages/DisplayPendingForm/SpecificDisplayPendingForm'
 import Forms from './pages/Forms/Forms';
+import Anavbar from './components/Navbar/Anavbar';
 
 
 function App() {
   return (
 
     <>
-      
+      <Anavbar />
+      <div className='mt-40 h-0'></div>
         <Routes>
         <Route exact path="/" element={ <Home/> } />
           <Route exact path="/home" element={ <Home/> } />
