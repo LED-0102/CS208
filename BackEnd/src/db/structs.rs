@@ -7,6 +7,18 @@ use sqlx::{FromRow, Type};
 pub struct Users {
     pub(crate) password: String,
 }
+#[derive(Serialize, Deserialize, FromRow)]
+pub struct UserDb {
+    pub id: i32,
+    pub username: String,
+    pub email: String,
+    pub password: String,
+    pub admin: i32,
+    pub designation: Desig,
+    pub department: Option<DepartmentEnum>,
+    pub location: String,
+    pub contact_number: String
+}
 #[derive(Debug, Serialize, Deserialize)]
 pub struct SS04Orders {
     pub supplier: String,
@@ -38,6 +50,14 @@ pub enum Degree {
     MTech, 
     MS, 
     BTech,
+}
+#[derive(Debug, PartialEq, Eq, Type, Deserialize, Serialize, Clone)]
+pub enum DepartmentEnum {
+    CSE,
+    CE,
+    ME,
+    MEMS,
+    EE
 }
 #[derive(Debug, Serialize, Deserialize, FromRow)]
 pub struct SS04 {
