@@ -8,83 +8,94 @@ import globalUrl from "../../components/url";
 
 const MM04 =  () => {
 
-    // pub struct MM04 {
-    // pub quotation: String,
-    // pub dated: String,
-    // pub name_: String,
-    // pub financial: i32,
-    // pub taxes: i32,
-    // pub words: String,
-    // pub name_signature_member_1: String,
-    // pub name_signature_member_2: String,
-    // pub name_signature_convenor: String,
-    // }
   const [userData,setUserData]=useState({})
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({
-    quotation: "",
-    dated: "",
-    name_: "",
-    financial: "",
-    taxes: "",
-    words: "",
-    name_signature_member_1: "",
-    name_signature_member_2: "",
-    name_signature_convenor: "",
+    note: "",
+    receiver: 2,
+    submitter: 0,
+    quotation_no: "",
+    date: "",
+    requester_name: "",
+    amount: "",
+    amount_tax: "",
+    amount_words: "",
+    name_member: "",
+    designation_member: "",
+    name_convener: "",
+    approval_status: "Approved",
+    reason: "",
   });
 
+  const [searchName, setSearchName] = useState("");
+  const [selectedDesignation, setSelectedDesignation] = useState("");
+         
   const handleChange = (evt) => {
-    const changedField = evt.target.name;
-    const newValue = evt.target.value;
+      const changedField = evt.target.name;
+      let newValue = evt.target.value;
+  };
+    
+    const designation = [
+    "HOD",
+    "Staff",
+    "Professor",
+    "Office",
+    "Student",
+    ];
+    
+  const handleSubmit = async (e) => {
+      e.preventDefault();
 
-    setFormData((currData) => {
-    currData[changedField] = newValue;
-    return {
-        ...currData,
-    };
-    });
-};
+      const dataToBeSub={...formData};
+      const date1=new Date();
+      const formattedDate=`${date1.getFullYear()}/${date1.getMonth()+1}/${date1.getDate()}`;
+      dataToBeSub.date=formattedDate;
+
+      try {
   
-  const designation = [
-  "HOD",
-  "Staff",
-  "Professor",
-  "Office",
-  "Student",
-  ];
-  
-const handleSubmit = async (e) => {
-    e.preventDefault();
+          const storedCookie = document.cookie;
+          console.log(storedCookie);
+      // Create a custom set of headers
+          const customHeaders = new Headers({
+              'Content-Type': 'application/json', // You may need to adjust the content type based on your request
+              'Cookie': storedCookie, // Include the retrieved cookie in the 'Cookie' header
+          });
+          const headersObject = Object.fromEntries(customHeaders.entries());
+          const response = await fetch(`${globalUrl}/v1/submit/R1`, {
+              method: 'POST',
+              credentials: 'include',  // Include credentials (cookies) in the request
+              headers: headersObject,
+              body: JSON.stringify(dataToBeSub)
+          });
+          console.log(response)
+          if (response.statusCode === 401) {
+              console.log("Failed");
+          }
+          } catch (error) {
+          console.error("Error:", error);
+          }
+  };
 
-    const dataToBeSub={...formData};
-    const date1=new Date();
-    const formattedDate=`${date1.getFullYear()}/${date1.getMonth()+1}/${date1.getDate()}`;
-    dataToBeSub.date=formattedDate;
-
-    try {
-
-        const storedCookie = document.cookie;
-        console.log(storedCookie);
-    // Create a custom set of headers
-        const customHeaders = new Headers({
-            'Content-Type': 'application/json', // You may need to adjust the content type based on your request
-            'Cookie': storedCookie, // Include the retrieved cookie in the 'Cookie' header
-        });
-        const headersObject = Object.fromEntries(customHeaders.entries());
-        const response = await fetch(`${globalUrl}/v1/submit/R1`, {
-            method: 'POST',
-            credentials: 'include',  // Include credentials (cookies) in the request
-            headers: headersObject,
-            body: JSON.stringify(dataToBeSub)
-        });
-        console.log(response)
-        if (response.statusCode === 401) {
-            console.log("Failed");
-        }
+  useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response = await axios.get(`${globalUrl}/list/receiver`);
+          setUserData(response.data);
         } catch (error) {
-        console.error("Error:", error);
+          setError(error);
+        } finally {
+          // setLoading(false);
         }
-};
+      };
+  
+      fetchData();
+      
+
+  return () => {
+    
+  };
+}, []); 
+
 
     return (
         <div>
@@ -102,14 +113,14 @@ const handleSubmit = async (e) => {
             <p className="text-sm px-4">
             Certified that we, the members of the Purchase Committee are jointly and individually satisfied that the goods recommended for Purchase are <b>of the requisite specification and quality, priced reasonably at the prevailing market rates and the supplier recommended is reliable and competent to supply the goods in question, and it is not debarred by Department of Commerce or Ministry/ Department concerned. Accordingly, 
             we enclose the quotation no.
-            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="quotation" onChange = {handleChange}/> 
-            dated <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="dated" onChange = {handleChange}/> 
-            of M/s. <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="name_" onChange = {handleChange}/> for placing Purchase Order.</b>
+            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="quotation_no" onChange = {handleChange}/> 
+            dated <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="date" onChange = {handleChange}/> 
+            of M/s. <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="requester_name" onChange = {handleChange}/> for placing Purchase Order.</b>
             </p> <br/>
             <p classname="text-sm px-4">The total financial implications will be `
-             <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="financial" onChange = {handleChange}/><b>
-            (Inclusive of Tax @ )<input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="taxes" onChange = {handleChange}/>
-    (In Words-) <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="words" onChange = {handleChange}/></b>
+             <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="amount" onChange = {handleChange}/><b>
+            (Inclusive of Tax @ )<input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="amount_tax" onChange = {handleChange}/>
+    (In Words-) <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="amount_words" onChange = {handleChange}/></b>
     </p>
           </div>
     
@@ -123,13 +134,13 @@ const handleSubmit = async (e) => {
               <label className="block text-gray-700 text-sm font-bold mb-2">
                 Name, Designation & Signature of Member 
               </label>
-              <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text"  name="name_signature_member_1" onChange = {handleChange}/>
+              <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text"  name="name_member" onChange = {handleChange}/>
             </div>
             <div className="w-1/2 pl-2">
               <label className="block text-gray-700 text-sm font-bold mb-2">
                 Name, Designation & Signature of Member 
               </label>
-              <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="name_signature_member_2" onChange = {handleChange}/>
+              <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="designation_member" onChange = {handleChange}/>
             </div>
           </div>
     
@@ -137,12 +148,27 @@ const handleSubmit = async (e) => {
           <label className="block text-gray-700 text-sm font-bold mb-2">
                 Name, Designation & Signature of Convenor
               </label>
-              <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="name_signature_convenor" onChange = {handleChange}/>
+              <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="name_convener" onChange = {handleChange}/>
           </div>
           <div className="mb-6">
             <p className="text-xs italic text-center">
               *The certificate is as per GFR 2017 Rule No. 155.
             </p>
+          </div>
+          <div className="mb-4 lg:mb-0 lg:mr-4 lg:w-full">
+          <select
+            value={selectedDesignation}
+            onChange={(e) => setSelectedDesignation(e.target.value)}
+            className="p-2 border w-full rounded-md text-white"
+            style={{ backgroundColor: "rgb(10 11 19)" }}
+          >
+            <option value="">Select Department</option>
+            {designation.map((department) => (
+              <option key={department} value={department}>
+                {department}
+              </option>
+            ))}
+          </select>
           </div>
     
           <div className="flex items-center justify-center">
