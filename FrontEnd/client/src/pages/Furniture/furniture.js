@@ -17,10 +17,14 @@ const FurnitureRequirementForm = () => {
   const [userData,setUserData]=useState({})
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({
-    indenter_name: "",
-    designamtion: "",
+    note: "Sample Note",
+    receiver: 123,
+    submitter: 456,
+    date: "",
+    name_indenter: "",
+    designation: "",
     discipline: "",
-    budget: "",
+    budget_head: "",
     space: "",
     specification: "",
     purpose: "",
@@ -96,11 +100,11 @@ const handleSubmit = async (e) => {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-2"><b>Name of the Indenter:</b></label>
-            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="indenter_name" onChange = {handleChange}/>
+            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="name_indenter" onChange = {handleChange} />
           </div>
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-2"><b>Designation:</b></label>
-            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="designamtion" onChange = {handleChange}/>
+            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="designation" onChange = {handleChange}/>
           </div>
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-2"><b>Discipline/Center/Office:</b></label>
@@ -108,7 +112,7 @@ const handleSubmit = async (e) => {
           </div>
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-2"><b>Budget head: (a) Institute/(b) Department/(c) Project (specify) (d) Other (Specify): </b></label>
-            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="budget" onChange = {handleChange}/>
+            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="budget_head" onChange = {handleChange}/>
           </div>
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-2"><b>Space availability:</b>Location such as Room No. and Building: </label>

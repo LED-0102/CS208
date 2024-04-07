@@ -23,6 +23,7 @@ const MM04 =  () => {
     name_member: "",
     designation_member: "",
     name_convener: "",
+    To_Whom: "",
     approval_status: "Approved",
     reason: "",
   });
@@ -113,14 +114,14 @@ const MM04 =  () => {
             <p className="text-sm px-4">
             Certified that we, the members of the Purchase Committee are jointly and individually satisfied that the goods recommended for Purchase are <b>of the requisite specification and quality, priced reasonably at the prevailing market rates and the supplier recommended is reliable and competent to supply the goods in question, and it is not debarred by Department of Commerce or Ministry/ Department concerned. Accordingly, 
             we enclose the quotation no.
-            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="quotation_no" onChange = {handleChange}/> 
-            dated <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="date" onChange = {handleChange}/> 
-            of M/s. <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="requester_name" onChange = {handleChange}/> for placing Purchase Order.</b>
+            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="quotation_no" onChange = {handleChange} required/> 
+            dated <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="date" onChange = {handleChange} required/> 
+            of M/s. <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="requester_name" onChange = {handleChange} required/> for placing Purchase Order.</b>
             </p> <br/>
             <p classname="text-sm px-4">The total financial implications will be `
-             <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="amount" onChange = {handleChange}/><b>
-            (Inclusive of Tax @ )<input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="amount_tax" onChange = {handleChange}/>
-    (In Words-) <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="amount_words" onChange = {handleChange}/></b>
+             <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="amount" onChange = {handleChange} required/><b>
+            (Inclusive of Tax @ )<input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="amount_tax" onChange = {handleChange} required/>
+    (In Words-) <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="amount_words" onChange = {handleChange} required/></b>
     </p>
           </div>
     
@@ -134,13 +135,13 @@ const MM04 =  () => {
               <label className="block text-gray-700 text-sm font-bold mb-2">
                 Name, Designation & Signature of Member 
               </label>
-              <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text"  name="name_member" onChange = {handleChange}/>
+              <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text"  name="name_member" onChange = {handleChange} required/>
             </div>
             <div className="w-1/2 pl-2">
               <label className="block text-gray-700 text-sm font-bold mb-2">
                 Name, Designation & Signature of Member 
               </label>
-              <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="designation_member" onChange = {handleChange}/>
+              <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="designation_member" onChange = {handleChange} required/>
             </div>
           </div>
     
@@ -148,7 +149,7 @@ const MM04 =  () => {
           <label className="block text-gray-700 text-sm font-bold mb-2">
                 Name, Designation & Signature of Convenor
               </label>
-              <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="name_convener" onChange = {handleChange}/>
+              <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="name_convener" onChange = {handleChange} required/>
           </div>
           <div className="mb-6">
             <p className="text-xs italic text-center">
@@ -169,7 +170,19 @@ const MM04 =  () => {
               </option>
             ))}
           </select>
-          </div>
+          </div><br/>
+          <tr>
+                    <th><label htmlFor='To_Whom'>select to whom you are sending the form</label></th>
+                    <td colSpan="5">
+                        <select id="To_Whom" name="To_Whom" onChange={handleChange}>
+                            <option value="HOD">HOD</option>
+                            <option value="Staff">Staff</option>
+                            <option value="Professor">Professor</option>
+                            <option value="office">Office</option>
+                            <option value="Student">Student</option>
+                        </select>
+                    </td>
+                </tr>
     
           <div className="flex items-center justify-center">
             <button onClick={(e) => handleSubmit(e)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
