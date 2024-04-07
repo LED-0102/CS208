@@ -244,7 +244,7 @@ const R1 = () => {
 
         <div className='p-4'> 
           <div>
-         <div className="flex flex-col lg:flex-row mb-4 lg:mb-8 font-custom">
+        <div className="flex flex-col lg:flex-row mb-4 lg:mb-8 font-custom">
         <div className="mb-4 lg:mb-0 lg:mr-4 lg:w-full">
           <input
             type="text"

@@ -190,11 +190,7 @@ const MM04 =  () => {
               </label>
               <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="name_convener" onChange = {handleChange} required/>
           </div>
-          <div className="mb-6">
-            <p className="text-xs italic text-center">
-              *The certificate is as per GFR 2017 Rule No. 155.
-            </p>
-          </div>
+          
           {/* <div className="mb-4 lg:mb-0 lg:mr-4 lg:w-full">
           <select
             value={selectedDesignation}
@@ -238,6 +234,11 @@ const MM04 =  () => {
           </select>
         </div>
         </div>
+        <div className="mb-6">
+            <p className="text-xs italic text-center">
+              *The certificate is as per GFR 2017 Rule No. 155.
+            </p>
+          </div>
         
           <div className="flex items-center justify-center">
             <button onClick={(e) => handleSubmit(e)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
