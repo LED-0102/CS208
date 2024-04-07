@@ -12,17 +12,17 @@ const MM04 =  () => {
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     note: "",
-    receiver: 2,
-    submitter: 0,
-    quotation_no: "",
-    date: "",
-    requester_name: "",
-    amount: "",
-    amount_tax: "",
-    amount_words: "",
+    receiver: 1,
+    submitter: 2,
+    quotation_no: "Q123456",
+    date: "2024-03-26",
+    requester_name: "John Doe",
+    amount: 1000,
+    amount_tax: 200,
+    amount_words: "One thousand two hundred dollars",
     name_member: "",
     designation_member: "",
-    name_convener: "",
+    name_convener: "Bob Johnson",
     To_Whom: "",
     approval_status: "Approved",
     reason: "",
@@ -34,6 +34,10 @@ const MM04 =  () => {
   const handleChange = (evt) => {
       const changedField = evt.target.name;
       let newValue = evt.target.value;
+      setFormData({
+        ...formData,
+        [changedField]: newValue
+      });
   };
     
     const designation = [
@@ -56,7 +60,7 @@ const MM04 =  () => {
   
           const storedCookie = document.cookie;
           console.log(storedCookie);
-      // Create a custom set of headers
+          // Create a custom set of headers
           const customHeaders = new Headers({
               'Content-Type': 'application/json', // You may need to adjust the content type based on your request
               'Cookie': storedCookie, // Include the retrieved cookie in the 'Cookie' header
@@ -72,9 +76,9 @@ const MM04 =  () => {
           if (response.statusCode === 401) {
               console.log("Failed");
           }
-          } catch (error) {
+      } catch (error) {
           console.error("Error:", error);
-          }
+      }
   };
 
   useEffect(() => {
@@ -90,13 +94,7 @@ const MM04 =  () => {
       };
   
       fetchData();
-      
-
-  return () => {
-    
-  };
-}, []); 
-
+  }, []); 
 
     return (
         <div>
@@ -109,10 +107,10 @@ const MM04 =  () => {
      Rs. 25,000/- (Twenty-Five Thousand Only) to Rs. 2,50,000/- (Two Lakh Fifty Thousand Only)
     </h3>
     
-    
           <div className="border-t border-b py-4 mb-6">
             <p className="text-sm px-4">
-            Certified that we, the members of the Purchase Committee are jointly and individually satisfied that the goods recommended for Purchase are <b>of the requisite specification and quality, priced reasonably at the prevailing market rates and the supplier recommended is reliable and competent to supply the goods in question, and it is not debarred by Department of Commerce or Ministry/ Department concerned. Accordingly, 
+            Certified that we, the members of the Purchase Committee are jointly and individually satisfied that the goods recommended for Purchase are <b>of the requisite specification and quality, priced reasonably at the prevailing market rates and the supplier recommended is reliable and competent
+            to supply the goods in question, and it is not debarred by Department of Commerce or Ministry/ Department concerned. Accordingly, 
             we enclose the quotation no.
             <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="quotation_no" onChange = {handleChange} required/> 
             dated <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="date" onChange = {handleChange} required/> 
