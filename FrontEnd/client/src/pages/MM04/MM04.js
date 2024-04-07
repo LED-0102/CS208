@@ -12,88 +12,129 @@ const MM04 =  () => {
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     note: "",
-    receiver: 1,
-    submitter: 2,
-    quotation_no: "Q123456",
-    date: "2024-03-26",
-    requester_name: "John Doe",
-    amount: 1000,
-    amount_tax: 200,
-    amount_words: "One thousand two hundred dollars",
+    receiver: 2,
+    submitter: 0,
+    quotation_no: "",
+    date: "",
+    requester_name: "",
+    amount: "",
+    amount_tax: "",
+    amount_words: "",
     name_member: "",
     designation_member: "",
-    name_convener: "Bob Johnson",
+    name_convener: "",
     To_Whom: "",
     approval_status: "Approved",
     reason: "",
   });
 
   const [searchName, setSearchName] = useState("");
-  const [selectedDesignation, setSelectedDesignation] = useState("");
-         
-  const handleChange = (evt) => {
-      const changedField = evt.target.name;
-      let newValue = evt.target.value;
-      setFormData({
-        ...formData,
-        [changedField]: newValue
-      });
-  };
+    const [selectedDesignation, setSelectedDesignation] = useState("");
+           
+    const handleChange = (evt) => {
+        const changedField = evt.target.name;
+        let newValue = evt.target.value;
     
-    const designation = [
-    "HOD",
-    "Staff",
-    "Professor",
-    "Office",
-    "Student",
-    ];
-    
-  const handleSubmit = async (e) => {
-      e.preventDefault();
-
-      const dataToBeSub={...formData};
-      const date1=new Date();
-      const formattedDate=`${date1.getFullYear()}/${date1.getMonth()+1}/${date1.getDate()}`;
-      dataToBeSub.date=formattedDate;
-
-      try {
-  
-          const storedCookie = document.cookie;
-          console.log(storedCookie);
-          // Create a custom set of headers
-          const customHeaders = new Headers({
-              'Content-Type': 'application/json', // You may need to adjust the content type based on your request
-              'Cookie': storedCookie, // Include the retrieved cookie in the 'Cookie' header
-          });
-          const headersObject = Object.fromEntries(customHeaders.entries());
-          const response = await fetch(`${globalUrl}/v1/submit/R1`, {
-              method: 'POST',
-              credentials: 'include',  // Include credentials (cookies) in the request
-              headers: headersObject,
-              body: JSON.stringify(dataToBeSub)
-          });
-          console.log(response)
-          if (response.statusCode === 401) {
-              console.log("Failed");
-          }
-      } catch (error) {
-          console.error("Error:", error);
-      }
-  };
-
-  useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const response = await axios.get(`${globalUrl}/list/receiver`);
-          setUserData(response.data);
-        } catch (error) {
-          setError(error);
-        } finally {
-          // setLoading(false);
+        setFormData((currData) => {
+        if(changedField === "amount_claimed"){
+            newValue=parseInt(newValue);
         }
+        currData[changedField] = newValue;
+        return {
+            ...currData,
+        };
+        });
+    };
+      
+      const designation = [
+      "HOD",
+      "Staff",
+      "Professor",
+      "Office",
+      "Student",
+      ];
+      
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const dataToBeSub={...formData};
+        const date1=new Date();
+        const formattedDate=`${date1.getFullYear()}/${date1.getMonth()+1}/${date1.getDate()}`;
+        dataToBeSub.date=formattedDate;
+
+        try {
+    
+            const storedCookie = document.cookie;
+            console.log(storedCookie);
+        // Create a custom set of headers
+            const customHeaders = new Headers({
+                'Content-Type': 'application/json', // You may need to adjust the content type based on your request
+                'Cookie': storedCookie, // Include the retrieved cookie in the 'Cookie' header
+            });
+            const headersObject = Object.fromEntries(customHeaders.entries());
+            const response = await fetch(`${globalUrl}/v1/submit/R1`, {
+                method: 'POST',
+                credentials: 'include',  // Include credentials (cookies) in the request
+                headers: headersObject,
+                body: JSON.stringify(dataToBeSub)
+            });
+            console.log(response)
+            if (response.statusCode === 401) {
+                console.log("Failed");
+            }
+            } catch (error) {
+            console.error("Error:", error);
+            }
+    };
+
+    const filterUsers = () => {
+        return userData.filter(
+          (user) =>
+            user.username.toLowerCase().includes(searchName.toLowerCase()) &&
+            user.designation
+              .toLowerCase()
+              .includes(selectedDesignation.toLowerCase())
+            //   &&
+            // user.roll_no.toLowerCase().includes(searchRollNo.toLowerCase())
+        );
       };
+
+
+      const handleUserSelect = (userId,userName) => {
+        console.log("aaaa",userName)
+        console.log("aaaa",userId)
+        setFormData({
+          ...formData,
+          receiver: userId
+        });
+      
+        if (userName) {
+          setSearchName(userName);
+        } else {
+          setSearchName(''); // or any default value you prefer
+        }
+        console.log("search+++",searchName)
+      };
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const response = await axios.get(`${globalUrl}/list/receiver`);
+            setUserData(response.data);
+          } catch (error) {
+            setError(error);
+          } finally {
+            // setLoading(false);
+          }
+        };
+    
+        fetchData();
+        
   
-      fetchData();
+    return () => {
+      
+    };
   }, []); 
 
     return (
@@ -107,10 +148,10 @@ const MM04 =  () => {
      Rs. 25,000/- (Twenty-Five Thousand Only) to Rs. 2,50,000/- (Two Lakh Fifty Thousand Only)
     </h3>
     
+    
           <div className="border-t border-b py-4 mb-6">
             <p className="text-sm px-4">
-            Certified that we, the members of the Purchase Committee are jointly and individually satisfied that the goods recommended for Purchase are <b>of the requisite specification and quality, priced reasonably at the prevailing market rates and the supplier recommended is reliable and competent
-            to supply the goods in question, and it is not debarred by Department of Commerce or Ministry/ Department concerned. Accordingly, 
+            Certified that we, the members of the Purchase Committee are jointly and individually satisfied that the goods recommended for Purchase are <b>of the requisite specification and quality, priced reasonably at the prevailing market rates and the supplier recommended is reliable and competent to supply the goods in question, and it is not debarred by Department of Commerce or Ministry/ Department concerned. Accordingly, 
             we enclose the quotation no.
             <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="quotation_no" onChange = {handleChange} required/> 
             dated <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="date" onChange = {handleChange} required/> 
@@ -154,7 +195,7 @@ const MM04 =  () => {
               *The certificate is as per GFR 2017 Rule No. 155.
             </p>
           </div>
-          <div className="mb-4 lg:mb-0 lg:mr-4 lg:w-full">
+          {/* <div className="mb-4 lg:mb-0 lg:mr-4 lg:w-full">
           <select
             value={selectedDesignation}
             onChange={(e) => setSelectedDesignation(e.target.value)}
@@ -168,26 +209,45 @@ const MM04 =  () => {
               </option>
             ))}
           </select>
-          </div><br/>
-          <tr>
-                    <th><label htmlFor='To_Whom'>select to whom you are sending the form</label></th>
-                    <td colSpan="5">
-                        <select id="To_Whom" name="To_Whom" onChange={handleChange}>
-                            <option value="HOD">HOD</option>
-                            <option value="Staff">Staff</option>
-                            <option value="Professor">Professor</option>
-                            <option value="office">Office</option>
-                            <option value="Student">Student</option>
-                        </select>
-                    </td>
-                </tr>
-    
+          </div> */}
+          <div className='p-4'> 
+          <>
+         <div className="flex flex-col lg:flex-row mb-4 lg:mb-8 font-custom">
+        <div className="mb-4 lg:mb-0 lg:mr-4 lg:w-full">
+          <input
+            type="text"
+            placeholder="Search by name"
+            value={searchName}
+            onChange={(e) => setSearchName(e.target.value)}
+            className="p-2 border w-full rounded-md search-input hover:bg-gray-200"
+          />
+        </div>
+        <div className="mb-4 lg:mb-0 lg:mr-4 lg:w-full">
+          <select
+            value={selectedDesignation}
+            onChange={(e) => setSelectedDesignation(e.target.value)}
+            className="p-2 border w-full rounded-md text-white"
+            style={{ backgroundColor: "rgb(30 41 59)" }}
+          >
+            <option value="">Select Department</option>
+            {designation.map((department) => (
+              <option key={department} value={department}>
+                {department}
+              </option>
+            ))}
+          </select>
+        </div>
+        </div>
+        
           <div className="flex items-center justify-center">
             <button onClick={(e) => handleSubmit(e)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
               Submit
             </button>
           </div>
+          </>
+          </div>
           </form>
+          
         </div>
         </div>
       );
