@@ -68,7 +68,7 @@ const DisplayPreviousForm = () => {
       };
 
   return (
-    <div>
+    <div className='flex'>
     {previousFormData && Object.entries(previousFormData).map(([formName, forms]) => (
       <div key={formName}>
         <h2>{formName}</h2>
@@ -85,6 +85,9 @@ const DisplayPreviousForm = () => {
         </ul>
       </div>
     ))}
+      <div className='bg-blue-700 h-64 border-black border-2'>
+        <textarea className='h-32'></textarea>
+      </div>
   </div>
   )
 }
