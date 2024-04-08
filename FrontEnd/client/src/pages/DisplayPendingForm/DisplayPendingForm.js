@@ -8,7 +8,56 @@ import {data} from "../../components/Search/data";
 
 const DisplayPendingForm = () => {
     const [pendingFormData,setPendingFormData]=useState(null)
+    const [reason, setReason] = useState('');
     const [error, setError] = useState("");
+    // const [formData, setFormData] = useState({
+    //   form_id:0,
+
+    // })
+
+    const handleFormClick = async (formId, formName, action) => {
+      // Get the form details based on formId and formName
+      // const formDetails = pendingFormData[formName].find(form => form.id === formId);
+  
+      // Prepare data to send to the backend
+      const dataToSend = {
+        // formDetails: formDetails,
+        form_id:formId,
+        form_type:formName,
+        note: reason,
+        // sender:"",
+      
+        decision:action === "accept" ? 1 : 0 ,
+      };
+      
+      console.log("++++++++++++++++++datatosend",dataToSend)
+ 
+      try {
+
+        const storedCookie = document.cookie;
+        console.log(storedCookie);
+  // Create a custom set of headers
+        const customHeaders = new Headers({
+          'Content-Type': 'application/json', // You may need to adjust the content type based on your request
+          'Cookie': storedCookie, // Include the retrieved cookie in the 'Cookie' header
+        });
+        const headersObject = Object.fromEntries(customHeaders.entries());
+        // const response = await fetch('https://jsonplaceholder.typicode.com/posts',{
+        const response = await fetch(`${globalUrl}/v1/approval`, {
+          method: 'POST',
+          credentials: 'include',  // Include credentials (cookies) in the request
+          headers: headersObject,
+          body: JSON.stringify(dataToSend)
+        });
+        console.log(response)
+        if (response.statusCode === 401) {
+          console.log("Failed");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+  
     // console.log("datais++++",data[0].name)
     const navigate = useNavigate();
     useEffect(() => {
@@ -65,11 +114,16 @@ const DisplayPendingForm = () => {
     //     navigate(`${globalUrl}/displayPendingForm/SS04/${id}`); // Navigate to a route with the item's id
     //   };
 
-      const handleFormClick = (formId,formName) => {
+      const handleFormClickProceed = (formId,formName) => {
         // console.log('Clicked form with ID:', formId);
         navigate(`/displayPendingForm/${formName}/${formId}`);
         // Add your navigation or other logic here
       };
+
+      const handleChange = (event) => {
+        setReason(event.target.value);
+      };
+    
 
   return (
     <div className='flex flex-row border-2 border-black p-4 gap-4 text-center '>
@@ -83,7 +137,9 @@ const DisplayPendingForm = () => {
               <p>Submitter: {form.submitter}</p>
               <p>Receiver: {form.receiver}</p>
               <p>Approval Status: {form.approval_status}</p>
-              <button onClick={() => handleFormClick(form.id,formName)}>Proceed</button>
+              <button onClick={() => handleFormClickProceed(form.id,formName)}>Proceed</button>
+              <button onClick={() => handleFormClick(form.id, formName, 'accept')}>Accept</button>
+              <button onClick={() => handleFormClick(form.id, formName, 'reject')}>Reject</button>
             </li>
           ))}
         </ul>
@@ -91,12 +147,18 @@ const DisplayPendingForm = () => {
     ))}
     <div className='flex flex-col w-2/3'>
       <div className=''>
-      <textarea className='border-2 border-black'></textarea>
+      <textarea className='border-2 border-black'
+       placeholder=" Reason for acception and rejection"
+      //  id="invoice_no_date"
+      //  name="invoice_no_date"
+      type="text"
+      value={reason}
+       onChange={handleChange}></textarea>
       </div>
-      <div className='flex flex-row gap-4'>
+      {/* <div className='flex flex-row gap-4 justify-center w-full'>
         <p>Accept</p>
         <p>Reject</p>
-      </div>
+      </div> */}
     </div>
   </div>
   )
