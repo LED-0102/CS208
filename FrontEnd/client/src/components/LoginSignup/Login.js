@@ -52,6 +52,7 @@ const LoginSignup = () => {
             }
             console.log(response);
             navigate("/");
+            console.log(document.cookie)
       }
     } catch (err) {
       console.error(err);

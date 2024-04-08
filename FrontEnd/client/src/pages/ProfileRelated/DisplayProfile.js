@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
+import axios from 'axios';
+import globalUrl from '../../components/url';
 
 const DisplayProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -6,6 +8,53 @@ const DisplayProfile = () => {
   const handleEditClick = () => {
     setIsEditing(!isEditing);
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+        try {
+            const storedCookie = document.cookie;
+            console.log(storedCookie);
+      // Create a custom set of headers
+            const customHeaders = new Headers({
+              'Content-Type': 'application/json', // You may need to adjust the content type based on your request
+              'Cookie': storedCookie, // Include the retrieved cookie in the 'Cookie' header
+            });
+            const headersObject = Object.fromEntries(customHeaders.entries());
+  
+            //  const response = await fetch('https://jsonplaceholder.typicode.com/posts',{
+            const response = await fetch(`${globalUrl}/v1/profile`, {
+                method: 'GET',
+                credentials: 'include',  // Include credentials (cookies) in the request
+                headers: headersObject,
+                // body: JSON.stringify(updatedFormData)
+              });
+            //   console.log(response)
+            // console.log("aadd",typeof(data))
+            // setPendingFormData(response.data);
+            // console.log("aadd",typeof(pendingFormData))
+            // console.log("aadd",pendingFormData)
+            // console.log("aadd++++",response)
+               // Parsing JSON response
+const responseData = await response.json();
+// console.log('Parsed JSON response:', typeof(responseData));
+console.log('Parsed JSON response:', (responseData));
+console.log("asd")
+            //   console.log()
+              if (response.statusCode === 401) {
+                console.log("Failed");
+              }
+            } catch (error) {
+              console.error("Error:", error);
+            }
+    };
+
+    fetchData();
+
+
+    return () => {
+
+    };
+}, []); 
 
   return (
     <div className="max-w-4xl mx-auto mt-10">

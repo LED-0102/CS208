@@ -72,9 +72,9 @@ const DisplayPendingForm = () => {
       };
 
   return (
-    <div>
+    <div className='flex flex-row border-2 border-black p-4 gap-4 text-center '>
     {pendingFormData && Object.entries(pendingFormData).map(([formName, forms]) => (
-      <div key={formName}>
+      <div key={formName} className="w-1/3">
         <h2>{formName}</h2>
         <ul>
           {forms.map(form => (
@@ -89,6 +89,15 @@ const DisplayPendingForm = () => {
         </ul>
       </div>
     ))}
+    <div className='flex flex-col w-2/3'>
+      <div className=''>
+      <textarea className='border-2 border-black'></textarea>
+      </div>
+      <div className='flex flex-row gap-4'>
+        <p>Accept</p>
+        <p>Reject</p>
+      </div>
+    </div>
   </div>
   )
 }

@@ -45,10 +45,9 @@ const E01 = () => {
         let newValue = evt.target.value;
     
         setFormData((currData) => {
-        if(changedField === "amount_claimed"){
-            newValue=parseInt(newValue);
-        }
+        
         currData[changedField] = newValue;
+        console.log(currData[changedField])
         return {
             ...currData,
         };
@@ -81,7 +80,7 @@ const E01 = () => {
                 'Cookie': storedCookie, // Include the retrieved cookie in the 'Cookie' header
             });
             const headersObject = Object.fromEntries(customHeaders.entries());
-            const response = await fetch(`${globalUrl}/v1/submit/R1`, {
+            const response = await fetch(`${globalUrl}/v1/submit/E01`, {
                 method: 'POST',
                 credentials: 'include',  // Include credentials (cookies) in the request
                 headers: headersObject,
@@ -130,13 +129,7 @@ const E01 = () => {
         const fetchData = async () => {
           try {
             const response = await axios.get(`${globalUrl}/list/receiver`);
-            // const response = await axios.get(`https://randomuser.me/api/`);
-            // const datss=data
-            // console.log("aadd",typeof(response.data))
-            // console.log("aadd",typeof(data))
             setUserData(response.data);
-            // console.log("dats",response.data)
-            // console.log("dats++++++userData",userData)
           } catch (error) {
             setError(error);
           } finally {
@@ -161,44 +154,22 @@ const E01 = () => {
         <p className='text-center'>(For regular maintenance, do not use this form; instead use ticket generation service)</p>
         <form action="#">
             <div className="mb-4">
-              <label for="name"><p className='text-center'><span className='font-bold'>Requisition submitted by: </span> [must be an employee (other than project employee) of the Institute]</p></label>
+              <p className='text-center'><span className='font-bold'>Requisition submitted by: </span> [must be an employee (other than project employee) of the Institute]</p>
               <table>
+                <tbody>
                 <tr>
-                  <td><label htmlFor='name'>Name</label></td>
-                  <td><input type="text" id="name" name="name" className="p-2 border-2 border-black" /></td>
-                  <td><label htmlFor="phone">Phone/Mobile No.:</label></td>
-                  <td><input type="tel" id="phone" name="phone" className="p-2 border-2 border-black" /></td>
-                </tr>
-                <tr>
-                  <td><label htmlFor="department">Dept./Section:</label></td>
-                  <td><input type="text" id="department" name="department" className="p-2 border-2 border-black" /></td>
                   <td><label htmlFor="empId">Emp Id:</label></td>
-                  <td><input type="text" id="empId" name="empId" className="p-2 border-2 border-black" /></td>
-                  <td><label htmlFor="email">E-mail:</label></td>
-                  <td><input type="text" id="email" name="email" className="p-2 border-2 border-black" /></td>
+                  <td><input type="text" id="empId" name="empId" className="p-2 border-2 border-black" onChange={handleChange} /></td>
                 </tr>
-                <tr>
-                  <td><label htmlFor="location">Location:</label></td>
-                  <td><input type="text" id="location" name="location" className="p-2 border-2 border-black" /></td>
-                </tr>
-                
-                <tr>
-                  <td><label htmlFor="location">Location:</label></td>
-                  <td><input type="text" id="location" name="location" className="p-2 border-2 border-black" /></td>
-                </tr>
-                <tr>
-                  <td><label htmlFor="location">Location:</label></td>
-                  <td><input type="text" id="location" name="location" className="p-2 border-2 border-black" /></td>
-                </tr>
-                
+                </tbody>
                 
               </table>
             </div>
-            <div className="mb-4">
-                <label htmlFor="description">Provide Description</label>
-                <input type="text" id="description" name="description" className="p-2 border-2 border-black" />
+            <div className="mb-4 mx-2">
+                <label htmlFor="reason">Provide Description</label>
+                <input type="text" id="reason" name="reason" className="p-2 border-2 border-black" onChange={handleChange} />
             </div>
-            <div>
+            {/* <div>
                 <label>Does this work require new built-up area/covered area?</label><br />
                 <input type="radio" name="new_area" value="yes" checked /> Yes
                 <input type="radio" name="new_area" value="no" /> No
@@ -215,15 +186,36 @@ const E01 = () => {
             </div>
             <div className="form-group">
                 <label>Do you have any suggestion that can be used for this purpose (optional)?</label><br />
-                <input className='a w-2' type="radio" name="suggestion" value="yes" checked /> Yes
+                <input type="radio" name="suggestion" value="yes" checked /> Yes
                 <input type="radio" name="suggestion" value="no" /> No
-            </div>
-            <div className='mt-3'>
+            </div> */}
+            {/* <div className='mt-3 mx-2'>
                 <label className='font-bold'>Suggestions</label>
-                <input type="text" id="suggestion" name="suggestion" className="p-2 border-2 border-black" />
+                <input type="text" id="suggestion" name="suggestion" className="p-2 border-2 border-black" onChange={handleChange} />
+            </div> */}
+
+            <div className="mb-4">
+              
+              <table>
+                <tbody>
+                <tr>
+                  <td><label htmlFor="hod_name">HOD Name:</label></td>
+                  <td><input type="text" id="hod_name" name="hod_name" className="p-2 border-2 border-black" onChange={handleChange} /></td>
+                  <td><label htmlFor="hod_signature_date">HOD Signature Date:</label></td>
+                  <td><input type="date" id="hod_signature_date" name="hod_signature_date" className="p-2 border-2 border-black" onChange={handleChange} /></td>
+                </tr>
+                
+                <tr>
+                  <td><label htmlFor="jr_name">JR Name:</label></td>
+                  <td><input type="text" id="jr_name" name="jr_name" className="p-2 border-2 border-black" onChange={handleChange} /></td>
+                  <td><label htmlFor="jr_signature_date">JR Signature Date:</label></td>
+                  <td><input type="date" id="jr_signature_date" name="jr_signature_date" className="p-2 border-2 border-black" onChange={handleChange} /></td>
+                </tr>
+                </tbody>
+              </table>
             </div>
             
-            <input type="submit" value="Submit" />
+            <button onClick={(e) => handleSubmit(e)} className='bg-black text-white m-3'>Submit</button>
         </form>
     </div>
   )
