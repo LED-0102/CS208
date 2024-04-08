@@ -3,7 +3,6 @@ mod get_form;
 mod profile;
 
 use std::error::Error;
-use std::fmt::format;
 use std::str::FromStr;
 use actix_web::{post, web::{self, Data}, HttpResponse};
 use serde::{Deserialize, Serialize};
