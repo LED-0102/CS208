@@ -7,10 +7,13 @@ import google_icon from '../../images/LoginSignup/google.svg'
 import globalUrl from "../url";
 import Cookies from 'js-cookie';
 import axios from "axios";
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+
 
 const LoginSignup = () => {
   const [action,setAction]=useState("Sign Up");
+  const [server_error, setServerError] = useState({});
+  const navigate = useNavigate();
   const [post,setPost]=useState({
     username:'',
     email:'',
@@ -46,18 +49,18 @@ const LoginSignup = () => {
       const response = await axios.post(`${globalUrl}/v1/auth/register`, post, {
           withCredentials: true,
       });
-      console.log("Here");
-      console.log("Response.headers", response.headers);
-
-        if (response.headers['set-cookie']){
-            console.log("Inside");
-            const cookieValue = response.headers['set-cookie'][0];
-            localStorage.setItem('jwt', cookieValue);
-            console.log('Cookie set: ');
-        }
-        console.log(response);
+  
+      if (response.headers['set-cookie']){
+          console.log("Inside");
+          const cookieValue = response.headers['set-cookie'][0];
+          localStorage.setItem('jwt', cookieValue);
+          console.log('Cookie set: ');
+      }
+      console.log(response);
+      navigate("/login");
     } catch (err) {
       console.error(err);
+      setServerError(err.data)
     }
   }
 

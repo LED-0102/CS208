@@ -7,12 +7,15 @@ import campus from '../../images/LoginSignup/campus.jpg'
 import globalUrl from "../url";
 import Cookies from 'js-cookie';
 import axios from "axios";
-import { Link } from 'react-router-dom'
+import { Link , useNavigate} from 'react-router-dom'
 import "./login.css"
+import Typography from '@mui/material/Typography'
 
 
 const LoginSignup = () => {
   const [action,setAction]=useState("Sign Up");
+  const [server_error, setServerError] = useState(null);
+  const navigate = useNavigate();
   const [post,setPost]=useState({
     // username:'',
     email:'',
@@ -34,18 +37,25 @@ const LoginSignup = () => {
       const response = await axios.post(`${globalUrl}/v1/auth/login`, post, {
           withCredentials: true,
       });
-      console.log("Here");
-      console.log("Response.headers", response.headers);
-      
-        if (response.headers['set-cookie']){
-            console.log("Inside");
-            const cookieValue = response.headers['set-cookie'][0];
-            localStorage.setItem('jwt', cookieValue);
-            console.log('Cookie set: ');
-        }
-        console.log(response);
+      if(response.error){
+        setServerError(response.error.data);
+      }
+      if(response.data){
+          console.log("Here");
+          console.log("Response.headers", response.headers);
+          
+            if (response.headers['set-cookie']){
+                console.log("Inside");
+                const cookieValue = response.headers['set-cookie'][0];
+                localStorage.setItem('jwt', cookieValue);
+                console.log('Cookie set: ');
+            }
+            console.log(response);
+            navigate("/");
+      }
     } catch (err) {
       console.error(err);
+      setServerError(err.data);
     }
   }
 
@@ -108,6 +118,7 @@ const LoginSignup = () => {
             </div>
             <Link className="cursor-pointer"><span className="font-bold text-md">Forgot password</span></Link>
           </div>
+          
           <button
             className="w-full font-normal text-base bg-blue-600 text-white p-2 rounded-lg mb-6 hover:bg-blue-800 hover:font-bold hover:text-lg"
             type="submit"
@@ -115,6 +126,7 @@ const LoginSignup = () => {
           >
             Sign in
           </button>
+          {server_error!=null?<Typography style = {{fontSize:12, color:"red", paddingLeft:10}}>Invalid Email or Password</Typography>:""}
           </form>
           {/* <button
             className="w-full border border-gray-300 text-md p-2 rounded-lg mb-6 hover:bg-black hover:text-white"
