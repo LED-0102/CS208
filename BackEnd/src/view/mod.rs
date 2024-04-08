@@ -73,6 +73,7 @@ pub async fn accept_reject(pool: Data<AppState>, jwt: JwToken, data: web::Json<A
             }
         }
         Err(e) => {
+            println!("{:?}", e);
             return HttpResponse::BadRequest().body(e);
         }
     }
@@ -84,6 +85,7 @@ pub async fn accept_reject(pool: Data<AppState>, jwt: JwToken, data: web::Json<A
         .await {
         Ok(_) => {},
         Err(e) => {
+            println!("{:?}", e);
             return HttpResponse::BadRequest().body(e.to_string());
         }
     }
@@ -95,7 +97,8 @@ pub async fn accept_reject(pool: Data<AppState>, jwt: JwToken, data: web::Json<A
             .await;
         match q {
             Ok(_) => {}
-            Err(_) => {
+            Err(e) => {
+                println!("{:?}", e);
                 return HttpResponse::InternalServerError().finish();
             }
         }
@@ -106,7 +109,8 @@ pub async fn accept_reject(pool: Data<AppState>, jwt: JwToken, data: web::Json<A
             .await;
         match q {
             Ok(_) => {}
-            Err(_) => {
+            Err(e) => {
+                println!("{:?}", e);
                 return HttpResponse::InternalServerError().finish();
             }
         }
@@ -116,6 +120,7 @@ pub async fn accept_reject(pool: Data<AppState>, jwt: JwToken, data: web::Json<A
             HttpResponse::Ok().finish()
         }
         Err(e) => {
+            println!("{:?}", e);
             return HttpResponse::InternalServerError().body(e.to_string());
         }
     }
