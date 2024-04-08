@@ -1,11 +1,10 @@
 mod fetch_forms;
 
 use actix_web::{web::{Data}, HttpResponse, Responder, web};
-use sqlx::{Error, Row};
-use crate::db::structs::{Student, Instrument, Receivers, Seeking};
+use sqlx::{Error};
+use crate::db::structs::{Student, Instrument, Receivers};
 
 use crate::AppState;
-use crate::auth::jwt::JwToken;
 use crate::lists::fetch_forms::get_pending;
 
 pub async fn get_students(app_state: Data<AppState>) -> impl Responder{

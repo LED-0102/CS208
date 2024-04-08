@@ -6,9 +6,8 @@ use crate::ws::server::{ChatServer, Identifier};
 use serde_json;
 use serde_json::Value;
 use sqlx::{PgPool, Row};
-use sqlx::postgres::PgRow;
 use crate::auth::jwt::JwToken;
-use crate::db::fetch_id::{identifier_id, verify_receiver};
+use crate::db::fetch_id::{identifier_id};
 
 #[derive(Debug)]
 pub enum Forms {
@@ -125,23 +124,23 @@ impl FormTrait for Forms {
 
     async fn process(&self, pool: &PgPool, id: i32) -> Result<(), Box<dyn Error>>{
         match self {
-            Forms::SS04(f) => {
-                let e = self.send_recv_update(pool, id, self.enum_to_str()).await?;
+            Forms::SS04(_) => {
+                let _ = self.send_recv_update(pool, id, self.enum_to_str()).await?;
             },
-            Forms::MM04(f) => {
-                let e = self.send_recv_update(pool, id, self.enum_to_str()).await?;
+            Forms::MM04(_) => {
+                let _ = self.send_recv_update(pool, id, self.enum_to_str()).await?;
             },
-            Forms::SS01(f) => {
-                let e = self.send_recv_update(pool, id, self.enum_to_str()).await?;
+            Forms::SS01(_) => {
+                let _ = self.send_recv_update(pool, id, self.enum_to_str()).await?;
             },
-            Forms::R1(f) => {
-                let e = self.send_recv_update(pool, id, self.enum_to_str()).await?;
+            Forms::R1(_) => {
+                let _ = self.send_recv_update(pool, id, self.enum_to_str()).await?;
             },
-            Forms::E01(f) => {
-                let e = self.send_recv_update(pool, id, self.enum_to_str()).await?;
+            Forms::E01(_) => {
+                let _ = self.send_recv_update(pool, id, self.enum_to_str()).await?;
             },
-            Forms::Furniture(f) => {
-                let e = self.send_recv_update(pool, id, self.enum_to_str()).await?;
+            Forms::Furniture(_) => {
+                let _ = self.send_recv_update(pool, id, self.enum_to_str()).await?;
             }
         }
         Ok(())

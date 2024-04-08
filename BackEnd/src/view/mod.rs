@@ -64,9 +64,11 @@ pub async fn form_handler(jwt: JwToken, form_type: web::Path<String>, form_data:
 pub async fn accept_reject(pool: Data<AppState>, jwt: JwToken, data: web::Json<ApprovalData>) -> HttpResponse {
     let pool = &pool.pool;
     let res = verify_receiver(pool, data.form_id, &data.form_type, jwt.id).await;
+    let mut submitter: i32 = 0;
     match res {
         Ok(s) => {
-            if !s {
+            submitter = s.1;
+            if !s.0 {
                 return HttpResponse::Unauthorized().finish();
             }
         }
@@ -74,17 +76,27 @@ pub async fn accept_reject(pool: Data<AppState>, jwt: JwToken, data: web::Json<A
             return HttpResponse::BadRequest().body(e);
         }
     }
-    return if data.decision {
-        let q = format!("UPDATE {} SET approval_status = 'Accepted' WHERE id = {}", &data.form_type, &data.form_id);
+    let query = format! ("UPDATE {} SET note = $1 WHERE id = $2", &data.form_type);
+    match sqlx::query(&query)
+        .bind(&data.note)
+        .bind(&data.form_id)
+        .execute(pool)
+        .await {
+        Ok(_) => {},
+        Err(e) => {
+            return HttpResponse::BadRequest().body(e.to_string());
+        }
+    }
+    if data.decision {
+        let q = format!("UPDATE {} SET approval_status = 'Accepted' WHERE id = $1", &data.form_type);
         let q = sqlx::query(&q)
+            .bind(&data.form_id)
             .execute(pool)
             .await;
         match q {
-            Ok(_) => {
-                HttpResponse::Ok().finish()
-            }
+            Ok(_) => {}
             Err(_) => {
-                HttpResponse::InternalServerError().finish()
+                return HttpResponse::InternalServerError().finish();
             }
         }
     } else {
@@ -93,12 +105,45 @@ pub async fn accept_reject(pool: Data<AppState>, jwt: JwToken, data: web::Json<A
             .execute(pool)
             .await;
         match q {
-            Ok(_) => {
-                HttpResponse::Ok().finish()
-            }
+            Ok(_) => {}
             Err(_) => {
-                HttpResponse::InternalServerError().finish()
+                return HttpResponse::InternalServerError().finish();
             }
         }
     }
+    match add_to_previous(&data, pool, jwt.id, submitter).await {
+        Ok(_) => {
+            HttpResponse::Ok().finish()
+        }
+        Err(e) => {
+            return HttpResponse::InternalServerError().body(e.to_string());
+        }
+    }
+}
+pub async fn add_to_previous (data: &ApprovalData, pool: &sqlx::PgPool, receiver: i32, submitter: i32) -> Result<(), Box<dyn Error>> {
+    let query = format! ("UPDATE {}_data
+    SET
+        pending = ARRAY_REMOVE(source_array, $1),
+        previous = ARRAY_APPEND(destination_array, $1)
+    WHERE
+        id = $2;", &data.form_type);
+    sqlx::query(&query)
+        .bind(&data.form_id)
+        .bind(receiver)
+        .execute(pool)
+        .await?;
+
+    let query = format! ("UPDATE {}_data
+    SET
+        seeking = ARRAY_REMOVE(source_array, $1),
+        previous = ARRAY_APPEND(destination_array, $1)
+    WHERE
+        id = $2;", &data.form_type);
+    sqlx::query(&query)
+        .bind(&data.form_id)
+        .bind(submitter)
+        .execute(pool)
+        .await?;
+
+    Ok(())
 }

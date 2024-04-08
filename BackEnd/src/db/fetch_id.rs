@@ -1,6 +1,4 @@
-use std::fmt::format;
-use sqlx::{Error, PgPool, Row};
-use sqlx::postgres::PgRow;
+use sqlx::{PgPool, Row};
 use crate::ws::server::Identifier;
 
 pub async fn identifier_id (id: i32, pool: &PgPool) -> Result<Identifier, Box<dyn std::error::Error>> {
@@ -34,18 +32,19 @@ pub async fn identifier_email (email: &str, pool: &PgPool) -> Identifier{
     id
 }
 
-pub async fn verify_receiver (pool: &PgPool, form_id: i32, form_name: &str, receiver_id: i32) -> Result<bool, String> {
-    let q = format!("SELECT receiver from {form_name} where id={form_id}");
+pub async fn verify_receiver (pool: &PgPool, form_id: i32, form_name: &str, receiver_id: i32) -> Result<(bool, i32), String> {
+    let q = format!("SELECT submitter, receiver from {form_name} where id={form_id}");
     let a = sqlx::query(&q)
         .fetch_one(pool)
         .await;
     match a {
         Ok(s) => {
             let receiver: i32 = s.get("receiver");
+            let submitter: i32 = s.get("submitter");
             if receiver == receiver_id {
-                Ok(true)
+                Ok((true, submitter))
             } else {
-                Ok(false)
+                Ok((false, submitter))
             }
         }
         Err(e) => {

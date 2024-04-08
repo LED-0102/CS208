@@ -1,9 +1,7 @@
-use actix_web::web::{resource, scope};
-use actix_web::{web, HttpResponse, Responder, HttpServer, App, dev::Service};
+use actix_web::{web, HttpResponse, HttpServer, App, dev::Service};
 use actix_cors::Cors;
-use serde::{Deserialize, Serialize};
 use sqlx::{Pool, Postgres};
-use sqlx::{Executor, FromRow, PgPool};
+use sqlx::{PgPool};
 pub mod auth;
 pub mod db;
 pub mod view;

@@ -12,9 +12,9 @@ CREATE TABLE users (
     admin INT DEFAULT 0,
     designation desig,
     department department_enum,
-    location VARCHAR,
-    room VARCHAR,
-    contact_number VARCHAR
+    location VARCHAR DEFAULT '',
+    room VARCHAR DEFAULT '',
+    contact_number VARCHAR DEFAULT ''
 );
 CREATE TABLE forms (
     form VARCHAR PRIMARY KEY

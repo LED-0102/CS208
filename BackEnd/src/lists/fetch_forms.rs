@@ -2,7 +2,7 @@ use std::collections::HashMap;
 use actix_web::{HttpResponse, web};
 use actix_web::web::Path;
 use serde::Serialize;
-use sqlx::{Column, Error, FromRow, Row};
+use sqlx::{Error, FromRow, Row};
 use crate::AppState;
 use crate::auth::jwt::JwToken;
 use crate::db::structs::State;

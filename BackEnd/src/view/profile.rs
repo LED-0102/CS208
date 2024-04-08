@@ -9,8 +9,8 @@ pub async fn get_profile (jwt: JwToken, app_state: web::Data<AppState>) -> HttpR
         .bind(id)
         .fetch_one(&app_state.pool)
         .await {
-        Ok(user) => {
-            let user: UserDb = user;
+        Ok(s) => {
+            let user: UserDb = s;
             user
         }
         Err(e) => {
