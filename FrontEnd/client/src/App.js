@@ -38,6 +38,7 @@ function App() {
           <Route exact path="/home" element={ <Home/> } />
           <Route exact path="/Forms" element={ <Forms /> } />
           <Route exact path="/login" element={ <Login/> } />
+          {/* <Route exact path="/login2" element={ <ModalComponentLogIn /> } /> */}
           <Route exact path="/completeprofile" element={ <CompleteProfile /> } />
           <Route exact path="/displayprofile" element={ <DisplayProfile /> } />
           <Route exact path="/signup" element={ <SignUp/> } />

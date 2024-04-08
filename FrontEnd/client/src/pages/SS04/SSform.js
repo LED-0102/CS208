@@ -165,7 +165,7 @@ const handleChangeTable = (event, index, key) => {
     console.log("update form data:", updatedFormData)
 
     try {
-
+      
       const storedCookie = document.cookie;
       console.log(storedCookie);
 // Create a custom set of headers
