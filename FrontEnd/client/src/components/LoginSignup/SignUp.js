@@ -19,6 +19,7 @@ const LoginSignup = () => {
     email:'',
     password:'',
     designation:'',
+    department:"MEMS",
   
   })
 
