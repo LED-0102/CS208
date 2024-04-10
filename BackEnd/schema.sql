@@ -11,7 +11,7 @@ CREATE TABLE users (
     password VARCHAR NOT NULL,
     admin INT DEFAULT 0,
     designation desig,
-    department department,
+    department department DEFAULT 'MEMS',
     location VARCHAR DEFAULT '',
     room VARCHAR DEFAULT '',
     contact_number VARCHAR DEFAULT ''
