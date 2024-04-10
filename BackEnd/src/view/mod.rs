@@ -1,6 +1,7 @@
 mod forms;
 mod get_form;
 mod profile;
+mod labs;
 
 use std::error::Error;
 use std::str::FromStr;
@@ -13,6 +14,7 @@ use crate::AppState;
 use crate::db::fetch_id::verify_receiver;
 use get_form::get_form;
 use crate::view::profile::get_profile;
+use self::labs::{get_schedule, book_schedule};
 
 #[derive(Deserialize, Debug, Serialize)]
 pub struct ApprovalData {
@@ -27,8 +29,10 @@ pub fn view_config (cfg: &mut web::ServiceConfig) {
         web::scope("/v1")
             .service(form_handler)
             .service(accept_reject)
+            .service(book_schedule)
             .route("/{form_name}/{form_id}", web::get().to(get_form))
             .route("/profile", web::get().to(get_profile))
+            .route("/labs/get_schedule/{lab_name}/{Date}", web::get().to(get_schedule))
     );
 }
 
