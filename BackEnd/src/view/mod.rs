@@ -32,6 +32,7 @@ pub fn view_config (cfg: &mut web::ServiceConfig) {
             .service(book_schedule)
             .route("/{form_name}/{form_id}", web::get().to(get_form))
             .route("/profile", web::get().to(get_profile))
+            .route("/edit", web::post().to(profile::edit_profile))
             .route("/labs/get_schedule/{lab_name}/{Date}", web::get().to(get_schedule))
     );
 }
