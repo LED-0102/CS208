@@ -27,7 +27,7 @@ const DisplayPendingForm = () => {
         note: reason,
         // sender:"",
       
-        decision:action === "accept" ? 1 : 0 ,
+        decision: action === "accept" ,
       };
       
       console.log("++++++++++++++++++datatosend",dataToSend)
