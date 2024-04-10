@@ -37,7 +37,7 @@ impl JwToken {
             .fetch_one(pool)
             .await
             .map_err(|e| error::ErrorBadRequest(e.to_string())).unwrap();
-        let timestamp = Utc::now().checked_add_signed(chrono::Duration::minutes(360)).expect("valid Timestamp").timestamp();
+        let timestamp = Utc::now().checked_add_signed(chrono::Duration::try_minutes(360).unwrap()).expect("valid Timestamp").timestamp();
         return JwToken {username: todo.username, exp: timestamp as usize, email, is_admin: todo.admin, id: todo.id};
     }
     pub fn from_token(token: String) -> Result<Self, String>{
@@ -70,7 +70,7 @@ impl FromRequest for JwToken {
             Some(data) => {
                 // println!("{}", data);
                 let raw_token = data.value().to_string();
-                // println!("{}", raw_token);
+                println!("{}", raw_token);
 
                 let token_result = JwToken::from_token(raw_token);
                 match token_result {

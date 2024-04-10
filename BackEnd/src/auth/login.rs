@@ -34,6 +34,7 @@ pub async fn login (credentials: web::Json<Login>, state: web::Data<AppState>) -
         true =>{
             let token = JwToken::new(credentials.email.clone(), &state.pool);
             let raw_token = token.await.encode();
+            let token_clone = raw_token.clone();
             println!("{}", raw_token);
             let response = LoginResponse{token: raw_token.clone()};
             let body = serde_json::to_string(&response).unwrap();
@@ -47,7 +48,7 @@ pub async fn login (credentials: web::Json<Login>, state: web::Data<AppState>) -
                 .cookie(cookie)
                 .append_header(("Access-Control-Allow-Origin", "http://localhost:3000"))
                 .append_header(("Access-Control-Allow-Credentials", "true"))
-                .finish()
+                .body(token_clone)
         },
         false => {
             HttpResponse::Unauthorized().into()

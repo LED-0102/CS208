@@ -1,4 +1,4 @@
-CREATE TYPE department_enum AS ENUM ('CSE', 'EE', 'MEMS', 'CE', 'ME');
+CREATE TYPE department AS ENUM ('CSE', 'EE', 'MEMS', 'CE', 'ME');
 CREATE TYPE state AS ENUM ('Pending', 'Accepted', 'Rejected');
 CREATE TYPE desig AS ENUM ('HOD', 'Staff', 'Professor', 'Office', 'Student');
 CREATE TYPE con_enum AS ENUM ('Con', 'N-Con');
@@ -11,7 +11,7 @@ CREATE TABLE users (
     password VARCHAR NOT NULL,
     admin INT DEFAULT 0,
     designation desig,
-    department department_enum,
+    department department,
     location VARCHAR DEFAULT '',
     room VARCHAR DEFAULT '',
     contact_number VARCHAR DEFAULT ''

@@ -15,7 +15,7 @@ pub struct UserDb {
     pub password: String,
     pub admin: i32,
     pub designation: Desig,
-    pub department: Option<DepartmentEnum>,
+    pub department: Department,
     pub location: String,
     pub contact_number: String
 }
@@ -52,7 +52,7 @@ pub enum Degree {
     BTech,
 }
 #[derive(Debug, PartialEq, Eq, Type, Deserialize, Serialize, Clone)]
-pub enum DepartmentEnum {
+pub enum Department {
     CSE,
     CE,
     ME,
@@ -418,6 +418,20 @@ impl FromStr for Degree {
             "PhD" => Ok(Self::PhD),
             "MTech" => Ok(Self::MTech),
             "BTech" => Ok(Self::BTech),
+            _ => Err(())
+        }
+    }
+}
+
+impl FromStr for Department {
+    type Err = ();
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "CSE" => Ok(Self::CSE),
+            "CE" => Ok(Self::CE),
+            "ME" => Ok(Self::ME),
+            "MEMS" => Ok(Self::MEMS),
+            "EE" => Ok(Self::EE),
             _ => Err(())
         }
     }
