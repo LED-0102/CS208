@@ -17,7 +17,8 @@ pub struct UserDb {
     pub designation: Desig,
     pub department: Department,
     pub location: String,
-    pub contact_number: String
+    pub contact_number: String,
+    pub room: String
 }
 #[derive(Debug, Serialize, Deserialize)]
 pub struct SS04Orders {
