@@ -61,6 +61,7 @@ const LoginSignup = (props) => {
             //     console.log('Cookie set: ');
             // }
             console.log(response);
+            localStorage.setItem('token', response.data);
             navigate("/");
             console.log(document.cookie)
       }
