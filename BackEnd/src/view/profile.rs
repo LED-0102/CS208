@@ -19,6 +19,5 @@ pub async fn get_profile (jwt: JwToken, app_state: web::Data<AppState>) -> HttpR
         }
     };
     resp.password ="".to_string();
-    let json_string = serde_json::to_string(&resp).unwrap();
     HttpResponse::Ok().body(json_string)
 }
