@@ -126,12 +126,14 @@ const DisplayPendingForm = () => {
     
 
   return (
-    <div className='flex flex-row border-2 border-black p-4 gap-4 text-center '>
+    <div className='flex flex-col border-2 border-black p-4 gap-4 text-center '>
     {pendingFormData && Object.entries(pendingFormData).map(([formName, forms]) => (
       <div key={formName} className="w-1/3">
         <h2>{formName}</h2>
         <ul>
           {forms.map(form => (
+            <div className='flex flex-row'>
+              <div className=''>
             <li key={form.id}>
               <p>ID: {form.id}</p>
               <p>Submitter: {form.submitter}</p>
@@ -141,25 +143,29 @@ const DisplayPendingForm = () => {
               <button onClick={() => handleFormClick(form.id, formName, 'accept')}>Accept</button>
               <button onClick={() => handleFormClick(form.id, formName, 'reject')}>Reject</button>
             </li>
+            </div>
+
+              <div className='flex flex-col w-2/3'>
+              <div className=''>
+              <textarea className='border-2 border-black'
+               placeholder=" Reason for acception and rejection"
+              //  id="invoice_no_date"
+              //  name="invoice_no_date"
+              type="text"
+              value={reason}
+               onChange={handleChange}></textarea>
+              </div>
+              {/* <div className='flex flex-row gap-4 justify-center w-full'>
+                <p>Accept</p>
+                <p>Reject</p>
+              </div> */}
+            </div>
+            </div>
           ))}
         </ul>
       </div>
     ))}
-    <div className='flex flex-col w-2/3'>
-      <div className=''>
-      <textarea className='border-2 border-black'
-       placeholder=" Reason for acception and rejection"
-      //  id="invoice_no_date"
-      //  name="invoice_no_date"
-      type="text"
-      value={reason}
-       onChange={handleChange}></textarea>
-      </div>
-      {/* <div className='flex flex-row gap-4 justify-center w-full'>
-        <p>Accept</p>
-        <p>Reject</p>
-      </div> */}
-    </div>
+  
   </div>
   )
 }
