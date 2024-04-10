@@ -1,5 +1,5 @@
 import './App.css';
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route} from "react-router-dom";
 import FacultyHome from './pages/HomePages/FacultyHome/FacultyHome';
 import StudentHome from './pages/HomePages/StudentHome/StudentHome';
 import FirstFormofPurchase from './pages/PurchasePages/FirstFormofPurchase';
@@ -25,26 +25,31 @@ import Forms from './pages/Forms/Forms';
 import Anavbar from './components/Navbar/Anavbar';
 import CompleteProfile from './pages/ProfileRelated/CompleteProfile';
 import DisplayProfile from './pages/ProfileRelated/DisplayProfile';
-
+import { useState } from 'react';
 
 function App() {
+
+  
+  const[authenticated , setAuthenticated]=useState(false);
+
   return (
 
     <>
-      <Anavbar />
-      <div className='mt-40 h-0'></div>
+      {authenticated ? (<Anavbar />) : (<div></div>)}
+      {authenticated ? (<div className='mt-40 h-0'></div>) : (<div></div>)}
+      {authenticated ? (
         <Routes>
         <Route exact path="/" element={ <Home/> } />
           <Route exact path="/home" element={ <Home/> } />
           <Route exact path="/Forms" element={ <Forms /> } />
-          <Route exact path="/login" element={ <Login/> } />
+          <Route exact path="/login" element={ <Login setAuthenticated={setAuthenticated} /> } />
           {/* <Route exact path="/login2" element={ <ModalComponentLogIn /> } /> */}
           <Route exact path="/completeprofile" element={ <CompleteProfile /> } />
           <Route exact path="/displayprofile" element={ <DisplayProfile /> } />
           <Route exact path="/signup" element={ <SignUp/> } />
-  
+ 
           <Route exact path="/facultyHome" element={ <FacultyHome /> } />
-          
+         
           <Route exact path="/StudentHome" element={ <StudentHome /> } />
 
           <Route exact path="/faculty/purchase/ff" element={ <FirstFormofPurchase /> } />
@@ -65,10 +70,48 @@ function App() {
           <Route exact path="/displayPreviousForm/:formName/:formId" element={ <SpecificDisplayPreviousForm /> } />
 
           <Route exact path="/availableForms" element={ <Selectform /> } />
-  
+ 
         </Routes>
+      ):(
+        <Routes>
+         <Route exact path="/" element={ <Login setAuthenticated={setAuthenticated} /> } />
+           <Route exact path="/home" element={ <Login setAuthenticated={setAuthenticated} /> } />
+           <Route exact path="/Forms" element={ <Login setAuthenticated={setAuthenticated} /> } />
+           <Route exact path="/login" element={ <Login setAuthenticated={setAuthenticated} /> } />
+           <Route exact path="/completeprofile" element={ <Login setAuthenticated={setAuthenticated} /> } />
+           <Route exact path="/displayprofile" element={ <Login setAuthenticated={setAuthenticated} /> } />
+           <Route exact path="/signup" element={ <SignUp/> } />
+  
+           <Route exact path="/facultyHome" element={ <Login setAuthenticated={setAuthenticated} /> } />
+          
+           <Route exact path="/StudentHome" element={ <Login setAuthenticated={setAuthenticated} /> } />
+
+           <Route exact path="/faculty/purchase/ff" element={ <Login setAuthenticated={setAuthenticated} /> } />
+           <Route exact path="/SS04" element={ <Login setAuthenticated={setAuthenticated} /> } />
+           <Route exact path="/SS01" element={ <Login setAuthenticated={setAuthenticated} /> } />
+           <Route exact path="/MM04" element={ <Login setAuthenticated={setAuthenticated} /> } />
+           <Route exact path="/Furniture" element={ <Login setAuthenticated={setAuthenticated} /> } />
+           <Route exact path="/search" element={ <Login setAuthenticated={setAuthenticated} /> } />
+           <Route exact path="/pfh" element={ <Login setAuthenticated={setAuthenticated} /> } />
+           <Route exact path="/nfh" element={ <Login setAuthenticated={setAuthenticated} /> } />
+           <Route exact path="/e01" element={ <Login setAuthenticated={setAuthenticated} /> } />
+           <Route exact path="/r1" element={ <Login setAuthenticated={setAuthenticated} /> } />
+           <Route exact path="/displayPendingForm" element={ <Login setAuthenticated={setAuthenticated} /> } />
+           <Route exact path="/displaySeekingForm" element={ <Login setAuthenticated={setAuthenticated} /> } />
+           <Route exact path="/displayPreviousForm" element={ <Login setAuthenticated={setAuthenticated} /> } />
+           <Route exact path="/displayPendingForm/:formName/:formId" element={ <Login setAuthenticated={setAuthenticated} /> } />
+           <Route exact path="/displaySeekingForm/:formName/:formId" element={ <Login setAuthenticated={setAuthenticated} /> } />
+           <Route exact path="/displayPreviousForm/:formName/:formId" element={ <Login setAuthenticated={setAuthenticated} /> } />
+
+           <Route exact path="/availableForms" element={ <Login setAuthenticated={setAuthenticated} /> } />
+  
+         </Routes>
+      )}
+
 
     </>
+
+    
   );
 }
 

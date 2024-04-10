@@ -12,7 +12,7 @@ import "./login.css"
 import Typography from '@mui/material/Typography'
 
 
-const LoginSignup = () => {
+const LoginSignup = (props) => {
   const [action,setAction]=useState("Sign Up");
   const [server_error, setServerError] = useState(null);
   const navigate = useNavigate();
@@ -34,22 +34,32 @@ const LoginSignup = () => {
     console.log("formdata",post)
     
     try {
-      const response = await axios.post(`${globalUrl}/v1/auth/login`, post, {
+      let response={}
+      try {
+          response = await axios.post(`${globalUrl}/v1/auth/login`, post, {
           withCredentials: true,
       });
+        props.setAuthenticated(true);
+      } catch (error) {
+        console.log("jaik")
+      }
       if(response.error){
         setServerError(response.error.data);
       }
       if(response.data){
           console.log("Here");
           console.log("Response.headers", response.headers);
-          
-            if (response.headers['set-cookie']){
-                console.log("Inside");
-                const cookieValue = response.headers['set-cookie'][0];
-                localStorage.setItem('jwt', cookieValue);
-                console.log('Cookie set: ');
+
+            const storedCookie=document.cookie;
+            if(storedCookie){
+              console.log("jai shree ram");
             }
+            // if (response.headers['set-cookie']){
+            //     console.log("Inside");
+            //     const cookieValue = response.headers['set-cookie'][0];
+            //     localStorage.setItem('jwt', cookieValue);
+            //     console.log('Cookie set: ');
+            // }
             console.log(response);
             navigate("/");
             console.log(document.cookie)
@@ -120,13 +130,13 @@ const LoginSignup = () => {
             <Link className="cursor-pointer"><span className="font-bold text-md">Forgot password</span></Link>
           </div>
           
-          <button
+          <Link to="/home"><button
             className="w-full font-normal text-base bg-blue-600 text-white p-2 rounded-lg mb-6 hover:bg-blue-800 hover:font-bold hover:text-lg"
             type="submit"
             onClick={(e) => handleSubmit(e)}
           >
             Sign in
-          </button>
+          </button></Link>
           {server_error!=null?<Typography style = {{fontSize:12, color:"red", paddingLeft:10}}>Invalid Email or Password</Typography>:""}
           </form>
           {/* <button

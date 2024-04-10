@@ -181,6 +181,7 @@ const handleChangeTable = (event, index, key) => {
         headers: headersObject,
         body: JSON.stringify(updatedFormData)
       });
+      console.log(headersObject)
       console.log(response)
       if (response.statusCode === 401) {
         console.log("Failed");
