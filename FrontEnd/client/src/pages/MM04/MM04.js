@@ -12,13 +12,13 @@ const MM04 =  () => {
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     note: "",
-    receiver: 2,
-    submitter: 0,
+    receiver: 1,
+    submitter: 1,
     quotation_no: "",
     date: "",
     requester_name: "",
-    amount: "",
-    amount_tax: "",
+    amount: 0,
+    amount_tax: 0,
     amount_words: "",
     name_member: "",
     designation_member: "",
@@ -28,8 +28,48 @@ const MM04 =  () => {
     reason: "",
   });
 
+
   const [searchName, setSearchName] = useState("");
     const [selectedDesignation, setSelectedDesignation] = useState("");
+
+    const handleUserSelect = (userId,userName) => {
+      console.log("aaaa",userName)
+      console.log("aaaa",userId)
+      setFormData({
+        ...formData,
+        receiver: userId
+      });
+    
+      if (userName) {
+        setSearchName(userName);
+      } else {
+        setSearchName(''); // or any default value you prefer
+      }
+      console.log("search+++",searchName)
+    };
+
+    
+    const filterUsers = () => {
+      return userData.filter(
+        (user) =>
+          user.username.toLowerCase().includes(searchName.toLowerCase()) &&
+          user.designation
+            .toLowerCase()
+            .includes(selectedDesignation.toLowerCase())
+          //   &&
+          // user.roll_no.toLowerCase().includes(searchRollNo.toLowerCase())
+      );
+    };
+
+
+
+    const designation = [
+      "HOD",
+      "Staff",
+      "Professor",
+      "Office",
+      "Student",
+      ];
            
     const handleChange = (evt) => {
         const changedField = evt.target.name;
@@ -46,13 +86,7 @@ const MM04 =  () => {
         });
     };
       
-      const designation = [
-      "HOD",
-      "Staff",
-      "Professor",
-      "Office",
-      "Student",
-      ];
+     
       
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -72,7 +106,7 @@ const MM04 =  () => {
                 'Cookie': storedCookie, // Include the retrieved cookie in the 'Cookie' header
             });
             const headersObject = Object.fromEntries(customHeaders.entries());
-            const response = await fetch(`${globalUrl}/v1/submit/R1`, {
+            const response = await fetch(`${globalUrl}/v1/submit/MM04`, {
                 method: 'POST',
                 credentials: 'include',  // Include credentials (cookies) in the request
                 headers: headersObject,
@@ -87,34 +121,7 @@ const MM04 =  () => {
             }
     };
 
-    const filterUsers = () => {
-        return userData.filter(
-          (user) =>
-            user.username.toLowerCase().includes(searchName.toLowerCase()) &&
-            user.designation
-              .toLowerCase()
-              .includes(selectedDesignation.toLowerCase())
-            //   &&
-            // user.roll_no.toLowerCase().includes(searchRollNo.toLowerCase())
-        );
-      };
-
-
-      const handleUserSelect = (userId,userName) => {
-        console.log("aaaa",userName)
-        console.log("aaaa",userId)
-        setFormData({
-          ...formData,
-          receiver: userId
-        });
       
-        if (userName) {
-          setSearchName(userName);
-        } else {
-          setSearchName(''); // or any default value you prefer
-        }
-        console.log("search+++",searchName)
-      };
 
 
     useEffect(() => {
@@ -139,6 +146,7 @@ const MM04 =  () => {
 
     return (
         <div>
+          <form>
         <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 max-w-lg mx-auto">
           <img src="/path-to-your-header-image.jpg" alt="Header" className="mx-auto mb-4" />
     
@@ -167,7 +175,7 @@ const MM04 =  () => {
          
     
           
-          <form>
+          {/* <form> */}
           <div className="flex items-center justify-between mb-4">
             
             <div className="w-1/2 pl-2">
@@ -206,34 +214,72 @@ const MM04 =  () => {
             ))}
           </select>
           </div> */}
-          <div className='p-4'> 
+          <div className=''> 
           <>
-         <div className="flex flex-col lg:flex-row mb-4 lg:mb-8 font-custom">
-        <div className="mb-4 lg:mb-0 lg:mr-4 lg:w-full">
-          <input
-            type="text"
-            placeholder="Search by name"
-            value={searchName}
-            onChange={(e) => setSearchName(e.target.value)}
-            className="p-2 border w-full rounded-md search-input hover:bg-gray-200"
-          />
-        </div>
-        <div className="mb-4 lg:mb-0 lg:mr-4 lg:w-full">
-          <select
-            value={selectedDesignation}
-            onChange={(e) => setSelectedDesignation(e.target.value)}
-            className="p-2 border w-full rounded-md text-white"
-            style={{ backgroundColor: "rgb(30 41 59)" }}
-          >
-            <option value="">Select Department</option>
-            {designation.map((department) => (
-              <option key={department} value={department}>
-                {department}
-              </option>
-            ))}
-          </select>
-        </div>
-        </div>
+          <div className='p-4'>
+            <div>
+              <div className="flex flex-col lg:flex-row mb-4 lg:mb-8 font-custom">
+                <div className="mb-4 lg:mb-0 lg:mr-4 lg:w-full">
+                  <input
+                    type="text"
+                    placeholder="Search by name"
+                    value={searchName}
+                    onChange={(e) => setSearchName(e.target.value)}
+                    className="p-2 border w-full rounded-md search-input hover:bg-gray-200"
+                  />
+                </div>
+                <div className="mb-4 lg:mb-0 lg:mr-4 lg:w-full">
+                  <select
+                    value={selectedDesignation}
+                    onChange={(e) => setSelectedDesignation(e.target.value)}
+                    className="p-2 border w-full rounded-md text-white"
+                    style={{ backgroundColor: "rgb(30 41 59)" }}
+                  >
+                    <option value="">Select Department</option>
+                    {designation.map((department) => (
+                      <option key={department} value={department}>
+                        {department}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              {searchName.toLowerCase() !== '' && (
+                <table className="w-full lg:w-full table-auto  border-collapse font-custom">
+                  <thead>
+                    <tr>
+                      <th className="w-1/3 border-4 p-2 text-center font-bold text-purple-900">
+                        Name
+                      </th>
+                      <th className="w-1/3 border-4 p-2 text-center font-bold text-purple-900">
+                        Designation
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filterUsers().map((user, index) => (
+                      <tr
+                        key={user.id}
+                        className="bg-slate-950 hover:bg-slate-800 transition-all cursor-pointer"
+                        onClick={() => handleUserSelect(user.id, user.username)}>
+
+                        <td className="w-1/3 border-4 p-4 bg-white subpixel-antialiased text-teal-500 ">
+                          {user.username}
+                        </td>
+                        <td className="w-1/3 border-4 p-4 bg-white text-center text-cyan-500">
+                          {user.designation}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+
+              {/* <p className="text-black">hwlooooooooooooooooooooooooooooooooooooooooooo</p> */}
+            </div>
+
+
+          </div>
         <div className="mb-6">
             <p className="text-xs italic text-center">
               *The certificate is as per GFR 2017 Rule No. 155.
@@ -247,9 +293,10 @@ const MM04 =  () => {
           </div>
           </>
           </div>
-          </form>
+          {/* </form> */}
           
         </div>
+        </form>
         </div>
       );
 

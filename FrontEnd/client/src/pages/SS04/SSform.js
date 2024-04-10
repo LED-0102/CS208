@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../../components/Navbar/Navbar';
 import Header from '../../components/Navbar/Header';
 import "./ssform.css";
@@ -11,7 +11,7 @@ const SS04form = () => {
   const [tabledata, setTabledata] = useState([]);
   const [totalCost, setTotalCost] = useState(0);
   const navigate = useNavigate();
-  
+
 
   const addRow = (e) => {
     e.preventDefault();
@@ -21,7 +21,7 @@ const SS04form = () => {
     setTabledata([...tabledata, newRow]);
   };
 
-  const [userData,setUserData]=useState({})
+  const [userData, setUserData] = useState({})
   const [searchName, setSearchName] = useState("");
   const [error, setError] = useState("");
   const [selectedDesignation, setSelectedDesignation] = useState("");
@@ -29,10 +29,10 @@ const SS04form = () => {
     // StoreNo: "",
     // financialyear: "",
     // reqdate: "",
-    note:"",
-    receiver:0,
-    submitter:0,
-    date:"",
+    note: "",
+    receiver: 0,
+    submitter: 0,
+    date: "",
     custodian: "",
     department: "",
     location: "",
@@ -48,35 +48,35 @@ const SS04form = () => {
     sign_date_indenter: "",
     name_head: "",
     sign_date_head: "",
-    issued_approved_name:"",
-    issued_approved_date:"", // Assuming the date could be null
-    items_received_name:"" ,
-    items_received_date:"" ,
+    issued_approved_name: "",
+    issued_approved_date: "", // Assuming the date could be null
+    items_received_name: "",
+    items_received_date: "",
     items_issued_name: "",
-    items_issued_date:"", // Assuming the date could be null
-    action_ledger_name:"", 
-    action_ledger_date:"",  // Assuming the date could be null
-    approval_status:"Pending",
+    items_issued_date: "", // Assuming the date could be null
+    action_ledger_name: "",
+    action_ledger_date: "",  // Assuming the date could be null
+    approval_status: "Pending",
 
 
 
 
   });
 
-  const handleUserSelect = (userId,userName) => {
-    console.log("aaaa",userName)
-    console.log("aaaa",userId)
+  const handleUserSelect = (userId, userName) => {
+    console.log("aaaa", userName)
+    console.log("aaaa", userId)
     setFormData({
       ...formData,
       receiver: userId
     });
-  
+
     if (userName) {
       setSearchName(userName);
     } else {
       setSearchName(''); // or any default value you prefer
     }
-    console.log("search+++",searchName)
+    console.log("search+++", searchName)
   };
 
   const handleCustodianChange = (event) => {
@@ -106,7 +106,7 @@ const SS04form = () => {
     });
   };
 
-  
+
   const filterUsers = () => {
     return userData.filter(
       (user) =>
@@ -114,34 +114,34 @@ const SS04form = () => {
         user.designation
           .toLowerCase()
           .includes(selectedDesignation.toLowerCase())
-        //   &&
-        // user.roll_no.toLowerCase().includes(searchRollNo.toLowerCase())
+      //   &&
+      // user.roll_no.toLowerCase().includes(searchRollNo.toLowerCase())
     );
   };
-const designation = [
-"HOD",
-"Staff",
-"Professor",
-"Office",
-"Student",
-];
+  const designation = [
+    "HOD",
+    "Staff",
+    "Professor",
+    "Office",
+    "Student",
+  ];
 
-const handleChangeTable = (event, index, key) => {
-  const { value } = event.target;
-  const updatedListOrders = [...tabledata];
-  updatedListOrders[index][key] = value;
-  setTabledata(updatedListOrders);
+  const handleChangeTable = (event, index, key) => {
+    const { value } = event.target;
+    const updatedListOrders = [...tabledata];
+    updatedListOrders[index][key] = value;
+    setTabledata(updatedListOrders);
 
-  // Calculate the total cost for the entire table
-  let totalCost = 0;
-  updatedListOrders.forEach(row => {
+    // Calculate the total cost for the entire table
+    let totalCost = 0;
+    updatedListOrders.forEach(row => {
       const cost = parseFloat(row.total) || 0;
       totalCost += cost;
-  });
+    });
 
-  setTotalCost(totalCost);
-  setTabledata(updatedListOrders);
-};
+    setTotalCost(totalCost);
+    setTabledata(updatedListOrders);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -155,20 +155,20 @@ const handleChangeTable = (event, index, key) => {
       bill: row.bill,
       and_date: row.and_date,
       item: row.item,
-      quantity:  parseInt(row.quantity),
+      quantity: parseInt(row.quantity),
       con_n_con: row.con_n_con,
-      unit_price:  parseInt(row.unit_price),
-      total:  parseInt(row.total)
+      unit_price: parseInt(row.unit_price),
+      total: parseInt(row.total)
     }));
 
     const updatedFormData = { ...formData, list_orders: listOrders };
     console.log("update form data:", updatedFormData)
 
     try {
-      
+
       const storedCookie = document.cookie;
       console.log(storedCookie);
-// Create a custom set of headers
+      // Create a custom set of headers
       const customHeaders = new Headers({
         'Content-Type': 'application/json', // You may need to adjust the content type based on your request
         'Cookie': storedCookie, // Include the retrieved cookie in the 'Cookie' header
@@ -211,17 +211,17 @@ const handleChangeTable = (event, index, key) => {
 
     fetchData();
 
-  
+
     return () => {
-      
+
     };
-  }, []); 
+  }, []);
 
 
 
   return (
     <div>
-        {/* <div className="main">
+      {/* <div className="main">
             <div className="gradient" />
           </div> */}
       {/* <div></div> */}
@@ -378,10 +378,10 @@ const handleChangeTable = (event, index, key) => {
                 ))}
                 <tr>
 
-            <td colSpan="8" className="font-bold text-right ">Total incl. GST@18%</td>
-            <td>{totalCost}</td>
-            {/* <td>{totalCost}</td> */}
-              </tr>
+                  <td colSpan="8" className="font-bold text-right ">Total incl. GST@18%</td>
+                  <td>{totalCost}</td>
+                  {/* <td>{totalCost}</td> */}
+                </tr>
               </tbody>
             </table>
             <div className='flex w-full gap-80 '>
@@ -430,7 +430,7 @@ const handleChangeTable = (event, index, key) => {
                       {/* <!-- <span>MEMS</span> --> */}
                       <input type="text" id="issued_approved_date" name="issued_approved_date" value={formData.issued_approved_date} placeholder='issued_approved_date ' onChange={handleChange} className="border-2 border-black" /></td>
                   </tr>
-                 
+
                 </tbody>
               </table>
 
@@ -453,7 +453,7 @@ const handleChangeTable = (event, index, key) => {
                       {/* <!-- <span>MEMS</span> --> */}
                       <input type="text" id="items_received_date" name="items_received_date" value={formData.items_received_date} placeholder='items_received_date name' onChange={handleChange} className="border-2 border-black" /></td>
                   </tr>
-                
+
                 </tbody>
               </table>
 
@@ -476,8 +476,8 @@ const handleChangeTable = (event, index, key) => {
                       {/* <!-- <span>MEMS</span> --> */}
                       <input type="text" id="items_issued_date" name="items_issued_date" value={formData.items_issued_date} placeholder='items_issued_date name' onChange={handleChange} className="border-2 border-black" /></td>
                   </tr>
-                
-                 
+
+
                 </tbody>
               </table>
 
@@ -505,70 +505,70 @@ const handleChangeTable = (event, index, key) => {
 
             </div>
           </div>
-          <div className='p-4'> 
-          <div>
-         <div className="flex flex-col lg:flex-row mb-4 lg:mb-8 font-custom">
-        <div className="mb-4 lg:mb-0 lg:mr-4 lg:w-full">
-          <input
-            type="text"
-            placeholder="Search by name"
-            value={searchName}
-            onChange={(e) => setSearchName(e.target.value)}
-            className="p-2 border w-full rounded-md search-input hover:bg-gray-200"
-          />
-        </div>
-        <div className="mb-4 lg:mb-0 lg:mr-4 lg:w-full">
-          <select
-            value={selectedDesignation}
-            onChange={(e) => setSelectedDesignation(e.target.value)}
-            className="p-2 border w-full rounded-md text-white"
-            style={{ backgroundColor: "rgb(30 41 59)" }}
-          >
-            <option value="">Select Department</option>
-            {designation.map((department) => (
-              <option key={department} value={department}>
-                {department}
-              </option>
-            ))}
-          </select>
-        </div>
-        </div>
-        {searchName.toLowerCase() !== '' && (
-        <table className="w-full lg:w-full table-auto  border-collapse font-custom">
-        <thead>
-          <tr>
-            <th className="w-1/3 border-4 p-2 text-center font-bold text-purple-900">
-              Name
-            </th>
-            <th className="w-1/3 border-4 p-2 text-center font-bold text-purple-900">
-              Designation
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {filterUsers().map((user, index) => (
-            <tr
-              key={user.id}
-              className="bg-slate-950 hover:bg-slate-800 transition-all cursor-pointer"
-              onClick={() => handleUserSelect(user.id,user.username)}>
+          <div className='p-4'>
+            <div>
+              <div className="flex flex-col lg:flex-row mb-4 lg:mb-8 font-custom">
+                <div className="mb-4 lg:mb-0 lg:mr-4 lg:w-full">
+                  <input
+                    type="text"
+                    placeholder="Search by name"
+                    value={searchName}
+                    onChange={(e) => setSearchName(e.target.value)}
+                    className="p-2 border w-full rounded-md search-input hover:bg-gray-200"
+                  />
+                </div>
+                <div className="mb-4 lg:mb-0 lg:mr-4 lg:w-full">
+                  <select
+                    value={selectedDesignation}
+                    onChange={(e) => setSelectedDesignation(e.target.value)}
+                    className="p-2 border w-full rounded-md text-white"
+                    style={{ backgroundColor: "rgb(30 41 59)" }}
+                  >
+                    <option value="">Select Department</option>
+                    {designation.map((department) => (
+                      <option key={department} value={department}>
+                        {department}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              {searchName.toLowerCase() !== '' && (
+                <table className="w-full lg:w-full table-auto  border-collapse font-custom">
+                  <thead>
+                    <tr>
+                      <th className="w-1/3 border-4 p-2 text-center font-bold text-purple-900">
+                        Name
+                      </th>
+                      <th className="w-1/3 border-4 p-2 text-center font-bold text-purple-900">
+                        Designation
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filterUsers().map((user, index) => (
+                      <tr
+                        key={user.id}
+                        className="bg-slate-950 hover:bg-slate-800 transition-all cursor-pointer"
+                        onClick={() => handleUserSelect(user.id, user.username)}>
 
-              <td className="w-1/3 border-4 p-4 bg-white subpixel-antialiased text-teal-500 ">
-                {user.username}
-              </td>
-              <td className="w-1/3 border-4 p-4 bg-white text-center text-cyan-500">
-                {user.designation}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-        )}
-        
-        {/* <p className="text-black">hwlooooooooooooooooooooooooooooooooooooooooooo</p> */}
-    </div>
+                        <td className="w-1/3 border-4 p-4 bg-white subpixel-antialiased text-teal-500 ">
+                          {user.username}
+                        </td>
+                        <td className="w-1/3 border-4 p-4 bg-white text-center text-cyan-500">
+                          {user.designation}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
 
-           
+              {/* <p className="text-black">hwlooooooooooooooooooooooooooooooooooooooooooo</p> */}
             </div>
+
+
+          </div>
           <div className='flex justify-center w-full mb-8'>
             <button onClick={(e) => handleSubmit(e)} >Submit</button>
           </div>
