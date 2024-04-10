@@ -24,7 +24,7 @@ const MM04 =  () => {
     designation_member: "",
     name_convener: "",
     To_Whom: "",
-    approval_status: "Approved",
+    approval_status: "Pending",
     reason: "",
   });
 
