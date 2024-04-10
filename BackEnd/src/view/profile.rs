@@ -5,7 +5,7 @@ use crate::db::structs::UserDb;
 
 pub async fn get_profile (jwt: JwToken, app_state: web::Data<AppState>) -> HttpResponse{
     let id = jwt.id;
-    let resp = match sqlx::query_as("SELECT * from users where id = $1")
+    let mut resp = match sqlx::query_as("SELECT * from users where id = $1")
         .bind(id)
         .fetch_one(&app_state.pool)
         .await {
@@ -16,9 +16,9 @@ pub async fn get_profile (jwt: JwToken, app_state: web::Data<AppState>) -> HttpR
         Err(e) => {
             println!("{:?}", e);
             return HttpResponse::InternalServerError().body(e.to_string());
-
         }
     };
+    resp.password ="".to_string();
     let json_string = serde_json::to_string(&resp).unwrap();
     HttpResponse::Ok().body(json_string)
 }
