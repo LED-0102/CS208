@@ -25,12 +25,22 @@ import Forms from './pages/Forms/Forms';
 import Anavbar from './components/Navbar/Anavbar';
 import CompleteProfile from './pages/ProfileRelated/CompleteProfile';
 import DisplayProfile from './pages/ProfileRelated/DisplayProfile';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 
 function App() {
 
   
-  const[authenticated , setAuthenticated]=useState(false);
+  const[authenticated , setAuthenticated]=useState(()=>{
+    if(!(localStorage.getItem('authenticated'))){
+      return false;
+    }
+    const storedAuthState = localStorage.getItem('authenticated');
+    return JSON.parse(storedAuthState);
+  });
+
+  useEffect(() => {
+    localStorage.setItem('authenticated', JSON.stringify(authenticated));
+  }, [authenticated]);
 
   return (
 
