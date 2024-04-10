@@ -207,3 +207,118 @@ CREATE TABLE inventory (
     instrument_name VARCHAR NOT NULL,
     location VARCHAR
 );
+CREATE TABLE Energy_and_Sensor_Lab (
+    id SERIAL PRIMARY KEY,
+    today_date VARCHAR,
+    schedule jsonb
+);
+CREATE TABLE Advanced_Functional_Materials_Lab (
+    id SERIAL PRIMARY KEY,
+    today_date VARCHAR,
+    schedule jsonb
+);
+CREATE TABLE Materials_and_Thin_Film_Devices_Lab (
+    id SERIAL PRIMARY KEY,
+    today_date VARCHAR,
+    schedule jsonb
+);
+CREATE TABLE FESEM_EBSD_EDS_Lab (
+    id SERIAL PRIMARY KEY,
+    today_date VARCHAR,
+    schedule jsonb
+);
+CREATE TABLE Metal_Forming_Surface_Engineering_Lab (
+    id SERIAL PRIMARY KEY,
+    today_date VARCHAR,
+    schedule jsonb
+);
+CREATE TABLE Polymer_Nanostructures_Device_Fabrication_Lab (
+    id SERIAL PRIMARY KEY,
+    today_date VARCHAR,
+    schedule jsonb
+);
+CREATE TABLE Mechanics_of_Material_Lab (
+    id SERIAL PRIMARY KEY,
+    today_date VARCHAR,
+    schedule jsonb
+);
+CREATE TABLE Nano_Materials_Energy_Devices_Lab (
+    id SERIAL PRIMARY KEY,
+    today_date VARCHAR,
+    schedule jsonb
+);
+CREATE TABLE Thin_Films_Coatings_Lab (
+    id SERIAL PRIMARY KEY,
+    today_date VARCHAR,
+    schedule jsonb
+);
+CREATE TABLE Materials_Research_Lab (
+    id SERIAL PRIMARY KEY,
+    today_date VARCHAR,
+    schedule jsonb
+);
+CREATE TABLE Corrosion_Engineering_Lab (
+    id SERIAL PRIMARY KEY,
+    today_date VARCHAR,
+    schedule jsonb
+);
+CREATE TABLE Soft_Materials_Research_Lab (
+    id SERIAL PRIMARY KEY,
+    today_date VARCHAR,
+    schedule jsonb
+);
+CREATE TABLE Welding_Engineering_Lab (
+    id SERIAL PRIMARY KEY,
+    today_date VARCHAR,
+    schedule jsonb
+);
+CREATE TABLE Materials_Joining_Mechanical_Testing_Lab (
+    id SERIAL PRIMARY KEY,
+    today_date VARCHAR,
+    schedule jsonb
+);
+CREATE TABLE Physical_Metallurgy_Laboratory (
+    id SERIAL PRIMARY KEY,
+    today_date VARCHAR,
+    schedule jsonb
+);
+CREATE TABLE Non_equilibrium_Advanced_Materials_Engineering_Lab (
+    id SERIAL PRIMARY KEY,
+    today_date VARCHAR,
+    schedule jsonb
+);
+CREATE TABLE Foundry_Engineering_Lab (
+    id SERIAL PRIMARY KEY,
+    today_date VARCHAR,
+    schedule jsonb
+);
+CREATE TABLE Solidification_Nanomaterials_Lab (
+    id SERIAL PRIMARY KEY,
+    today_date VARCHAR,
+    schedule jsonb
+);
+CREATE TABLE Solid_State_Ionics_Lab (
+    id SERIAL PRIMARY KEY,
+    today_date VARCHAR,
+    schedule jsonb
+);
+CREATE TABLE Microstructure_Texture_Lab (
+    id SERIAL PRIMARY KEY,
+    today_date VARCHAR,
+    schedule jsonb
+);
+CREATE TABLE Advanced_Mechanical_Physical_Metallurgy_Lab (
+    id SERIAL PRIMARY KEY,
+    today_date VARCHAR,
+    schedule jsonb
+);
+CREATE TABLE Integrated_Computational_Materials_Science_Engineering_Lab (
+    id SERIAL PRIMARY KEY,
+    today_date VARCHAR,
+    schedule jsonb
+);
+CREATE TABLE High_Performance_Computing_Facility (
+    id SERIAL PRIMARY KEY,
+    today_date VARCHAR,
+    schedule jsonb
+);
