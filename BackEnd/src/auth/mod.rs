@@ -8,6 +8,7 @@ pub mod jwt;
 use login::login;
 use logout::logout;
 use register::register;
+use jwt::JwToken;
 
 pub fn auth_config (cfg: &mut web::ServiceConfig) {
     cfg.service(
@@ -15,7 +16,6 @@ pub fn auth_config (cfg: &mut web::ServiceConfig) {
             .route("/register", web::post().to(register))
             .route("/login", web::post().to(login))
             .route("/logout", web::post().to(logout))
-            .route("/verify", web::post().to(verify_user))
     );
 }
 
@@ -25,15 +25,4 @@ pub struct UserInfo {
     pub email: String,
     pub designation: String,
     pub department: String
-}
-pub async fn verify_user (jwt: JwToken) -> HttpResponse {
-    let resp = UserInfo {
-        username: jwt.username.clone(),
-        email: jwt.email.clone(),
-        designation: jwt.designation.clone(),
-        department: jwt.department.clone()
-    };
-    let resp_str = serde_json::to_string(&resp).unwrap();
-
-    HttpResponse::Ok().body(resp_str)
 }
