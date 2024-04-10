@@ -39,7 +39,7 @@ const LoginSignup = (props) => {
           response = await axios.post(`${globalUrl}/v1/auth/login`, post, {
           withCredentials: true,
       });
-        props.setAuthenticated(true);
+        props.setAuthenticated(`${response.data}`);
       } catch (error) {
         console.log("jaik")
       }

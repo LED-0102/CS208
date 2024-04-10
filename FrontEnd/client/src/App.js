@@ -30,17 +30,25 @@ import { useState,useEffect } from 'react';
 function App() {
 
   
-  const[authenticated , setAuthenticated]=useState(()=>{
-    if(!(localStorage.getItem('authenticated'))){
-      return false;
-    }
-    const storedAuthState = localStorage.getItem('authenticated');
-    return JSON.parse(storedAuthState);
-  });
+  // const[authenticated , setAuthenticated]=useState(()=>{
+  //   if(!(localStorage.getItem('authenticated'))){
+  //     return false;
+  //   }
+  //   const storedAuthState = localStorage.getItem('authenticated');
+  //   return JSON.parse(storedAuthState);
+  // });
 
-  useEffect(() => {
-    localStorage.setItem('authenticated', JSON.stringify(authenticated));
-  }, [authenticated]);
+  // useEffect(() => {
+  //   localStorage.setItem('authenticated', JSON.stringify(authenticated));
+  // }, [authenticated]);
+
+  const[authenticated , setAuthenticated]=useState(()=>{
+    if(!(localStorage.getItem('token'))){
+      return "";
+    }
+    const storedAuthState = localStorage.getItem('token');
+    return storedAuthState;
+  })
 
   return (
 
@@ -53,7 +61,6 @@ function App() {
           <Route exact path="/home" element={ <Home/> } />
           <Route exact path="/Forms" element={ <Forms /> } />
           <Route exact path="/login" element={ <Login setAuthenticated={setAuthenticated} /> } />
-          {/* <Route exact path="/login2" element={ <ModalComponentLogIn /> } /> */}
           <Route exact path="/completeprofile" element={ <CompleteProfile /> } />
           <Route exact path="/displayprofile" element={ <DisplayProfile /> } />
           <Route exact path="/signup" element={ <SignUp/> } />

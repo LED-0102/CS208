@@ -1,9 +1,9 @@
 import React, { useState,useEffect } from 'react';
-import axios from 'axios';
 import globalUrl from '../../components/url';
 
 const DisplayProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
+  let info={}
 
   const handleEditClick = () => {
     setIsEditing(!isEditing);
@@ -12,34 +12,23 @@ const DisplayProfile = () => {
   useEffect(() => {
     const fetchData = async () => {
         try {
-            const storedCookie = document.cookie;
-            console.log(storedCookie);
+            
       // Create a custom set of headers
             const customHeaders = new Headers({
               'Content-Type': 'application/json', // You may need to adjust the content type based on your request
-              'Cookie': storedCookie, // Include the retrieved cookie in the 'Cookie' header
+              'Cookie': localStorage.getItem('token'), // Include the retrieved cookie in the 'Cookie' header
             });
             const headersObject = Object.fromEntries(customHeaders.entries());
   
-            //  const response = await fetch('https://jsonplaceholder.typicode.com/posts',{
             const response = await fetch(`${globalUrl}/v1/profile`, {
                 method: 'GET',
-                credentials: 'include',  // Include credentials (cookies) in the request
+                credentials: 'include',  
                 headers: headersObject,
-                // body: JSON.stringify(updatedFormData)
               });
-            //   console.log(response)
-            // console.log("aadd",typeof(data))
-            // setPendingFormData(response.data);
-            // console.log("aadd",typeof(pendingFormData))
-            // console.log("aadd",pendingFormData)
-            // console.log("aadd++++",response)
-               // Parsing JSON response
-const responseData = await response.json();
-// console.log('Parsed JSON response:', typeof(responseData));
-console.log('Parsed JSON response:', (responseData));
-console.log("asd")
-            //   console.log()
+            
+          const responseData = await response.json();
+          console.log('Parsed JSON response:', (responseData));
+          info=responseData
               if (response.statusCode === 401) {
                 console.log("Failed");
               }
@@ -49,12 +38,7 @@ console.log("asd")
     };
 
     fetchData();
-
-
-    return () => {
-
-    };
-}, []); 
+}); 
 
   return (
     <div className="max-w-4xl mx-auto mt-10">
@@ -70,31 +54,31 @@ console.log("asd")
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label className="block mb-2 font-bold" htmlFor="name">Name:</label>
-          {isEditing ? <input type="text" id="name" defaultValue="Ram" /> : <p id="name">Ram</p>}
+          {isEditing ? <input type="text" id="name" defaultValue="Ram" /> : <p id="name">{}</p>}
         </div>
         <div>
           <label className="block mb-2 font-bold" htmlFor="email">Email:</label>
-          {isEditing ? <input type="email" id="email" defaultValue="ram@gmail.com" /> : <p id="email">ram@gmail.com</p>}
+          {isEditing ? <input type="email" id="email" defaultValue="ram@gmail.com" /> : <p id="email">{!(info) ? "":info.email}</p>}
         </div>
         <div>
           <label className="block mb-2 font-bold" htmlFor="designation">Designation:</label>
-          {isEditing ? <input type="text" id="designation" defaultValue="Proffesor" /> : <p id="designation">Proffesor</p>}
+          {isEditing ? <input type="text" id="designation" defaultValue="Proffesor" /> : <p id="designation">{!(info) ? "":info.designation}</p>}
         </div>
         <div>
           <label className="block mb-2 font-bold" htmlFor="department">Department:</label>
-          {isEditing ? <input type="text" id="department" defaultValue="MEMS" /> : <p id="department">MEMS</p>}
+          {isEditing ? <input type="text" id="department" defaultValue="MEMS" /> : <p id="department">{!(info) ? "":info.department}</p>}
         </div>
         <div>
           <label className="block mb-2 font-bold" htmlFor="location">Location:</label>
-          {isEditing ? <input type="text" id="location" defaultValue="Simrol" /> : <p id="location">Simrol</p>}
+          {isEditing ? <input type="text" id="location" defaultValue="Simrol" /> : <p id="location">{!(info) ? "":info.location}</p>}
         </div>
         <div>
           <label className="block mb-2 font-bold" htmlFor="room-no">Room No:</label>
-          {isEditing ? <input type="text" id="room-no" defaultValue="123" /> : <p id="room-no">123</p>}
+          {isEditing ? <input type="text" id="room-no" defaultValue="123" /> : <p id="room-no">{!(info) ? "":info.room}</p>}
         </div>
         <div>
           <label className="block mb-2 font-bold" htmlFor="contact-no">Contact No:</label>
-          {isEditing ? <input type="text" id="contact-no" defaultValue="1234567890" /> : <p id="contact-no">1234567890</p>}
+          {isEditing ? <input type="text" id="contact-no" defaultValue="1234567890" /> : <p id="contact-no">{!(info) ? "":info.contact_number}</p>}
         </div>
       </div>
     </div>

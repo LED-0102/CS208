@@ -171,7 +171,8 @@ const SS04form = () => {
       // Create a custom set of headers
       const customHeaders = new Headers({
         'Content-Type': 'application/json', // You may need to adjust the content type based on your request
-        'Cookie': storedCookie, // Include the retrieved cookie in the 'Cookie' header
+        'Cookie': '',
+        //'Cookie': storedCookie, // Include the retrieved cookie in the 'Cookie' header
       });
       const headersObject = Object.fromEntries(customHeaders.entries());
       // const response = await fetch('https://jsonplaceholder.typicode.com/posts',{
