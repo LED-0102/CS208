@@ -78,7 +78,7 @@ const FurnitureRequirementForm = () => {
                 'Cookie': storedCookie, // Include the retrieved cookie in the 'Cookie' header
             });
             const headersObject = Object.fromEntries(customHeaders.entries());
-            const response = await fetch(`${globalUrl}/v1/submit/R1`, {
+            const response = await fetch(`${globalUrl}/v1/submit/Furniture`, {
                 method: 'POST',
                 credentials: 'include',  // Include credentials (cookies) in the request
                 headers: headersObject,

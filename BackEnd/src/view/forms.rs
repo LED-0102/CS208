@@ -517,7 +517,7 @@ impl Forms {
                         Ok(Forms::MM04(s))
                     }
                     Err(e) => {
-                        println!("{:?}", &e);
+                        
                         Err(HttpResponse::BadRequest().body("Incompatible structure"))
                     }
                 }
@@ -573,7 +573,8 @@ impl Forms {
                         s.submitter = jwt.id;
                         Ok(Forms::Furniture(s))
                     }
-                    Err(_) => {
+                    Err(e) => {
+                        println!("{:?}", &e);
                         Err(HttpResponse::BadRequest().body("Incompatible structure"))
                     }
                 }
