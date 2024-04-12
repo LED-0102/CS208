@@ -8,6 +8,7 @@ import globalUrl from "../url";
 import Cookies from 'js-cookie';
 import axios from "axios";
 import { Link, useNavigate } from 'react-router-dom'
+import campus from '../../images/LoginSignup/campus.jpg'
 
 
 const LoginSignup = () => {
@@ -169,7 +170,7 @@ const deleteCookie = () => {
         {/* right side */}
         <div className="relative">
           <img
-            src=""
+            src={campus}
             alt="img"
             className="w-[400px] h-full hidden rounded-r-2xl md:block object-cover"
           />
@@ -177,10 +178,7 @@ const deleteCookie = () => {
           <div
             className="absolute hidden bottom-10 right-6 p-6 bg-white bg-opacity-30 backdrop-blur-sm rounded drop-shadow-lg md:block"
           >
-            <span className="text-white text-xl"
-              >We've been uesing Untitle to kick"<br />start every new project
-              and can't <br />imagine working without it."
-            </span>
+          \
           </div>
         </div>
       </div>
