@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import globalUrl from "../../components/url";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
+// import { useNavigate } from "react-router-dom";
 
 
 const SS04form = () => {
@@ -145,7 +147,11 @@ const SS04form = () => {
     setTabledata(updatedListOrders);
   };
 
-  const handleSubmit = async (e) => {
+  // const navigate = useNavigate();
+
+  const handleSubmit = async ( e,
+    onSuccessRedirect,
+    onFailureRedirect) => {
     e.preventDefault();
 
     const totalAmount = parseFloat(totalCost) || 0;
@@ -188,13 +194,19 @@ const SS04form = () => {
       console.log(response)
 
       if (response.status === 200) {
-        toast.success('Data submitted successfully');
-      } else if (response.status === 401) {
-        toast.error('Failed to submit data');
+        toast.success('Data submitted successfully', {
+          onClose: () => onSuccessRedirect() // Redirect to success page after toast is fully closed
+        });
+      } else if (response.status === 401 || response.status === 400 ) {
+        toast.error('Failed to submit data', {
+          onClose: () => onFailureRedirect() // Redirect to failure page after toast is fully closed
+        });
+      }else{
+        toast.error('Failed to submit data', {
+          onClose: () => onFailureRedirect() // Redirect to failure page after toast is fully closed
+        });
       }
-      if (response.statusCode === 401) {
-        console.log("Failed");
-      }
+
     } catch (error) {
       console.error("Error:", error);
     }
@@ -226,7 +238,13 @@ const SS04form = () => {
     };
   }, []);
 
+ const handleSuccessRedirect = () => {
+    navigate("/");
+  };
 
+  const handleFailureRedirect = () => {
+    navigate("/SS04");
+  };
 
   return (
     <div>
@@ -579,7 +597,8 @@ const SS04form = () => {
 
           </div>
           <div className='flex justify-center w-full mb-8'>
-            <button onClick={(e) => handleSubmit(e)} >Submit</button>
+          <button onClick={(e) => handleSubmit(e, handleSuccessRedirect, handleFailureRedirect)}>Submit</button>
+             <ToastContainer  />
           </div>
         </form>
       </div>
