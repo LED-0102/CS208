@@ -535,7 +535,7 @@ impl FormTrait for Forms {
                         leave_reason,
                         start_date,
                         end_date,
-                        approval,
+                        approval_status,
                         reason
                     ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
                     RETURNING id;")
@@ -546,7 +546,7 @@ impl FormTrait for Forms {
                     .bind(&lr.leave_reason)
                     .bind(&lr.start_date)
                     .bind(&lr.end_date)
-                    .bind(&lr.approval)
+                    .bind(&lr.approval_status)
                     .bind(&lr.reason)
                     .fetch_one(pool)
                     .await;
@@ -570,8 +570,8 @@ impl FormTrait for Forms {
                         leave_reason,
                         start_date,
                         end_date,
-                        intermediate_approval,
-                        hod_approval,
+                        intermediate_approval_status,
+                        hod_approval_status,
                         reason
                     ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
                     RETURNING id;")
@@ -582,8 +582,8 @@ impl FormTrait for Forms {
                     .bind(&ls.leave_reason)
                     .bind(&ls.start_date)
                     .bind(&ls.end_date)
-                    .bind(&ls.intermediate_approval)
-                    .bind(&ls.hod_approval)
+                    .bind(&ls.intermediate_approval_status)
+                    .bind(&ls.hod_approval_status)
                     .bind(&ls.reason)
                     .fetch_one(pool)
                     .await;

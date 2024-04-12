@@ -217,8 +217,8 @@ CREATE TABLE Leave_Student (
     leave_reason VARCHAR,
     start_date VARCHAR,
     end_date VARCHAR,
-    intermediate_approval state,
-    hod_approval state,
+    intermediate_approval_status state,
+    hod_approval_status state,
     reason VARCHAR
 );
 CREATE TABLE Leave_Rest (
@@ -230,7 +230,7 @@ CREATE TABLE Leave_Rest (
     leave_reason VARCHAR,
     start_date VARCHAR,
     end_date VARCHAR,
-    approval state,
+    approval_status state,
     reason VARCHAR
 );
 CREATE TABLE students (

@@ -216,8 +216,8 @@ pub struct Leave_Student {
     pub leave_reason: String,
     pub start_date: String,
     pub end_date: String,
-    pub intermediate_approval: State,
-    pub hod_approval: State,
+    pub intermediate_approval_status: State,
+    pub hod_approval_status: State,
     pub reason: String
 }
 
@@ -230,7 +230,7 @@ pub struct Leave_Rest {
     pub leave_reason: String,
     pub start_date: String,
     pub end_date: String,
-    pub approval: State,
+    pub approval_status: State,
     pub reason: String
 }
 
@@ -424,8 +424,8 @@ impl Leave_Student {
             leave_reason: "".to_string(), 
             start_date: "".to_string(), 
             end_date: "".to_string(), 
-            intermediate_approval: "Pending".parse().unwrap(), 
-            hod_approval: "Pending".parse().unwrap(), 
+            intermediate_approval_status: "Pending".parse().unwrap(), 
+            hod_approval_status: "Pending".parse().unwrap(), 
             reason: "".to_string() 
         }
     }
@@ -441,7 +441,7 @@ impl Leave_Rest {
             leave_reason: "".to_string(), 
             start_date: "".to_string(), 
             end_date: "".to_string(), 
-            approval: "Pending".parse().unwrap(), 
+            approval_status: "Pending".parse().unwrap(), 
             reason: "".to_string() 
         }
     }
