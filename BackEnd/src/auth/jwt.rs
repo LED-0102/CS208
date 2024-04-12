@@ -70,7 +70,6 @@ impl FromRequest for JwToken {
             Some(data) => {
                 // println!("{}", data);
                 let raw_token = data.value().to_string();
-                println!("{}", raw_token);
 
                 let token_result = JwToken::from_token(raw_token);
                 match token_result {

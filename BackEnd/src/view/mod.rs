@@ -13,7 +13,7 @@ use forms::{Forms, FormTrait};
 use crate::AppState;
 use crate::db::fetch_id::verify_receiver;
 use get_form::get_form;
-use crate::view::profile::get_profile;
+use crate::view::profile::{get_profile, edit_profile};
 use self::labs::{get_schedule, book_schedule};
 
 #[derive(Deserialize, Debug, Serialize)]
@@ -32,7 +32,7 @@ pub fn view_config (cfg: &mut web::ServiceConfig) {
             .service(book_schedule)
             .route("/{form_name}/{form_id}", web::get().to(get_form))
             .route("/profile", web::get().to(get_profile))
-            .route("/edit", web::post().to(profile::edit_profile))
+            .route("/edit", web::post().to(edit_profile))
             .route("/labs/get_schedule/{lab_name}/{Date}", web::get().to(get_schedule))
     );
 }
