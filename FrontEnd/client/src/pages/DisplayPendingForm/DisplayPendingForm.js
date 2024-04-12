@@ -131,7 +131,7 @@ const DisplayPendingForm = () => {
       <div key={formName} className="">
         <ul>
           {forms.map(form => (
-            <div className='flex flex-row'>
+            <div className='flex flex-row justify-center gap-8 '>
               <div className=''>
               <h2>{formName}</h2>
             <li key={form.id}>
@@ -139,9 +139,11 @@ const DisplayPendingForm = () => {
               <p>Submitter: {form.submitter}</p>
               <p>Receiver: {form.receiver}</p>
               <p>Approval Status: {form.approval_status}</p>
+              <div className="flex flex-row gap-4">
               <button onClick={() => handleFormClickProceed(form.id,formName)}>Proceed</button>
               <button onClick={() => handleFormClick(form.id, formName, 'accept')}>Accept</button>
               <button onClick={() => handleFormClick(form.id, formName, 'reject')}>Reject</button>
+              </div>
             </li>
             </div>
 

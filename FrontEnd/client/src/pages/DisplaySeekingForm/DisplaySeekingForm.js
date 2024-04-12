@@ -71,10 +71,10 @@ const DisplaySeekingForm = () => {
     <div className='flex'>
     {previousFormData && Object.entries(previousFormData).map(([formName, forms]) => (
       <div key={formName}>
-        <h2>{formName}</h2>
         <ul>
           {forms.map(form => (
             <li key={form.id}>
+              <h2>{formName}</h2>
               <p>ID: {form.id}</p>
               <p>Submitter: {form.submitter}</p>
               <p>Receiver: {form.receiver}</p>
