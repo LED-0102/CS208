@@ -263,8 +263,8 @@ const Home = () => {
           <p className='mb-2 text-lg'>Select the form you want to see</p>
             <div className='flex flex-col'>
               <Link to='/displayPendingForm' className="mb-2 text-white font-bold dark:text-gray-400 bg-green-300 w-32 rounded-3xl text-center p-4">Pending Form</Link>
-              <Link to='/displayPendingForm/:formName/:formId' className="mb-2 text-white font-bold dark:text-gray-400 bg-green-300 w-32 rounded-3xl text-center p-4">Previous Form</Link>
-              <Link to='/displayPendingForm/:formName/:formId' className="mb-2 text-white font-bold dark:text-gray-400 bg-green-300 w-32 rounded-3xl text-center p-4">Seeking Form</Link>
+              <Link to='/displayPreviousForm' className="mb-2 text-white font-bold dark:text-gray-400 bg-green-300 w-32 rounded-3xl text-center p-4">Previous Form</Link>
+              <Link to='/displaySeekingForm' className="mb-2 text-white font-bold dark:text-gray-400 bg-green-300 w-32 rounded-3xl text-center p-4">Seeking Form</Link>
               {/* <Link to='/displayPendingForm/:formName/:formId' className="mb-2 text-white font-bold dark:text-gray-400 bg-green-300 w-32 rounded-3xl text-center p-4">FURNITURE</Link>
               <Link to='/displayPendingForm/:formName/:formId' className="mb-2 text-white font-bold dark:text-gray-400 bg-green-300 w-32 rounded-3xl text-center p-4">R1</Link>
               <Link to='/displayPendingForm/:formName/:formId' className="mb-2 text-white font-bold dark:text-gray-400 bg-green-300 w-32 rounded-3xl text-center p-4">SS01</Link> */}

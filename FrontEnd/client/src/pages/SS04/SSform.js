@@ -5,12 +5,53 @@ import "./ssform.css";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import globalUrl from "../../components/url";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
+// import { useNavigate } from "react-router-dom";
 
 
 const SS04form = () => {
   const [tabledata, setTabledata] = useState([]);
   const [totalCost, setTotalCost] = useState(0);
   const navigate = useNavigate();
+
+
+  const [info,setInfo] = useState({})
+  useEffect(() => {
+    const fetchData = async () => {
+        try {
+            
+      // Create a custom set of headers
+            const customHeaders = new Headers({
+              'Content-Type': 'application/json', // You may need to adjust the content type based on your request
+              'Cookie': localStorage.getItem('token'), // Include the retrieved cookie in the 'Cookie' header
+            });
+            const headersObject = Object.fromEntries(customHeaders.entries());
+            const response = await fetch(`${globalUrl}/v1/profile`, {
+                method: 'GET',
+                credentials: 'include',  
+                headers: headersObject,
+              });
+            
+          const responseData = await response.json();
+          console.log('Parsed JSON response:', (responseData));
+          setInfo(responseData)
+              if (response.statusCode === 401) {
+                console.log("Failed");
+              }
+            } catch (error) {
+              console.error("Error:", error);
+            }
+    };
+
+    fetchData();
+},[]); 
+
+
+useEffect(() => {
+  console.log("information++++++++++++++", info);
+}, [info]);
 
 
   const addRow = (e) => {
@@ -143,7 +184,11 @@ const SS04form = () => {
     setTabledata(updatedListOrders);
   };
 
-  const handleSubmit = async (e) => {
+  // const navigate = useNavigate();
+
+  const handleSubmit = async ( e,
+    onSuccessRedirect,
+    onFailureRedirect) => {
     e.preventDefault();
 
     const totalAmount = parseFloat(totalCost) || 0;
@@ -171,7 +216,7 @@ const SS04form = () => {
       // Create a custom set of headers
       const customHeaders = new Headers({
         'Content-Type': 'application/json', // You may need to adjust the content type based on your request
-        'Cookie': '',
+        'Cookie': localStorage.getItem('token'),
         //'Cookie': storedCookie, // Include the retrieved cookie in the 'Cookie' header
       });
       const headersObject = Object.fromEntries(customHeaders.entries());
@@ -184,9 +229,21 @@ const SS04form = () => {
       });
       console.log(headersObject)
       console.log(response)
-      if (response.statusCode === 401) {
-        console.log("Failed");
+
+      if (response.status === 200) {
+        toast.success('Data submitted successfully', {
+          onClose: () => onSuccessRedirect() // Redirect to success page after toast is fully closed
+        });
+      } else if (response.status === 401 || response.status === 400 ) {
+        toast.error('Failed to submit data', {
+          onClose: () => onFailureRedirect() // Redirect to failure page after toast is fully closed
+        });
+      }else{
+        toast.error('Failed to submit data', {
+          onClose: () => onFailureRedirect() // Redirect to failure page after toast is fully closed
+        });
       }
+
     } catch (error) {
       console.error("Error:", error);
     }
@@ -218,7 +275,28 @@ const SS04form = () => {
     };
   }, []);
 
+ const handleSuccessRedirect = () => {
+    navigate("/");
+  };
 
+  const handleFailureRedirect = () => {
+    navigate("/SS04");
+  };
+
+  useEffect(() => {
+    console.log("information", info);
+    // Update the formData state with info data
+    setFormData(prevState => ({
+      ...prevState,
+      name_of_applicant: info.username,
+      designation: info.designation,
+      department: info.department,
+      location:info.location,
+      contact:info.contact_number,
+      email:info.email,
+    }));
+    console.log(formData)
+  }, [info]);
 
   return (
     <div>
@@ -292,15 +370,15 @@ const SS04form = () => {
                       <td className="border-none"><label className='font-bold' htmlFor="department">Department/Project No. :</label></td>
                       <td className="border-none">
                         {/* <!-- <span>MEMS</span> --> */}
-                        <input type="text" id="department" name="department" value={formData.department} placeholder='department name' onChange={handleChange} className="" /></td>
+                        <input type="text" id="department" name="department" defaultValue={formData.department} placeholder='department name' onChange={handleChange} className="" /></td>
                     </tr>
                     <tr>
                       <td className="border-none"><label className='font-bold' htmlFor="location">Location :</label></td>
-                      <td className="border-none"><input type="text" id="location" name="location" placeholder='location' value={formData.location} onChange={handleChange} className="" /></td>
+                      <td className="border-none"><input type="text" id="location" name="location" placeholder='location' defaultValue={formData.location} onChange={handleChange} className="" /></td>
                     </tr>
                     <tr>
                       <td className="border-none"><label className='font-bold' htmlFor="contact">Contact No :</label></td>
-                      <td className="border-none"><input type="number" id="contact" name="contact" placeholder='contact' value={formData.contact} onChange={handleChange} className="" /></td>
+                      <td className="border-none"><input type="number" id="contact" name="contact" placeholder='contact' defaultValue={formData.contact} onChange={handleChange} className="" /></td>
                     </tr>
                     <tr>
                       <td className="border-none"><label className='font-bold' htmlFor="items_receiving_date">Item Receiving Date: </label></td>
@@ -329,11 +407,11 @@ const SS04form = () => {
                     </tr>
                     <tr>
                       <td className="border-none"><label className='font-bold' htmlFor='room_no'>Room No :</label></td>
-                      <td className="border-none"><input type="text" id="room_no" name="room_no" placeholder='room number' value={formData.room_no} onChange={handleChange} className="" /></td>
+                      <td className="border-none"><input type="text" id="room_no" name="room_no" placeholder='room number' defaultValue={formData.room_no} onChange={handleChange} className="" /></td>
                     </tr>
                     <tr>
                       <td className="border-none"><label className='font-bold' htmlFor='email'>Email id :</label></td>
-                      <td className="border-none"><input type="email" id="email" name="email" placeholder='email' value={formData.email} onChange={handleChange} className="" /></td>
+                      <td className="border-none"><input type="email" id="email" name="email" placeholder='email' defaultValue={formData.email} onChange={handleChange} className="" /></td>
                     </tr>
                   </tbody>
                 </table>
@@ -571,7 +649,8 @@ const SS04form = () => {
 
           </div>
           <div className='flex justify-center w-full mb-8'>
-            <button onClick={(e) => handleSubmit(e)} >Submit</button>
+          <button onClick={(e) => handleSubmit(e, handleSuccessRedirect, handleFailureRedirect)}>Submit</button>
+             <ToastContainer  />
           </div>
         </form>
       </div>

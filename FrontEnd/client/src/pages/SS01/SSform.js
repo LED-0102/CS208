@@ -658,7 +658,7 @@ const SS01form = () => {
                                             <th>6. Invoice amount:</th>
                                             <td><input 
                                             placeholder=" Invoice amount"
-                                            type="text"
+                                            type="number"
                                             id="invoice_amount"
                                             name="invoice_amount"
                                             value={formData.invoice_amount}

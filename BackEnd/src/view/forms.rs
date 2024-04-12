@@ -3,8 +3,7 @@ use actix_web::{HttpResponse};
 use serde::{Serialize, Serializer};
 use crate::db::structs::{State, SS04, MM04, SS01, R1, E01, Furniture, Leave,};
 use crate::ws::server::{ChatServer, Identifier};
-use serde_json;
-use serde_json::Value;
+use serde_json::{self, Value, json};
 use sqlx::{PgPool, Row};
 use crate::auth::jwt::JwToken;
 use crate::db::fetch_id::{identifier_id};
@@ -369,6 +368,7 @@ impl FormTrait for Forms {
                     Ok(_) => {
                     }
                     Err(e) => {
+                        println!("{}", &e.to_string());
                         return Err(Box::try_from(e).unwrap());
                     }
                 }
@@ -554,7 +554,7 @@ impl FormTrait for Forms {
 }
 
 impl Forms {
-    pub fn from_str(s: &str, body: Value, jwt: &JwToken) -> Result<Self, HttpResponse> {
+    pub fn from_str(s: &str, mut body: Value, jwt: &JwToken) -> Result<Self, HttpResponse> {
         match s {
             "MM04" => {
                 match serde_json::from_value::<MM04>(body) {
@@ -581,12 +581,26 @@ impl Forms {
                 }
             }
             "SS01" => {
+                if let Some(invoice_amount) = body.get_mut("invoice_amount") {
+                    // Check if the "invoice_amount" field is a string
+                    if let Some(invoice_amount_string) = invoice_amount.as_str() {
+                        // Parse the string to an integer
+                        if let Ok(invoice_amount_integer) = invoice_amount_string.parse::<i32>() {
+                            // Update the JSON object with the integer value
+                            *invoice_amount = json!(invoice_amount_integer);
+                        }
+                    }
+                } else {
+                    return Err(HttpResponse::BadRequest().body("Missing 'invoice_amount' field"));
+                }
+
                 match serde_json::from_value::<SS01>(body) {
                     Ok(mut s) => {
                         s.submitter = jwt.id;
                         Ok(Forms::SS01(s))
                     }
-                    Err(_) => {
+                    Err(e) => {
+                        println!("{:?}", e);
                         Err(HttpResponse::BadRequest().body("Incompatible structure"))
                     }
                 }

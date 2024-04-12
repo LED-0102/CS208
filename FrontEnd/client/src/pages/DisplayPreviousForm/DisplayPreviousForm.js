@@ -85,9 +85,9 @@ const DisplayPreviousForm = () => {
         </ul>
       </div>
     ))}
-      <div className='bg-blue-700 h-64 border-black border-2'>
+      {/* <div className='bg-blue-700 h-64 border-black border-2'>
         <textarea className='h-32'></textarea>
-      </div>
+      </div> */}
   </div>
   )
 }

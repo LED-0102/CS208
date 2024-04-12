@@ -32,9 +32,11 @@ pub async fn get_profile (jwt: JwToken, app_state: web::Data<AppState>) -> HttpR
     HttpResponse::Ok().body(json_string)
 }
 
-pub async fn edit_profile (jw_token: JwToken, data: web::Data<EditUserInfo>, pool: web::Data<AppState>) -> HttpResponse {
+pub async fn edit_profile (jw_token: JwToken, data: web::Json<EditUserInfo>, pool: web::Data<AppState>) -> HttpResponse {
+    println!("Here");
     let id = jw_token.id;
     let query = "UPDATE users SET location = $1, room = $2, contact_number = $3 WHERE id = $4".to_string();
+    println!("Here2");
     match sqlx::query(&query)
         .bind(&data.location)
         .bind(&data.room)
@@ -43,6 +45,7 @@ pub async fn edit_profile (jw_token: JwToken, data: web::Data<EditUserInfo>, poo
         .execute(&pool.pool)
         .await {
         Ok(_) => {
+            println!("OK");
             HttpResponse::Ok().finish()
         },
         Err(e) => {
