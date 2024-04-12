@@ -22,6 +22,12 @@ const SpecificDisplayPendingForm = () => {
     case 'SS01':
       formComponent=<SS01form formId={formId} formName={formName}/>;
       break;
+    case 'MM04':
+      formComponent=<SS01form formId={formId} formName={formName}/>;
+      break;
+    case 'Furniture':
+      formComponent=<SS01form formId={formId} formName={formName}/>;
+      break;
     default:
       formComponent=<div>Unkmown Form</div>;
       break;
@@ -1191,6 +1197,8 @@ const SS01form = () => {
       </div>
   );
 }
+
+
 
 // export default SpecificDisplayPendingForm
 
