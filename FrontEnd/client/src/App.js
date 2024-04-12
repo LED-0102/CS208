@@ -21,6 +21,7 @@ import DisplayPreviousForm from './pages/DisplayPreviousForm/DisplayPreviousForm
 import SpecificDisplayPendingForm from './pages/DisplayPendingForm/SpecificDisplayPendingForm'
 import SpecificDisplaySeekingForm from './pages/DisplaySeekingForm/SpecificDisplaySeekingForm'
 import SpecificDisplayPreviousForm from './pages/DisplayPreviousForm/SpecificDisplayPreviousForm'
+import Leave_Student from './pages/Leave/Leave_Student'
 import Forms from './pages/Forms/Forms';
 import Anavbar from './components/Navbar/Anavbar';
 import CompleteProfile from './pages/ProfileRelated/CompleteProfile';
@@ -85,6 +86,7 @@ function App() {
           <Route exact path="/displayPendingForm/:formName/:formId" element={ <SpecificDisplayPendingForm /> } />
           <Route exact path="/displaySeekingForm/:formName/:formId" element={ <SpecificDisplaySeekingForm /> } />
           <Route exact path="/displayPreviousForm/:formName/:formId" element={ <SpecificDisplayPreviousForm /> } />
+          <Route exact path="/leave_student" element={ <Leave_Student /> } />
 
           <Route exact path="/availableForms" element={ <Selectform /> } />
  
@@ -119,6 +121,7 @@ function App() {
            <Route exact path="/displayPendingForm/:formName/:formId" element={ <Login setAuthenticated={setAuthenticated} /> } />
            <Route exact path="/displaySeekingForm/:formName/:formId" element={ <Login setAuthenticated={setAuthenticated} /> } />
            <Route exact path="/displayPreviousForm/:formName/:formId" element={ <Login setAuthenticated={setAuthenticated} /> } />
+           <Route exact path="/leave_student" element={ <Login setAuthenticated={setAuthenticated} /> } />
 
            <Route exact path="/availableForms" element={ <Login setAuthenticated={setAuthenticated} /> } />
   
