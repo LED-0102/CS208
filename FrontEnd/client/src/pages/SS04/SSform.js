@@ -17,6 +17,43 @@ const SS04form = () => {
   const navigate = useNavigate();
 
 
+  const [info,setInfo] = useState({})
+  useEffect(() => {
+    const fetchData = async () => {
+        try {
+            
+      // Create a custom set of headers
+            const customHeaders = new Headers({
+              'Content-Type': 'application/json', // You may need to adjust the content type based on your request
+              'Cookie': localStorage.getItem('token'), // Include the retrieved cookie in the 'Cookie' header
+            });
+            const headersObject = Object.fromEntries(customHeaders.entries());
+            const response = await fetch(`${globalUrl}/v1/profile`, {
+                method: 'GET',
+                credentials: 'include',  
+                headers: headersObject,
+              });
+            
+          const responseData = await response.json();
+          console.log('Parsed JSON response:', (responseData));
+          setInfo(responseData)
+              if (response.statusCode === 401) {
+                console.log("Failed");
+              }
+            } catch (error) {
+              console.error("Error:", error);
+            }
+    };
+
+    fetchData();
+},[]); 
+
+
+useEffect(() => {
+  console.log("information++++++++++++++", info);
+}, [info]);
+
+
   const addRow = (e) => {
     e.preventDefault();
     // Create a new row with a unique ID and serial number
@@ -246,6 +283,21 @@ const SS04form = () => {
     navigate("/SS04");
   };
 
+  useEffect(() => {
+    console.log("information", info);
+    // Update the formData state with info data
+    setFormData(prevState => ({
+      ...prevState,
+      name_of_applicant: info.username,
+      designation: info.designation,
+      department: info.department,
+      location:info.location,
+      contact:info.contact_number,
+      email:info.email,
+    }));
+    console.log(formData)
+  }, [info]);
+
   return (
     <div>
       {/* <div className="main">
@@ -318,15 +370,15 @@ const SS04form = () => {
                       <td className="border-none"><label className='font-bold' htmlFor="department">Department/Project No. :</label></td>
                       <td className="border-none">
                         {/* <!-- <span>MEMS</span> --> */}
-                        <input type="text" id="department" name="department" value={formData.department} placeholder='department name' onChange={handleChange} className="" /></td>
+                        <input type="text" id="department" name="department" defaultValue={formData.department} placeholder='department name' onChange={handleChange} className="" /></td>
                     </tr>
                     <tr>
                       <td className="border-none"><label className='font-bold' htmlFor="location">Location :</label></td>
-                      <td className="border-none"><input type="text" id="location" name="location" placeholder='location' value={formData.location} onChange={handleChange} className="" /></td>
+                      <td className="border-none"><input type="text" id="location" name="location" placeholder='location' defaultValue={formData.location} onChange={handleChange} className="" /></td>
                     </tr>
                     <tr>
                       <td className="border-none"><label className='font-bold' htmlFor="contact">Contact No :</label></td>
-                      <td className="border-none"><input type="number" id="contact" name="contact" placeholder='contact' value={formData.contact} onChange={handleChange} className="" /></td>
+                      <td className="border-none"><input type="number" id="contact" name="contact" placeholder='contact' defaultValue={formData.contact} onChange={handleChange} className="" /></td>
                     </tr>
                     <tr>
                       <td className="border-none"><label className='font-bold' htmlFor="items_receiving_date">Item Receiving Date: </label></td>
@@ -355,11 +407,11 @@ const SS04form = () => {
                     </tr>
                     <tr>
                       <td className="border-none"><label className='font-bold' htmlFor='room_no'>Room No :</label></td>
-                      <td className="border-none"><input type="text" id="room_no" name="room_no" placeholder='room number' value={formData.room_no} onChange={handleChange} className="" /></td>
+                      <td className="border-none"><input type="text" id="room_no" name="room_no" placeholder='room number' defaultValue={formData.room_no} onChange={handleChange} className="" /></td>
                     </tr>
                     <tr>
                       <td className="border-none"><label className='font-bold' htmlFor='email'>Email id :</label></td>
-                      <td className="border-none"><input type="email" id="email" name="email" placeholder='email' value={formData.email} onChange={handleChange} className="" /></td>
+                      <td className="border-none"><input type="email" id="email" name="email" placeholder='email' defaultValue={formData.email} onChange={handleChange} className="" /></td>
                     </tr>
                   </tbody>
                 </table>
