@@ -155,7 +155,7 @@ const DisplayPendingForm = () => {
       <div key={formName} className="">
         <ul>
           {forms.map(form => (
-            <div className='flex flex-row justify-center gap-8 '>
+            <div className='flex flex-row justify-center gap-8 p-4 '>
               <div className=''>
               <h2>{formName}</h2>
             <li key={form.id}>
