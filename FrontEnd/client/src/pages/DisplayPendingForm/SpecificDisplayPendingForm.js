@@ -23,10 +23,10 @@ const SpecificDisplayPendingForm = () => {
       formComponent=<SS01form formId={formId} formName={formName}/>;
       break;
     case 'MM04':
-      formComponent=<SS01form formId={formId} formName={formName}/>;
+      formComponent=<MM04form formId={formId} formName={formName}/>;
       break;
     case 'Furniture':
-      formComponent=<SS01form formId={formId} formName={formName}/>;
+      formComponent=<Furnitureform formId={formId} formName={formName}/>;
       break;
     default:
       formComponent=<div>Unkmown Form</div>;
