@@ -233,9 +233,9 @@ useEffect(() => {
                     <td colSpan="5"><input type="text" name="otherBudgetHead" id='otherBudgetHead' defaultValue="" onChange={handleChange} /></td>
                 </tr> */}
                 <tr>
-                    <th><label htmlFor='project_sanction_no'>8. Project Sanction No.</label></th>
+                    <th><label htmlFor='project_sanction_no'>7. Project Sanction No.</label></th>
                     <td><input type="text" name="project_sanction_no" id='project_sanction_no' onChange={handleChange} /></td>
-                    <th><label htmlFor='expenditure_head'>9. Expenditure Head</label></th>
+                    <th><label htmlFor='expenditure_head'>8. Expenditure Head</label></th>
                     <td colSpan="3">
                         <select id="expenditure_head" name="expenditure_head" onChange={handleChange}>
                             <option value="Equipment">Equipment</option>
@@ -250,11 +250,11 @@ useEffect(() => {
                     <td colSpan="5"><input type="text" name="otherexpenditureHead" id='otherexpenditureHead' defaultValue="" onChange={handleChange} /></td>
                 </tr> */}
                 <tr>
-                    <th><label htmlFor='amount_claimed'>11. Amount Claimed (Rs)</label></th>
+                    <th><label htmlFor='amount_claimed'>9. Amount Claimed (Rs)</label></th>
                     <td colSpan="5"><input type="number" name="amount_claimed" onChange={handleChange} required /></td>
                 </tr>
                 <tr>
-                    <th><label htmlFor='_name'>12. Name of Recommending Authority:</label></th>
+                    <th><label htmlFor='_name'>10. Name of Recommending Authority:</label></th>
                     <td colSpan="5"><input type="text" name="recommending_authority_name" id="recommending_authority_name" onChange={handleChange} required /></td>
                 </tr>
             </tbody>
