@@ -27,6 +27,8 @@ import Anavbar from './components/Navbar/Anavbar';
 import CompleteProfile from './pages/ProfileRelated/CompleteProfile';
 import DisplayProfile from './pages/ProfileRelated/DisplayProfile';
 import { useState,useEffect } from 'react';
+import BookLab from './pages/lab/BookLab';
+import CompleteBookLab from './pages/lab/CompleteBookLab';
 
 function App() {
 
@@ -54,18 +56,20 @@ function App() {
   return (
 
     <>
-      {authenticated ? (<Anavbar />) : (<div></div>)}
+      {authenticated ? (<Anavbar setAuthenticated={setAuthenticated} />) : (<div></div>)}
       {authenticated ? (<div className='mt-40 h-0'></div>) : (<div></div>)}
       {authenticated ? (
         <Routes>
         <Route exact path="/" element={ <Home/> } />
           <Route exact path="/home" element={ <Home/> } />
+          <Route exact path="/booklab" element={ <BookLab /> } />
           <Route exact path="/Forms" element={ <Forms /> } />
           <Route exact path="/login" element={ <Login setAuthenticated={setAuthenticated} /> } />
           <Route exact path="/completeprofile" element={ <CompleteProfile /> } />
           <Route exact path="/displayprofile" element={ <DisplayProfile /> } />
           <Route exact path="/signup" element={ <SignUp/> } />
- 
+          <Route exact path="/completebooklab/:labName" element={ <CompleteBookLab /> } />
+
           <Route exact path="/facultyHome" element={ <FacultyHome /> } />
          
           <Route exact path="/StudentHome" element={ <StudentHome /> } />
@@ -100,7 +104,7 @@ function App() {
            <Route exact path="/completeprofile" element={ <Login setAuthenticated={setAuthenticated} /> } />
            <Route exact path="/displayprofile" element={ <Login setAuthenticated={setAuthenticated} /> } />
            <Route exact path="/signup" element={ <SignUp/> } />
-  
+           <Route exact path="/booklab" element={ <Login /> } />
            <Route exact path="/facultyHome" element={ <Login setAuthenticated={setAuthenticated} /> } />
           
            <Route exact path="/StudentHome" element={ <Login setAuthenticated={setAuthenticated} /> } />
