@@ -6,25 +6,43 @@ import "./r1.css";
 
 const R1 = () => {
 
-    // pub struct R1 {
-    //     pub note: String,
-    //     pub receiver: i32,
-    //     pub submitter: i32,
-    //     pub date: String, 
-    //     pub purpose_of_expenditure: String,
-    //     pub name_of_applname_of_applicant
-    //     pub designation: String,
-    //     pub department: String,
-    //     pub payment_favour: String,
-    //     pub budget_head_expenditure: String,
-    //     pub project_sanction_no: String,
-    //     pub expenditure_head: String,
-    //     pub amount_claimed: i32,
-    //     pub recommending_authority_name: String,
-    //     pub approving_authority_name: String, 
-    //     pub approval_status: State,
-    //     pub reason: String
-    // }
+  const [info,setInfo] = useState({})
+  useEffect(() => {
+    const fetchData = async () => {
+        try {
+            
+      // Create a custom set of headers
+            const customHeaders = new Headers({
+              'Content-Type': 'application/json', // You may need to adjust the content type based on your request
+              'Cookie': localStorage.getItem('token'), // Include the retrieved cookie in the 'Cookie' header
+            });
+            const headersObject = Object.fromEntries(customHeaders.entries());
+            const response = await fetch(`${globalUrl}/v1/profile`, {
+                method: 'GET',
+                credentials: 'include',  
+                headers: headersObject,
+              });
+            
+          const responseData = await response.json();
+          console.log('Parsed JSON response:', (responseData));
+          setInfo(responseData)
+              if (response.statusCode === 401) {
+                console.log("Failed");
+              }
+            } catch (error) {
+              console.error("Error:", error);
+            }
+    };
+
+    fetchData();
+},[]); 
+
+
+useEffect(() => {
+  console.log("information", info);
+}, [info]);
+
+
     const [userData,setUserData]=useState({})
     const [error, setError] = useState("");
     const [formData, setFormData] = useState({
@@ -158,6 +176,17 @@ const R1 = () => {
     };
   }, []); 
 
+  useEffect(() => {
+    console.log("information", info);
+    // Update the formData state with info data
+    setFormData(prevState => ({
+      ...prevState,
+      name_of_applicant: info.username,
+      designation: info.designation,
+      department: info.department,
+    }));
+    console.log(formData)
+  }, [info]);
 
   return (
     <div>
@@ -176,11 +205,11 @@ const R1 = () => {
                 </tr>
                 <tr>
                     <th><label htmlFor='name_of_applicant'>2. Name of the Applicant</label></th>
-                    <td><input type="text" name="name_of_applicant" id="name_of_applicant" onChange={handleChange} required /></td>
+                    <td><input type="text" name="name_of_applicant" id="name_of_applicant" onChange={handleChange} defaultValue={formData.name_of_applicant} required /></td>
                     <th><label htmlFor='designation'>3. Designation</label></th>
-                    <td><input type="text" name="designation" id='designation' onChange={handleChange} required /></td>
+                    <td><input type="text" name="designation" id='designation' onChange={handleChange} defaultValue={formData.designation} required /></td>
                     <th><label className='department'>4. Department</label></th>
-                    <td><input type="text" name="department" id='department' onChange={handleChange} required /></td>
+                    <td><input type="text" name="department" id='department' onChange={handleChange} defaultValue={formData.department} required /></td>
                 </tr>
                 <tr>
                     <th>5. Payment to be made in favor of</th>

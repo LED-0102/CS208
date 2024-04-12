@@ -26,7 +26,6 @@ const CompleteProfile = () => {
         'Cookie': localStorage.getItem('token'),
       });
       const headersObject = Object.fromEntries(customHeaders.entries());
-      // const response = await fetch('https://jsonplaceholder.typicode.com/posts',{
       const response = await fetch(`${globalUrl}/v1/edit`, {
         method: 'POST',
         credentials: 'include',  // Include credentials (cookies) in the request
