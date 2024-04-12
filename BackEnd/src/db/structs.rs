@@ -208,21 +208,7 @@ pub struct Furniture {
 }
 
 #[derive(Debug, Serialize, Deserialize, FromRow)]
-pub struct Leave_Student {
-    pub note: String,
-    pub receiver: i32,
-    pub submitter: i32,
-    pub date: String,
-    pub leave_reason: String,
-    pub start_date: String,
-    pub end_date: String,
-    pub intermediate_approval_status: State,
-    pub hod_approval_status: State,
-    pub reason: String
-}
-
-#[derive(Debug, Serialize, Deserialize, FromRow)]
-pub struct Leave_Rest {
+pub struct Leave {
     pub note: String,
     pub receiver: i32,
     pub submitter: i32,
@@ -414,26 +400,9 @@ impl Furniture {
     }
 }
 
-impl Leave_Student {
+impl Leave {
     pub fn default() -> Self {
-        Leave_Student { 
-            note: "".to_string(), 
-            receiver: 0, 
-            submitter: 0, 
-            date: "".to_string(), 
-            leave_reason: "".to_string(), 
-            start_date: "".to_string(), 
-            end_date: "".to_string(), 
-            intermediate_approval_status: "Pending".parse().unwrap(), 
-            hod_approval_status: "Pending".parse().unwrap(), 
-            reason: "".to_string() 
-        }
-    }
-}
-
-impl Leave_Rest {
-    pub fn default() -> Self {
-        Leave_Rest { 
+        Leave { 
             note: "".to_string(), 
             receiver: 0, 
             submitter: 0, 

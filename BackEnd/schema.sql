@@ -66,13 +66,7 @@ CREATE TABLE Furniture_data (
     seeking INT[],
     previous INT[]
 );
-CREATE TABLE Leave_Rest_data (
-    id INT PRIMARY KEY REFERENCES users (id),
-    pending INT[],
-    seeking INT[],
-    previous INT[]
-);
-CREATE TABLE Leave_Student_data (
+CREATE TABLE Leave_data (
     id INT PRIMARY KEY REFERENCES users (id),
     pending INT[],
     seeking INT[],
@@ -208,20 +202,7 @@ CREATE TABLE Furniture (
     approval_status state,
     reason VARCHAR
 );
-CREATE TABLE Leave_Student (
-    id SERIAL PRIMARY KEY,
-    note VARCHAR,
-    submitter INT REFERENCES users (id),
-    receiver INT REFERENCES users (id),
-    date VARCHAR,
-    leave_reason VARCHAR,
-    start_date VARCHAR,
-    end_date VARCHAR,
-    intermediate_approval_status state,
-    hod_approval_status state,
-    reason VARCHAR
-);
-CREATE TABLE Leave_Rest (
+CREATE TABLE Leave (
     id SERIAL PRIMARY KEY,
     note VARCHAR,
     submitter INT REFERENCES users (id),
