@@ -5,6 +5,8 @@ import "./ssform.css";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import globalUrl from "../../components/url";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const SS04form = () => {
@@ -184,6 +186,12 @@ const SS04form = () => {
       });
       console.log(headersObject)
       console.log(response)
+
+      if (response.status === 200) {
+        toast.success('Data submitted successfully');
+      } else if (response.status === 401) {
+        toast.error('Failed to submit data');
+      }
       if (response.statusCode === 401) {
         console.log("Failed");
       }
