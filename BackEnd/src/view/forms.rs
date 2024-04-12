@@ -358,6 +358,7 @@ impl FormTrait for Forms {
                     Ok(_) => {
                     }
                     Err(e) => {
+                        println!("{}", &e.to_string());
                         return Err(Box::try_from(e).unwrap());
                     }
                 }
@@ -540,7 +541,8 @@ impl Forms {
                         s.submitter = jwt.id;
                         Ok(Forms::SS01(s))
                     }
-                    Err(_) => {
+                    Err(e) => {
+                        println!("{:?}", e);
                         Err(HttpResponse::BadRequest().body("Incompatible structure"))
                     }
                 }
