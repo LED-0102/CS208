@@ -42,7 +42,7 @@ function App() {
   // });
 
   // useEffect(() => {
-  //   localStorage.setItem('authenticated', JSON.stringify(authenticat ed));
+  //   localStorage.setItem('authenticated', JSON.stringify(authenticated));
   // }, [authenticated]);
 
   const[authenticated , setAuthenticated]=useState(()=>{
