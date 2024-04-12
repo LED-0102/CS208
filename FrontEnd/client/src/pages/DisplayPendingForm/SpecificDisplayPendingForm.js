@@ -1250,6 +1250,7 @@ console.log("formData++++",formData)
 }
 
 const MM04form=()=>{
+  const { formName,formId } = useParams();
   const [userData,setUserData]=useState({})
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({
@@ -1330,39 +1331,85 @@ const MM04form=()=>{
       
      
       
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
 
-        const dataToBeSub={...formData};
-        const date1=new Date();
-        const formattedDate=`${date1.getFullYear()}/${date1.getMonth()+1}/${date1.getDate()}`;
-        dataToBeSub.date=formattedDate;
+    //     const dataToBeSub={...formData};
+    //     const date1=new Date();
+    //     const formattedDate=`${date1.getFullYear()}/${date1.getMonth()+1}/${date1.getDate()}`;
+    //     dataToBeSub.date=formattedDate;
 
-        try {
+    //     try {
     
-            const storedCookie = document.cookie;
-            console.log(storedCookie);
+    //         const storedCookie = document.cookie;
+    //         console.log(storedCookie);
+    //     // Create a custom set of headers
+    //         const customHeaders = new Headers({
+    //             'Content-Type': 'application/json', // You may need to adjust the content type based on your request
+    //             'Cookie': storedCookie, // Include the retrieved cookie in the 'Cookie' header
+    //         });
+    //         const headersObject = Object.fromEntries(customHeaders.entries());
+    //         const response = await fetch(`${globalUrl}/v1/submit/MM04`, {
+    //             method: 'POST',
+    //             credentials: 'include',  // Include credentials (cookies) in the request
+    //             headers: headersObject,
+    //             body: JSON.stringify(dataToBeSub)
+    //         });
+    //         console.log(response)
+    //         if (response.statusCode === 401) {
+    //             console.log("Failed");
+    //         }
+    //         } catch (error) {
+    //         console.error("Error:", error);
+    //         }
+    // };
+    useEffect(() => {
+      const fetchData = async () => {
+          try {
+              const storedCookie = document.cookie;
+              console.log(storedCookie);
         // Create a custom set of headers
-            const customHeaders = new Headers({
+              const customHeaders = new Headers({
                 'Content-Type': 'application/json', // You may need to adjust the content type based on your request
                 'Cookie': storedCookie, // Include the retrieved cookie in the 'Cookie' header
-            });
-            const headersObject = Object.fromEntries(customHeaders.entries());
-            const response = await fetch(`${globalUrl}/v1/submit/MM04`, {
-                method: 'POST',
-                credentials: 'include',  // Include credentials (cookies) in the request
-                headers: headersObject,
-                body: JSON.stringify(dataToBeSub)
-            });
-            console.log(response)
-            if (response.statusCode === 401) {
-                console.log("Failed");
-            }
-            } catch (error) {
-            console.error("Error:", error);
-            }
-    };
-
+              });
+              const headersObject = Object.fromEntries(customHeaders.entries());
+    
+              //  const response = await fetch('https://jsonplaceholder.typicode.com/posts',{
+              const response = await fetch(`${globalUrl}/v1/${formName}/${formId}`, {
+                  method: 'GET',
+                  credentials: 'include',  // Include credentials (cookies) in the request
+                  headers: headersObject,
+                  // body: JSON.stringify(updatedFormData)
+                });
+              //   console.log(response)
+              // console.log("aadd",typeof(data))
+              // setPendingFormData(response.data);
+              // console.log("aadd",typeof(pendingFormData))
+              // console.log("aadd",pendingFormData)
+              // console.log("aadd++++",response)
+                 // Parsing JSON response
+  const responseData = await response.json();
+  // console.log('Parsed JSON response:', typeof(responseData));
+  console.log('Parsed JSON response:', (responseData));
+  setFormData(responseData);
+  // setTabledata(responseData.list_orders)
+              //   console.log()
+                if (response.statusCode === 401) {
+                  console.log("Failed");
+                }
+              } catch (error) {
+                console.error("Error:", error);
+              }
+      };
+  
+      fetchData();
+  
+  
+      return () => {
+  
+      };
+  }, []);
       
 
 
@@ -1403,14 +1450,14 @@ const MM04form=()=>{
             <p className="text-sm px-4">
             Certified that we, the members of the Purchase Committee are jointly and individually satisfied that the goods recommended for Purchase are <b>of the requisite specification and quality, priced reasonably at the prevailing market rates and the supplier recommended is reliable and competent to supply the goods in question, and it is not debarred by Department of Commerce or Ministry/ Department concerned. Accordingly, 
             we enclose the quotation no.
-            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="quotation_no" onChange = {handleChange} required/> 
-            dated <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="date" onChange = {handleChange} required/> 
-            of M/s. <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="requester_name" onChange = {handleChange} required/> for placing Purchase Order.</b>
+            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="quotation_no" onChange = {handleChange} value={formData.quotation_no} required/> 
+            dated <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="date" onChange = {handleChange} value={formData.date} required/> 
+            of M/s. <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="requester_name" onChange = {handleChange} value={formData.requester_name} required/> for placing Purchase Order.</b>
             </p> <br/>
             <p classname="text-sm px-4">The total financial implications will be `
-             <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="amount" onChange = {handleChange} required/><b>
-            (Inclusive of Tax @ )<input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="amount_tax" onChange = {handleChange} required/>
-    (In Words-) <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="amount_words" onChange = {handleChange} required/></b>
+             <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="amount" onChange = {handleChange} value={formData.amount} required/><b>
+            (Inclusive of Tax @ )<input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="amount_tax" onChange = {handleChange} value={formData.amount_tax} required/>
+    (In Words-) <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="amount_words" onChange = {handleChange} value={formData.amount_words} required/></b>
     </p>
           </div>
     
@@ -1473,6 +1520,10 @@ const MM04form=()=>{
         </form>
         </div>
       );
+
+}
+
+const Furnitureform=()=>{
 
 }
 
