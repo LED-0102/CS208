@@ -13,7 +13,43 @@ import SearchUserComp from "../../components/Search/search";
 
 const FurnitureRequirementForm = () => {
 
-  
+  const [info,setInfo] = useState({})
+  useEffect(() => {
+    const fetchData = async () => {
+        try {
+            
+      // Create a custom set of headers
+            const customHeaders = new Headers({
+              'Content-Type': 'application/json', // You may need to adjust the content type based on your request
+              'Cookie': localStorage.getItem('token'), // Include the retrieved cookie in the 'Cookie' header
+            });
+            const headersObject = Object.fromEntries(customHeaders.entries());
+            const response = await fetch(`${globalUrl}/v1/profile`, {
+                method: 'GET',
+                credentials: 'include',  
+                headers: headersObject,
+              });
+            
+          const responseData = await response.json();
+          console.log('Parsed JSON response:', (responseData));
+          setInfo(responseData)
+              if (response.statusCode === 401) {
+                console.log("Failed");
+              }
+            } catch (error) {
+              console.error("Error:", error);
+            }
+    };
+
+    fetchData();
+},[]); 
+
+
+useEffect(() => {
+  console.log("information", info);
+}, [info]);
+
+
   const [userData,setUserData]=useState({})
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({
@@ -142,6 +178,16 @@ const FurnitureRequirementForm = () => {
       
     };
   }, []); 
+
+  useEffect(() => {
+    console.log("information", info);
+    // Update the formData state with info data
+    setFormData(prevState => ({
+      ...prevState,
+      designation: info.designation,
+    }));
+    console.log(formData)
+  }, [info]);
 
   return (
     <>
