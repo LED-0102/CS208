@@ -536,6 +536,8 @@ impl Forms {
                 }
             }
             "SS01" => {
+                let a = body.get("invoice_amount").unwrap();
+
                 match serde_json::from_value::<SS01>(body) {
                     Ok(mut s) => {
                         s.submitter = jwt.id;
