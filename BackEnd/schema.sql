@@ -66,6 +66,12 @@ CREATE TABLE Furniture_data (
     seeking INT[],
     previous INT[]
 );
+CREATE TABLE Leave_data (
+    id INT PRIMARY KEY REFERENCES users (id),
+    pending INT[],
+    seeking INT[],
+    previous INT[]
+);
 CREATE TABLE SS04 (
     id SERIAL PRIMARY KEY,
     note VARCHAR DEFAULT '',
@@ -193,6 +199,18 @@ CREATE TABLE Furniture (
     nature VARCHAR,
     present_availability VARCHAR,
     sign_date VARCHAR,
+    approval_status state,
+    reason VARCHAR
+);
+CREATE TABLE Leave (
+    id SERIAL PRIMARY KEY,
+    note VARCHAR,
+    submitter INT REFERENCES users (id),
+    receiver INT REFERENCES users (id),
+    date VARCHAR,
+    leave_reason VARCHAR,
+    start_date VARCHAR,
+    end_date VARCHAR,
     approval_status state,
     reason VARCHAR
 );

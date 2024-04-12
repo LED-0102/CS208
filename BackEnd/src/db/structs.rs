@@ -208,6 +208,19 @@ pub struct Furniture {
 }
 
 #[derive(Debug, Serialize, Deserialize, FromRow)]
+pub struct Leave {
+    pub note: String,
+    pub receiver: i32,
+    pub submitter: i32,
+    pub date: String,
+    pub leave_reason: String,
+    pub start_date: String,
+    pub end_date: String,
+    pub approval_status: State,
+    pub reason: String
+}
+
+#[derive(Debug, Serialize, Deserialize, FromRow)]
 pub struct Seeking {
     pub data: serde_json::Value
 }
@@ -383,6 +396,22 @@ impl Furniture {
             sign_date: "".to_string(),
             approval_status: "Pending".parse().unwrap(),
             reason: "".to_string()
+        }
+    }
+}
+
+impl Leave {
+    pub fn default() -> Self {
+        Leave { 
+            note: "".to_string(), 
+            receiver: 0, 
+            submitter: 0, 
+            date: "".to_string(), 
+            leave_reason: "".to_string(), 
+            start_date: "".to_string(), 
+            end_date: "".to_string(), 
+            approval_status: "Pending".parse().unwrap(), 
+            reason: "".to_string() 
         }
     }
 }

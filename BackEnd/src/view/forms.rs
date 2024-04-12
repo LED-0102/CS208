@@ -1,7 +1,7 @@
 use std::error::Error;
 use actix_web::{HttpResponse};
 use serde::{Serialize, Serializer};
-use crate::db::structs::{State, SS04, MM04, SS01, R1, E01, Furniture};
+use crate::db::structs::{State, SS04, MM04, SS01, R1, E01, Furniture, Leave,};
 use crate::ws::server::{ChatServer, Identifier};
 use serde_json::{self, Value, json};
 use sqlx::{PgPool, Row};
@@ -15,7 +15,8 @@ pub enum Forms {
     SS01(SS01),
     R1(R1),
     E01(E01),
-    Furniture(Furniture)
+    Furniture(Furniture),
+    Leave(Leave)
 }
 pub trait FormTrait: Serialize {
     async fn process (&self, pool: &PgPool, id: i32) -> Result<(), Box<dyn Error>>;
@@ -114,6 +115,9 @@ impl Serialize for Forms {
             },
             Forms::Furniture(f) => {
                 f.serialize(serializer)
+            },
+            Forms::Leave(l) => {
+                l.serialize(serializer)
             }
         }
     }
@@ -140,7 +144,10 @@ impl FormTrait for Forms {
             },
             Forms::Furniture(_) => {
                 let _ = self.send_recv_update(pool, id, self.enum_to_str()).await?;
-            }
+            },
+            Forms::Leave(_) => {
+                let _ = self.send_recv_update(pool, id, self.enum_to_str()).await?;
+            },
         }
         Ok(())
     }
@@ -170,7 +177,11 @@ impl FormTrait for Forms {
             Forms::Furniture(f) => {
                 let id = identifier_id(f.receiver, pool).await;
                 id
-            }
+            },
+            Forms::Leave(l) => {
+                let id = identifier_id(l.receiver, pool).await;
+                id
+            },
         }
     }
 
@@ -502,6 +513,41 @@ impl FormTrait for Forms {
                 }
                 let id: i32 = result.unwrap().try_get("id")?;
                 Ok(id)
+            },
+            Forms::Leave(l) => {
+                let result = sqlx::query("
+                    INSERT INTO Leave(
+                        note,
+                        submitter,
+                        receiver,
+                        date,
+                        leave_reason,
+                        start_date,
+                        end_date,
+                        approval_status,
+                        reason
+                    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+                    RETURNING id;")
+                    .bind(&l.note)
+                    .bind(&l.submitter)
+                    .bind(&l.receiver)
+                    .bind(&l.date)
+                    .bind(&l.leave_reason)
+                    .bind(&l.start_date)
+                    .bind(&l.end_date)
+                    .bind(&l.approval_status)
+                    .bind(&l.reason)
+                    .fetch_one(pool)
+                    .await;
+                match result {
+                    Ok(_) => {
+                    }
+                    Err(e) => {
+                        return Err(Box::try_from(e).unwrap());
+                    }
+                }
+                let id: i32 = result.unwrap().try_get("id")?;
+                Ok(id)
             }
         }
     }
@@ -593,6 +639,18 @@ impl Forms {
                     }
                 }
             }
+            "Leave" => {
+                match serde_json::from_value::<Leave>(body) {
+                    Ok(mut s) => {
+                        s.submitter = jwt.id;
+                        Ok(Forms::Leave(s))
+                    }
+                    Err(e) => {
+                        println!("{:?}", &e);
+                        Err(HttpResponse::BadRequest().body("Incompatible structure"))
+                    }
+                }
+            }
             _ => {
                 println!("Invalid form type");
                 Err(HttpResponse::BadRequest().body("Invalid form type"))
@@ -607,9 +665,8 @@ impl Forms {
             Forms::SS01(_) => {"SS01"},
             Forms::R1(_) => {"R1"},
             Forms::E01(_) => {"E01"},
-            Forms::Furniture(_) => {"Furniture"}
+            Forms::Furniture(_) => {"Furniture"},
+            Forms::Leave(_) => {"Leave"},
         }
     }
 }
-
-
