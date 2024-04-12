@@ -66,6 +66,18 @@ CREATE TABLE Furniture_data (
     seeking INT[],
     previous INT[]
 );
+CREATE TABLE Leave_Rest_data (
+    id INT PRIMARY KEY REFERENCES users (id),
+    pending INT[],
+    seeking INT[],
+    previous INT[]
+);
+CREATE TABLE Leave_Student_data (
+    id INT PRIMARY KEY REFERENCES users (id),
+    pending INT[],
+    seeking INT[],
+    previous INT[]
+);
 CREATE TABLE SS04 (
     id SERIAL PRIMARY KEY,
     note VARCHAR DEFAULT '',
