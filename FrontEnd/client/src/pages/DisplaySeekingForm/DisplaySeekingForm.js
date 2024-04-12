@@ -68,12 +68,13 @@ const DisplaySeekingForm = () => {
       };
 
   return (
-    <div className='flex'>
+    <div className='flex flex-row justify-center gap-32 '>
     {previousFormData && Object.entries(previousFormData).map(([formName, forms]) => (
       <div key={formName}>
         <ul>
+        <div  className="flex flex-col gap-16 justify-center ">
           {forms.map(form => (
-            <li key={form.id}>
+            <li key={form.id} className="border-2 p-2 bg-pink-50 shadow-md rounded-lg">
               <h2>{formName}</h2>
               <p>ID: {form.id}</p>
               <p>Submitter: {form.submitter}</p>
@@ -82,6 +83,7 @@ const DisplaySeekingForm = () => {
               <button onClick={() => handleFormClick(form.id,formName)}>Proceed</button>
             </li>
           ))}
+    </div>
         </ul>
       </div>
     ))}
