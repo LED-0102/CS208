@@ -294,6 +294,7 @@ useEffect(() => {
       location:info.location,
       contact:info.contact_number,
       email:info.email,
+      room_no:info.room,
     }));
     console.log(formData)
   }, [info]);
