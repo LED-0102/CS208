@@ -305,10 +305,10 @@ useEffect(() => {
             <div className="gradient" />
           </div> */}
       {/* <div></div> */}
-      <div className='border-2 border-black h-full bg-blue-50'>
+      <div className='border-2 border-black h-full '>
         <form>
-          <div className='flex w-full p-4 '>
-            <div className='w-2/3'>IITI logo and header left</div>
+          {/* <div className='flex w-full p-4 '>
+          
             <div>
               <div className=' border-2 border-black'>
                 <div className='flex-col p-4'>
@@ -316,7 +316,7 @@ useEffect(() => {
                   <table>
                     <thead>
                       <tr>
-                        {/* Table headers */}
+                       
                       </tr>
                     </thead>
                     <tbody>
@@ -351,7 +351,7 @@ useEffect(() => {
               </div>
 
             </div>
-          </div>
+          </div> */}
           <div className=' w-full px-4 py-2  '>
             <span className='flex justify'>
               <span className='mx-auto'>(To be prepared in duplicate. One copy will be forwarded to Finance, and one held with Store Office.)</span>

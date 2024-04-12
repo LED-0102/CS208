@@ -611,9 +611,9 @@ console.log("formData++++",formData)
 
            
             </div>
-          <div className='flex justify-center w-full mb-8'>
+          {/* <div className='flex justify-center w-full mb-8'>
             <button onClick={(e) => handleSubmit(e)} >Submit</button>
-          </div>
+          </div> */}
         </form>
       </div>
 
@@ -1389,9 +1389,9 @@ const SS01form = () => {
                           </div>
 
                       </div>
-                      <div className='flex justify-center w-full mb-8'>
+                      {/* <div className='flex justify-center w-full mb-8'>
                               <button onClick={(e) => handleSubmit(e)} >Submit</button>
-                          </div>
+                          </div> */}
                   </form>
               </div>
           </div>

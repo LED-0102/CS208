@@ -5,6 +5,9 @@ import { useNavigate } from "react-router-dom";
 import globalUrl from "../../components/url";
 import {data} from "../../components/Search/data";
 // import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 const DisplayPendingForm = () => {
     const [pendingFormData,setPendingFormData]=useState(null)
@@ -15,7 +18,8 @@ const DisplayPendingForm = () => {
 
     // })
 
-    const handleFormClick = async (formId, formName, action) => {
+    const handleFormClick = async (formId, formName, action,onSuccessRedirect,
+      onFailureRedirect) => {
       // Get the form details based on formId and formName
       // const formDetails = pendingFormData[formName].find(form => form.id === formId);
   
@@ -50,6 +54,19 @@ const DisplayPendingForm = () => {
           body: JSON.stringify(dataToSend)
         });
         console.log(response)
+        if (response.status === 200) {
+          toast.success('Data submitted successfully', {
+            onClose: () => onSuccessRedirect() // Redirect to success page after toast is fully closed
+          });
+        } else if (response.status === 401 || response.status === 400 ) {
+          toast.error('Failed to submit data', {
+            onClose: () => onFailureRedirect() // Redirect to failure page after toast is fully closed
+          });
+        }else{
+          toast.error('Failed to submit data', {
+            onClose: () => onFailureRedirect() // Redirect to failure page after toast is fully closed
+          });
+        }
         if (response.statusCode === 401) {
           console.log("Failed");
         }
@@ -123,7 +140,14 @@ const DisplayPendingForm = () => {
       const handleChange = (event) => {
         setReason(event.target.value);
       };
+  
+      const handleSuccessRedirect = () => {
+        navigate("/");
+      };
     
+      const handleFailureRedirect = () => {
+        navigate("/displayPendingForm");
+      };
 
   return (
     <div className='flex flex-col border-2  p-4 gap-4 text-center '>
@@ -141,8 +165,9 @@ const DisplayPendingForm = () => {
               <p>Approval Status: {form.approval_status}</p>
               <div className="flex flex-row gap-4">
               <button onClick={() => handleFormClickProceed(form.id,formName)}>Proceed</button>
-              <button onClick={() => handleFormClick(form.id, formName, 'accept')}>Accept</button>
-              <button onClick={() => handleFormClick(form.id, formName, 'reject')}>Reject</button>
+              <button onClick={() => handleFormClick(form.id, formName, 'accept',handleSuccessRedirect, handleFailureRedirect)}>Accept</button>
+              <button onClick={() => handleFormClick(form.id, formName, 'reject',handleSuccessRedirect, handleFailureRedirect)}>Reject</button>
+              <ToastContainer  />
               </div>
             </li>
             </div>
