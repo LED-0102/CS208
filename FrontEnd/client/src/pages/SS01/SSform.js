@@ -9,6 +9,9 @@ import { useNavigate } from "react-router-dom";
 import globalUrl from "../../components/url";
 // import {data} from "./data"
 import SearchUserComp from "../../components/Search/search";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 const SS01form = () => {
     const [tabledata, setTabledata] = useState([]);
@@ -17,6 +20,7 @@ const SS01form = () => {
     const [searchName, setSearchName] = useState("");
     const [error, setError] = useState("");
     const [selectedDesignation, setSelectedDesignation] = useState("");
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         // StoreNo: "",
         // financialyear: "",
@@ -59,6 +63,39 @@ const SS01form = () => {
         approval_status: "Pending",
         reason:""
     });
+
+    
+  const [info,setInfo] = useState({})
+  useEffect(() => {
+    const fetchData = async () => {
+        try {
+            
+      // Create a custom set of headers
+            const customHeaders = new Headers({
+              'Content-Type': 'application/json', // You may need to adjust the content type based on your request
+              'Cookie': localStorage.getItem('token'), // Include the retrieved cookie in the 'Cookie' header
+            });
+            const headersObject = Object.fromEntries(customHeaders.entries());
+            const response = await fetch(`${globalUrl}/v1/profile`, {
+                method: 'GET',
+                credentials: 'include',  
+                headers: headersObject,
+              });
+            
+          const responseData = await response.json();
+          console.log('Parsed JSON response:', (responseData));
+          setInfo(responseData)
+              if (response.statusCode === 401) {
+                console.log("Failed");
+              }
+            } catch (error) {
+              console.error("Error:", error);
+            }
+    };
+
+    fetchData();
+},[]); 
+
 
     const handleUserSelect = (userId, userName) => {
         console.log("aaaa", userName)
@@ -146,7 +183,8 @@ const SS01form = () => {
         setTabledata(updatedListOrders);
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e,  onSuccessRedirect,
+        onFailureRedirect) => {
         e.preventDefault();
         // Calculate total cost
         const totalAmount = parseFloat(totalCost) || 0;
@@ -184,9 +222,20 @@ const SS01form = () => {
                 body: JSON.stringify(updatedFormData)
             });
             console.log(response)
-            if (response.statusCode === 401) {
-                console.log("Failed");
-            }
+         
+      if (response.status === 200) {
+        toast.success('Data submitted successfully', {
+          onClose: () => onSuccessRedirect() // Redirect to success page after toast is fully closed
+        });
+      } else if (response.status === 401 || response.status === 400 ) {
+        toast.error('Failed to submit data', {
+          onClose: () => onFailureRedirect() // Redirect to failure page after toast is fully closed
+        });
+      }else{
+        toast.error('Failed to submit data', {
+          onClose: () => onFailureRedirect() // Redirect to failure page after toast is fully closed
+        });
+      }
         } catch (error) {
             console.error("Error:", error);
         }
@@ -217,6 +266,30 @@ const SS01form = () => {
 
         };
     }, []);
+
+    const handleSuccessRedirect = () => {
+        navigate("/");
+      };
+    
+      const handleFailureRedirect = () => {
+        navigate("/SS01");
+      };
+
+      useEffect(() => {
+        console.log("information", info);
+        // Update the formData state with info data
+        setFormData(prevState => ({
+          ...prevState,
+          name_of_applicant: info.username,
+          designation: info.designation,
+          department: info.department,
+          location:info.location,
+          contact:info.contact_number,
+          email:info.email,
+          room_no:info.room,
+        }));
+        console.log(formData)
+      }, [info]);
 
     return (
         <div className="maxcbackground">
@@ -263,7 +336,7 @@ const SS01form = () => {
                                                             type="text"
                                                             id="department"
                                                             name="department"
-                                                            value={formData.department}
+                                                            defaultValue={formData.department}
                                                             placeholder="department name"
                                                             onChange={handleChange}
                                                         // className="border-2 border-black"
@@ -282,7 +355,7 @@ const SS01form = () => {
                                                             id="location"
                                                             name="location"
                                                             placeholder="location"
-                                                            value={formData.location}
+                                                            defaultValue={formData.location}
                                                             onChange={handleChange}
                                                         // className="border-2 border-black"
                                                         />
@@ -312,7 +385,7 @@ const SS01form = () => {
                                                             id="designation"
                                                             name="designation"
                                                             placeholder="designation"
-                                                            value={formData.designation}
+                                                            defaultValue={formData.designation}
                                                             onChange={handleChange}
                                                         // className="border-2 border-black"
                                                         />
@@ -348,7 +421,7 @@ const SS01form = () => {
                                                             id="room_no"
                                                             name="room_no"
                                                             placeholder="room number"
-                                                            value={formData.room_no}
+                                                            defaultValue={formData.room_no}
                                                             onChange={handleChange}
                                                             className="input-field"
                                                         />
@@ -695,8 +768,9 @@ const SS01form = () => {
 
                         </div>
                         <div className='flex justify-center w-full mb-8'>
-                                <button onClick={(e) => handleSubmit(e)} >Submit</button>
-                            </div>
+                        <button onClick={(e) => handleSubmit(e, handleSuccessRedirect, handleFailureRedirect)}>Submit</button>
+                        <ToastContainer  />
+                        </div>
                     </form>
                 </div>
             </div>
