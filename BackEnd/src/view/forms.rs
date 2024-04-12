@@ -1,7 +1,7 @@
 use std::error::Error;
 use actix_web::{HttpResponse};
 use serde::{Serialize, Serializer};
-use crate::db::structs::{State, SS04, MM04, SS01, R1, E01, Furniture};
+use crate::db::structs::{State, SS04, MM04, SS01, R1, E01, Furniture, Leave_Rest, Leave_Student};
 use crate::ws::server::{ChatServer, Identifier};
 use serde_json;
 use serde_json::Value;
@@ -16,7 +16,9 @@ pub enum Forms {
     SS01(SS01),
     R1(R1),
     E01(E01),
-    Furniture(Furniture)
+    Furniture(Furniture),
+    Leave_Rest(Leave_Rest),
+    Leave_Student(Leave_Student)
 }
 pub trait FormTrait: Serialize {
     async fn process (&self, pool: &PgPool, id: i32) -> Result<(), Box<dyn Error>>;
@@ -115,6 +117,12 @@ impl Serialize for Forms {
             },
             Forms::Furniture(f) => {
                 f.serialize(serializer)
+            },
+            Forms::Leave_Rest(lr) => {
+                lr.serialize(serializer)
+            },
+            Forms::Leave_Student(ls) => {
+                ls.serialize(serializer)
             }
         }
     }
@@ -140,6 +148,12 @@ impl FormTrait for Forms {
                 let _ = self.send_recv_update(pool, id, self.enum_to_str()).await?;
             },
             Forms::Furniture(_) => {
+                let _ = self.send_recv_update(pool, id, self.enum_to_str()).await?;
+            },
+            Forms::Leave_Rest(_) => {
+                let _ = self.send_recv_update(pool, id, self.enum_to_str()).await?;
+            },
+            Forms::Leave_Student(_) => {
                 let _ = self.send_recv_update(pool, id, self.enum_to_str()).await?;
             }
         }
@@ -170,6 +184,14 @@ impl FormTrait for Forms {
             },
             Forms::Furniture(f) => {
                 let id = identifier_id(f.receiver, pool).await;
+                id
+            },
+            Forms::Leave_Rest(lr) => {
+                let id = identifier_id(lr.receiver, pool).await;
+                id
+            },
+            Forms::Leave_Student(ls) => {
+                let id = identifier_id(ls.receiver, pool).await;
                 id
             }
         }
@@ -502,6 +524,78 @@ impl FormTrait for Forms {
                 }
                 let id: i32 = result.unwrap().try_get("id")?;
                 Ok(id)
+            },
+            Forms::Leave_Rest(lr) => {
+                let result = sqlx::query("
+                    INSERT INTO Leave_Rest(
+                        note,
+                        submitter,
+                        receiver,
+                        date,
+                        leave_reason,
+                        start_date,
+                        end_date,
+                        approval,
+                        reason
+                    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+                    RETURNING id;")
+                    .bind(&lr.note)
+                    .bind(&lr.submitter)
+                    .bind(&lr.receiver)
+                    .bind(&lr.date)
+                    .bind(&lr.leave_reason)
+                    .bind(&lr.start_date)
+                    .bind(&lr.end_date)
+                    .bind(&lr.approval)
+                    .bind(&lr.reason)
+                    .fetch_one(pool)
+                    .await;
+                match result {
+                    Ok(_) => {
+                    }
+                    Err(e) => {
+                        return Err(Box::try_from(e).unwrap());
+                    }
+                }
+                let id: i32 = result.unwrap().try_get("id")?;
+                Ok(id)
+            },
+            Forms::Leave_Student(ls) => {
+                let result = sqlx::query("
+                    INSERT INTO Leave_Student(
+                        note,
+                        submitter,
+                        receiver,
+                        date,
+                        leave_reason,
+                        start_date,
+                        end_date,
+                        intermediate_approval,
+                        hod_approval,
+                        reason
+                    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+                    RETURNING id;")
+                    .bind(&ls.note)
+                    .bind(&ls.submitter)
+                    .bind(&ls.receiver)
+                    .bind(&ls.date)
+                    .bind(&ls.leave_reason)
+                    .bind(&ls.start_date)
+                    .bind(&ls.end_date)
+                    .bind(&ls.intermediate_approval)
+                    .bind(&ls.hod_approval)
+                    .bind(&ls.reason)
+                    .fetch_one(pool)
+                    .await;
+                match result {
+                    Ok(_) => {
+                    }
+                    Err(e) => {
+                        return Err(Box::try_from(e).unwrap());
+                    }
+                }
+                let id: i32 = result.unwrap().try_get("id")?;
+                Ok(id)
             }
         }
     }
@@ -579,6 +673,30 @@ impl Forms {
                     }
                 }
             }
+            "Leave_Rest" => {
+                match serde_json::from_value::<Leave_Rest>(body) {
+                    Ok(mut s) => {
+                        s.submitter = jwt.id;
+                        Ok(Forms::Leave_Rest(s))
+                    }
+                    Err(e) => {
+                        println!("{:?}", &e);
+                        Err(HttpResponse::BadRequest().body("Incompatible structure"))
+                    }
+                }
+            }
+            "Leave_Student" => {
+                match serde_json::from_value::<Leave_Student>(body) {
+                    Ok(mut s) => {
+                        s.submitter = jwt.id;
+                        Ok(Forms::Leave_Student(s))
+                    }
+                    Err(e) => {
+                        println!("{:?}", &e);
+                        Err(HttpResponse::BadRequest().body("Incompatible structure"))
+                    }
+                }
+            }
             _ => {
                 println!("Invalid form type");
                 Err(HttpResponse::BadRequest().body("Invalid form type"))
@@ -593,9 +711,9 @@ impl Forms {
             Forms::SS01(_) => {"SS01"},
             Forms::R1(_) => {"R1"},
             Forms::E01(_) => {"E01"},
-            Forms::Furniture(_) => {"Furniture"}
+            Forms::Furniture(_) => {"Furniture"},
+            Forms::Leave_Rest(_) => {"Leave_Rest"},
+            Forms::Leave_Student(_) => {"Leave_Student"}
         }
     }
 }
-
-

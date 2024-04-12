@@ -208,6 +208,33 @@ pub struct Furniture {
 }
 
 #[derive(Debug, Serialize, Deserialize, FromRow)]
+pub struct Leave_Student {
+    pub note: String,
+    pub receiver: i32,
+    pub submitter: i32,
+    pub date: String,
+    pub leave_reason: String,
+    pub start_date: String,
+    pub end_date: String,
+    pub intermediate_approval: State,
+    pub hod_approval: State,
+    pub reason: String
+}
+
+#[derive(Debug, Serialize, Deserialize, FromRow)]
+pub struct Leave_Rest {
+    pub note: String,
+    pub receiver: i32,
+    pub submitter: i32,
+    pub date: String,
+    pub leave_reason: String,
+    pub start_date: String,
+    pub end_date: String,
+    pub approval: State,
+    pub reason: String
+}
+
+#[derive(Debug, Serialize, Deserialize, FromRow)]
 pub struct Seeking {
     pub data: serde_json::Value
 }
@@ -383,6 +410,39 @@ impl Furniture {
             sign_date: "".to_string(),
             approval_status: "Pending".parse().unwrap(),
             reason: "".to_string()
+        }
+    }
+}
+
+impl Leave_Student {
+    pub fn default() -> Self {
+        Leave_Student { 
+            note: "".to_string(), 
+            receiver: 0, 
+            submitter: 0, 
+            date: "".to_string(), 
+            leave_reason: "".to_string(), 
+            start_date: "".to_string(), 
+            end_date: "".to_string(), 
+            intermediate_approval: "Pending".parse().unwrap(), 
+            hod_approval: "Pending".parse().unwrap(), 
+            reason: "".to_string() 
+        }
+    }
+}
+
+impl Leave_Rest {
+    pub fn default() -> Self {
+        Leave_Rest { 
+            note: "".to_string(), 
+            receiver: 0, 
+            submitter: 0, 
+            date: "".to_string(), 
+            leave_reason: "".to_string(), 
+            start_date: "".to_string(), 
+            end_date: "".to_string(), 
+            approval: "Pending".parse().unwrap(), 
+            reason: "".to_string() 
         }
     }
 }
