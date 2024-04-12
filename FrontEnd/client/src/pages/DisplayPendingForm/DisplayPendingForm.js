@@ -126,14 +126,14 @@ const DisplayPendingForm = () => {
     
 
   return (
-    <div className='flex flex-col border-2 border-black p-4 gap-4 text-center '>
+    <div className='flex flex-col border-2  p-4 gap-4 text-center '>
     {pendingFormData && Object.entries(pendingFormData).map(([formName, forms]) => (
-      <div key={formName} className="w-1/3">
-        <h2>{formName}</h2>
+      <div key={formName} className="">
         <ul>
           {forms.map(form => (
             <div className='flex flex-row'>
               <div className=''>
+              <h2>{formName}</h2>
             <li key={form.id}>
               <p>ID: {form.id}</p>
               <p>Submitter: {form.submitter}</p>
