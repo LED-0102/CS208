@@ -6,7 +6,11 @@ This project is dedicated to managing requests and approvals for various forms, 
 
 ## Form Management
 
-Efficiency and digitization are at the core of this project's approach to form requests and approvals within the MEMES Office. Below is a catalog of the diverse forms efficiently managed by the system:
+Efficiency and digitization are at the core of this project's approach to form requests and approvals within the MEMES Office. This project handles two type of foms, Leave Form and Budget Forms.
+
+### Budget Forms
+
+Below is a catalog of the budget forms efficiently managed by the system:
 
 - **SS04 Form**
 - **MM04 Form**
@@ -14,7 +18,10 @@ Efficiency and digitization are at the core of this project's approach to form r
 - **R1 Form**
 - **E01 Form**
 - **Furniture Committee Form**
-- **Leave Form**
+
+### Leave Form
+
+The website also facilitates a rudimentary Leave Form, allowing users to submit leave requests to their respective superiors. Additionally the website allows the users to accept or reject other's leave requests.
 
 ## Lab Booking System
 
@@ -24,8 +31,8 @@ Beyond form management, the project seamlessly facilitates lab bookings for all 
 
 This project necessitates pre-installation of Rust and React JS on your system. Below are comprehensive installation guides:
 
-- [Rust Installation Guide](https://www.youtube.com/watch?v=1a7Xtg2RgEo)
-- [React JS Installation Guide](https://www.youtube.com/watch?v=av5fmpgEJSU)
+- [Rust Installation Guide](https://doc.rust-lang.org/book/ch01-01-installation.html)
+- [React JS Installation Guide](https://react.dev/learn/installation)
 
 ### Back-End Setup
 
