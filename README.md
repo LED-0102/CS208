@@ -1,12 +1,12 @@
-# Description
+# Project Description
 
-This project aims to handle requests and approvals for various forms, manage lab bookings for all labs under the MEMES office, and oversee multiple essential tasks for MEMES office operations. It's part of the CS 208 course taught by Dr. Abhishek Srivastava.
+This project is dedicated to managing requests and approvals for various forms, coordinating lab bookings for all MEMES office facilities, and supervising crucial operational tasks. It forms an integral part of the CS 208 curriculum, under the esteemed guidance of Dr. Abhishek Srivastava.
 
-# Working of the project
+# Project Operation
 
-## Forms
+## Form Management
 
-The project aims to streamline and digitize the process of form requests and approvals within the MEMS Office. Below is a list of the various forms managed by the system:
+Efficiency and digitization are at the core of this project's approach to form requests and approvals within the MEMES Office. Below is a catalog of the diverse forms efficiently managed by the system:
 
 - **SS04 Form**
 - **MM04 Form**
@@ -16,41 +16,42 @@ The project aims to streamline and digitize the process of form requests and app
 - **Furniture Committee Form**
 - **Leave Form**
 
-## Lab Booking
+## Lab Booking System
 
-In addition to managing form requests and approvals, the project also facilitates the booking of all 23 labs overseen by the MEMES Office. Furthermore, it maintains a record of all bookings made through the website.
+Beyond form management, the project seamlessly facilitates lab bookings for all 23 facilities under the MEMES Office's purview. Additionally, it meticulously maintains a comprehensive record of all bookings made through the website.
 
 # Installation Guide
 
-This project requires Rust and React Js pre-installed in your system. Here are the guides.
+This project necessitates pre-installation of Rust and React JS on your system. Below are comprehensive installation guides:
 
-[Rust Installation Guide](https://www.youtube.com/watch?v=1a7Xtg2RgEo)
+- [Rust Installation Guide](https://www.youtube.com/watch?v=1a7Xtg2RgEo)
+- [React JS Installation Guide](https://www.youtube.com/watch?v=av5fmpgEJSU)
 
-[React Js Installation Guide](https://www.youtube.com/watch?v=av5fmpgEJSU)
+### Back-End Setup
 
-### Running Back-End
-
-From the main directory of the project, go to \BackEnd\ by typing
+Navigate to the project's root directory and access the \BackEnd\ directory by executing the following command in your terminal:
 
     cd .\BackEnd\
 
-into the terminal. To start up the server, type
+Initiate the server by entering the command:
 
     docker-compose up -d
 
-and
+Followed by:
 
     cargo run
 
-which starts the back-end side of the server.
+to commence the back-end server operation.
 
-### Running Front-End
+### Front-End Setup
 
-From the main directory of the project, go to \FrontEnd\client by typing
+From the project's main directory, navigate to \FrontEnd\client by executing:
 
     cd .\FrontEnd\client
 
-into the terminal. To start the front-end, type
+Proceed to start the front-end by executing:
 
     npm install
     npm start
+
+These commands will install dependencies and launch the front-end seamlessly.
