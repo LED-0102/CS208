@@ -1,15 +1,57 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams,useNavigate } from 'react-router-dom';
 import globalUrl from '../../components/url';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 const CompleteBookLab = () => {
+  const navigate=useNavigate();
+  const [info,setInfo] = useState({});
   const [date, setDate] = useState('');
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
   const [labNamea, setLabNamea] = useState('');
   const {labName}=useParams();
+
+  useEffect(() => {
+    const fetchData = async () => {
+        try {
+            
+      // Create a custom set of headers
+            const customHeaders = new Headers({
+              'Content-Type': 'application/json', // You may need to adjust the content type based on your request
+              'Cookie': localStorage.getItem('token'), // Include the retrieved cookie in the 'Cookie' header
+            });
+            const headersObject = Object.fromEntries(customHeaders.entries());
+            const response = await fetch(`${globalUrl}/v1/profile`, {
+                method: 'GET',
+                credentials: 'include',  
+                headers: headersObject,
+              });
+            
+          const responseData = await response.json();
+          console.log('Parsed JSON response:', (responseData));
+          setInfo(responseData)
+              if (response.statusCode === 401) {
+                console.log("Failed");
+              }
+            } catch (error) {
+              console.error("Error:", error);
+            }
+    };
+
+    fetchData();
+},[]);
+
+useEffect(() => {
+  console.log("information", info);
+}, [info]);
+
   // Function to handle form submission
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e,
+    onSuccessRedirect,
+    onFailureRedirect) => {
     e.preventDefault();
 
     // Here you can add logic to determine the lab name based on the provided information
@@ -18,10 +60,12 @@ const CompleteBookLab = () => {
     setLabNamea(generatedLabName);
     const labInReq = labName.replace(/[\s-]/g, "_");
     const d=new Date();
-    const dateInReq = `${d.getFullYear()}_${d.getMonth()+1}_${d.getDate()}`;
+    //const dateInReq = `${d.getFullYear()}_${d.getMonth()+1}_${d.getDate()}`;
+    const dateInReq = `${d.getFullYear()}_${(d.getMonth() + 1).toString().padStart(2, '0')}_${d.getDate().toString().padStart(2, '0')}`;
+
     try {
         const bookinginfo={
-            name: `${labInReq}`,
+            name: `${info.username}`,
             start: `${startTime}`,
             end : `${endTime}`
         }
@@ -36,36 +80,37 @@ const CompleteBookLab = () => {
           headers: headersObject,
           body: JSON.stringify(bookinginfo), // Sending updated profile information
         });
-        if (response.ok) {
-          // If the request is successful, update the state or show a success message
-          console.log('Profile information saved successfully!');
-          // You may want to update any local state here if needed
-        } else {
-          console.error('Failed to save profile information');
-          // Handle error scenarios, show error messages, etc.
+        console.log("JSON string",JSON.stringify(bookinginfo))
+        console.log(`${globalUrl}/v1/labs/book_schedule/${labInReq}/${dateInReq}`)
+        if (response.status === 200) {
+          toast.success('Booking successfully', {
+            onClose: () => onSuccessRedirect() // Redirect to success page after toast is fully closed
+          });
+        } else if (response.status === 401 || response.status === 400 ) {
+          toast.error('Failed to Book Lab', {
+            onClose: () => onFailureRedirect() // Redirect to failure page after toast is fully closed
+          });
+        }else{
+          toast.error('Failed to Book Lab', {
+            onClose: () => onFailureRedirect() // Redirect to failure page after toast is fully closed
+          });
         }
       } catch (error) {
         console.error('Error:', error);
       }
   };
-//   useEffect(() => {
-    
-//   }, []);
+  const handleSuccessRedirect = () => {
+    navigate("/BookLab");
+  };
+
+  const handleFailureRedirect = () => {
+    navigate("/BookLab");
+  };
   return (
     <div className="max-w-xl mx-auto mt-8">
       <h1 className="text-3xl font-bold mb-4">Book Lab "{labName}"</h1>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label htmlFor="date" className="block text-sm font-medium text-gray-700">Date</label>
-          <input
-            type="date"
-            id="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-            required
-          />
-        </div>
+      <form onSubmit={(e)=>{handleSubmit(e, handleSuccessRedirect, handleFailureRedirect)}}>
+        
         <div className="mb-4">
           <label htmlFor="startTime" className="block text-sm font-medium text-gray-700">Start Time</label>
           <input
@@ -89,6 +134,7 @@ const CompleteBookLab = () => {
           />
         </div>
         <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md">Submit</button>
+        <ToastContainer  />
       </form>
       {labNamea && (
         <div className="mt-4">
