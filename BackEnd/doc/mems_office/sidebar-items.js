@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["__loader","__runner","__shuttle_actix_web","main"],"mod":["auth","db","lists","view","ws"],"struct":["AppState"]};

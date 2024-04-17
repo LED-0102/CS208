@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["get_schedule"],"struct":["Schedule","book_schedule"]};

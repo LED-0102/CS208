@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["add_to_previous","view_config"],"mod":["forms","get_form","labs","profile"],"struct":["ApprovalData","accept_reject","form_handler"]};

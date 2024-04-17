@@ -1,0 +1,3 @@
+(function() {var implementors = {
+"mems_office":[["impl Actor for <a class=\"struct\" href=\"mems_office/ws/session/struct.WsSession.html\" title=\"struct mems_office::ws::session::WsSession\">WsSession</a>"],["impl Actor for <a class=\"struct\" href=\"mems_office/ws/server/struct.ChatServer.html\" title=\"struct mems_office::ws::server::ChatServer\">ChatServer</a>"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

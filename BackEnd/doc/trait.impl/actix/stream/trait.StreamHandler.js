@@ -1,0 +1,3 @@
+(function() {var implementors = {
+"mems_office":[["impl StreamHandler&lt;<a class=\"enum\" href=\"https://doc.rust-lang.org/1.77.2/core/result/enum.Result.html\" title=\"enum core::result::Result\">Result</a>&lt;Message, ProtocolError&gt;&gt; for <a class=\"struct\" href=\"mems_office/ws/session/struct.WsSession.html\" title=\"struct mems_office::ws::session::WsSession\">WsSession</a>"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

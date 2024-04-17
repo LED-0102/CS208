@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["get_receiver","get_students","list_config"],"mod":["fetch_forms"],"struct":["create_students"]};

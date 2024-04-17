@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["identifier_email","identifier_id","verify_receiver"]};
