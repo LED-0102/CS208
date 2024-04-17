@@ -67,3 +67,9 @@ These commands will install dependencies and launch the front-end seamlessly.
 ## Frontend
 
 The frontend is hosted on [https://mems-office.vercel.app/](https://mems-office.vercel.app/) and the backend is hosted on [https://mems-office.shuttleapp.rs/](https://mems-office.shuttleapp.rs/).
+
+# Documentation
+
+Down [this](https://drive.google.com/file/d/1ZhqPN_2ZgE3qN4iGK74ajRSRektT9ePs/view?usp=sharing) zip file. Extract the zip file and open the *mems-office* folder. Click on the *index.html* file to view the documentation.
+
+    
