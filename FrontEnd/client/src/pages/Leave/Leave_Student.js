@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import globalUrl from "../../components/url";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const Leave_Student = () => {
-
+  const navigate=useNavigate();
   const [userData,setUserData]=useState({})
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({
@@ -76,7 +80,8 @@ const Leave_Student = () => {
       
      
       
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e,  onSuccessRedirect,
+      onFailureRedirect) => {
         e.preventDefault();
 
         const dataToBeSub={...formData};
@@ -103,8 +108,18 @@ const Leave_Student = () => {
                 body: JSON.stringify(dataToBeSub)
             });
             console.log(response)
-            if (response.statusCode === 401) {
-                console.log("Failed");
+            if (response.status === 200) {
+              toast.success('Data submitted successfully', {
+                onClose: () => onSuccessRedirect() // Redirect to success page after toast is fully closed
+              });
+            } else if (response.status === 401 || response.status === 400 ) {
+              toast.error('Failed to submit data', {
+                onClose: () => onFailureRedirect() // Redirect to failure page after toast is fully closed
+              });
+            }else{
+              toast.error('Failed to submit data', {
+                onClose: () => onFailureRedirect() // Redirect to failure page after toast is fully closed
+              });
             }
             } catch (error) {
             console.error("Error:", error);
@@ -134,6 +149,13 @@ const Leave_Student = () => {
     };
   }, []); 
 
+  const handleSuccessRedirect = () => {
+    navigate("/");
+  };
+
+  const handleFailureRedirect = () => {
+    navigate("/leave_student");
+  };
   return (
     <div className="bg-gray-100 min-h-screen flex items-center justify-center">
       <div className="bg-white p-7 rounded-lg shadow-md w-100">
@@ -243,11 +265,12 @@ const Leave_Student = () => {
               )}
           </div>
           
-          <button onClick={(e) => handleSubmit(e)}
+          <button onClick={(e) => handleSubmit(e, handleSuccessRedirect, handleFailureRedirect)}
             type="submit"
             className="bg-blue-500 text-white rounded-md py-2 px-4 w-full mt-4">
             Submit
           </button>
+          <ToastContainer  />
           </div>
           </div>
         </div></form>
