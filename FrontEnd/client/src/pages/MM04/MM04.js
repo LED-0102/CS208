@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "../../components/Navbar/Navbar";
-import Header from "../../components/Navbar/Header";
 // import "./ssform.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import globalUrl from "../../components/url";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 const MM04 =  () => {
-
+  const navigate=useNavigate();
   const [userData,setUserData]=useState({})
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({
@@ -94,7 +95,9 @@ const MM04 =  () => {
       
      
       
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e,
+      onSuccessRedirect,
+      onFailureRedirect) => {
         e.preventDefault();
 
         const dataToBeSub={...formData};
@@ -119,8 +122,18 @@ const MM04 =  () => {
                 body: JSON.stringify(dataToBeSub)
             });
             console.log(response)
-            if (response.statusCode === 401) {
-                console.log("Failed");
+            if (response.status === 200) {
+              toast.success('Data submitted successfully', {
+                onClose: () => onSuccessRedirect() // Redirect to success page after toast is fully closed
+              });
+            } else if (response.status === 401 || response.status === 400 ) {
+              toast.error('Failed to submit data', {
+                onClose: () => onFailureRedirect() // Redirect to failure page after toast is fully closed
+              });
+            }else{
+              toast.error('Failed to submit data', {
+                onClose: () => onFailureRedirect() // Redirect to failure page after toast is fully closed
+              });
             }
             } catch (error) {
             console.error("Error:", error);
@@ -150,11 +163,18 @@ const MM04 =  () => {
     };
   }, []); 
 
+  const handleSuccessRedirect = () => {
+    navigate("/");
+  };
+
+  const handleFailureRedirect = () => {
+    navigate("/R1");
+  };
+
     return (
         <div>
           <form>
         <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 max-w-lg mx-auto">
-          <img src="/path-to-your-header-image.jpg" alt="Header" className="mx-auto mb-4" />
     
           <h1 className="text-3xl text-center font-bold mb-6">Certificate</h1>
           <h2 className="text-xl text-center font-bold mb-6">Purchase of Goods By Local Purchase Committee</h2>
@@ -293,9 +313,10 @@ const MM04 =  () => {
           </div>
         
           <div className="flex items-center justify-center">
-            <button onClick={(e) => handleSubmit(e)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+            <button onClick={(e) => handleSubmit(e, handleSuccessRedirect, handleFailureRedirect)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
               Submit
             </button>
+            <ToastContainer  />
           </div>
           </>
           </div>

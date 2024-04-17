@@ -58,7 +58,7 @@ useEffect(() => {
         designation: "",
         department: "",
         payment_favour: "",
-        budget_head_expenditure: "",
+        budget_head_expenditure: "RDF",
         // otherBudgetHead: "",
         project_sanction_no: "",
         expenditure_head: "",
@@ -260,7 +260,7 @@ useEffect(() => {
                     <td><input type="text" name="project_sanction_no" id='project_sanction_no' onChange={handleChange} /></td>
                     <th><label htmlFor='expenditure_head'>8. Expenditure Head</label></th>
                     <td colSpan="3">
-                        <select id="expenditure_head" name="expenditure_head" onChange={handleChange}>
+                        <select id="expenditure_head" name="expenditure_head" defaultValue="Equipment" onChange={handleChange}>
                             <option value="Equipment">Equipment</option>
                             <option value="Consumable">Consumable</option>
                             <option value="Contingency">Contingency</option>
