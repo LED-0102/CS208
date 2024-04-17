@@ -226,29 +226,29 @@ useEffect(() => {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-2"><b>Name of the Indenter:</b></label>
-            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="name_indenter" onChange = {handleChange} required />
+            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="name_indenter" onChange = {handleChange} value={formData.name_indenter} required />
           </div>
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-2"><b>Designation:</b></label>
-            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="designation" onChange = {handleChange} required />
+            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="designation" onChange = {handleChange} value={formData.designation} required />
           </div>
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-2"><b>Discipline/Center/Office:</b></label>
-            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="discipline" onChange = {handleChange} required />
+            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="discipline" onChange = {handleChange}  value={formData.discipline} required />
           </div>
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-2"><b>Budget head: (a) Institute/(b) Department/(c) Project (specify) (d) Other (Specify): </b></label>
-            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="budget_head" onChange = {handleChange} required />
+            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="budget_head" onChange = {handleChange} value={formData.budget_head} required />
           </div>
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-2"><b>Space availability:</b>Location such as Room No. </label>
-            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="room_no" onChange = {handleChange} required />
+            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="room_no" onChange = {handleChange} value={formData.room_no} required />
             <label className="block text-gray-700 text-sm font-bold mb-2"><b>Space availability:</b>Building no.  </label>
-            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="building" onChange = {handleChange} required />
+            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="building" onChange = {handleChange} value={formData.building} required />
           </div>
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-2"><b>Specification/s: </b></label>
-            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="specification" onChange = {handleChange} required  />
+            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="specification" onChange = {handleChange} value={formData.specification} required  />
           </div>
         </div>
 
@@ -293,17 +293,17 @@ useEffect(() => {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-2"><b>Purpose/ justification of the requirement: </b></label>
-            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="purpose" onChange = {handleChange} required />
+            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="purpose" onChange = {handleChange} value={formData.purpose} required />
           </div>
           <br/><br/>
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-2"><b>Nature of the material indented*: (a) Proprietary / (b) Single Source / (c) LPC / (d) Other:  </b></label>
-            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="nature" onChange = {handleChange} required />
+            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="nature" onChange = {handleChange}  value={formData.nature} required />
           </div>
           <br/><br/>
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-2"><b>Present availability of similar items with the Indenter:</b></label>
-            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text"  name="present_availability"  onChange = {handleChange} required />
+            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text"  name="present_availability"  onChange = {handleChange}  value={formData.present_availability} required />
           </div>
           </div>
            <br/><br/><br/><br/>
@@ -319,7 +319,7 @@ useEffect(() => {
             <div className="border-t border-gray-300 w-64 text-center pt-2">
             Head, MEMS Department<br/>Name: Dr. Ajay K. Kushwaha
             <label className="block text-gray-700 text-sm font-bold mb-2">Date:</label>
-            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="date" name="sign_date" onChange = {handleChange}/>
+            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="date" name="sign_date" onChange = {handleChange} value={formData.sign_date}/>
             </div>
           </div>
         </div><br/><br/>
