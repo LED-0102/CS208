@@ -8,6 +8,7 @@ use sqlx::{PgPool, Row};
 use crate::auth::jwt::JwToken;
 use crate::db::fetch_id::{identifier_id};
 
+///This is the enum which keeps the record of all the forms along with their contents
 #[derive(Debug)]
 pub enum Forms {
     SS04(SS04),
@@ -19,9 +20,13 @@ pub enum Forms {
     Leave(Leave)
 }
 pub trait FormTrait: Serialize {
+    ///This function is used to process the form. It takes in the pool object and the id of the form and returns a Result object.
     async fn process (&self, pool: &PgPool, id: i32) -> Result<(), Box<dyn Error>>;
+    ///This function is used to get the Identifier object corresponding to the form. It takes in the pool object and returns a Result object.
     async fn get_identifier (&self, pool: &PgPool) -> Result<Identifier, Box<dyn Error>>;
+    ///This function is used to insert the form into the database. It takes in the pool object and returns a Result object.
     async fn pg_insert (&self, pool: &PgPool) -> Result<i32, Box<dyn Error>>;
+    ///This function is used to send the form to the WebSocket server. It takes in the server object and the pool object and returns a Result object.
     async fn send_form_ws (&self, srv: &mut ChatServer, pool: &PgPool) -> Result<(), Box<dyn Error>>{
         let form_string = serde_json::to_string(&self);
         match form_string {
@@ -41,6 +46,7 @@ pub trait FormTrait: Serialize {
             }
         }
     }
+    ///This function is used to update the sender and receiver of the form. It takes in the pool object, the id of the form and the form_name and returns a Result object.
     async fn send_recv_update(&self, pool: &PgPool, id: i32, form_name: &str) -> Result<(), Box<dyn Error>> {
         let query = format!("SELECT submitter, receiver FROM {form_name} WHERE id = $1");
         let a = sqlx::query(&query)
@@ -554,6 +560,7 @@ impl FormTrait for Forms {
 }
 
 impl Forms {
+    ///This function is used to get the Forms enum from the string containing the form data. It takes in the form type, the body of the form and the JwToken object and returns a Result object.
     pub fn from_str(s: &str, mut body: Value, jwt: &JwToken) -> Result<Self, HttpResponse> {
         match s {
             "MM04" => {

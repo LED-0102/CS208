@@ -11,6 +11,7 @@ pub struct EditUserInfo {
     pub contact_number: String
 }
 
+/// This function is used to get the profile of the user.
 pub async fn get_profile (jwt: JwToken, app_state: web::Data<AppState>) -> HttpResponse{
     let id = jwt.id;
     let mut resp = match sqlx::query_as("SELECT * from users where id = $1")
@@ -32,6 +33,7 @@ pub async fn get_profile (jwt: JwToken, app_state: web::Data<AppState>) -> HttpR
     HttpResponse::Ok().body(json_string)
 }
 
+/// This function is used to edit the profile of the user.
 pub async fn edit_profile (jw_token: JwToken, data: web::Json<EditUserInfo>, pool: web::Data<AppState>) -> HttpResponse {
     println!("Here");
     let id = jw_token.id;

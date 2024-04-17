@@ -5,6 +5,8 @@ use crate::auth::jwt::JwToken;
 use serde_json::{json, Value};
 use crate::db::structs::State;
 
+
+///This function is used to get the form data corresponding to the form name and form id.
 pub async fn get_form(pool: web::Data<AppState>, path: web::Path<(String, i32)>, _: JwToken) -> HttpResponse {
     let (form_name, form_id) = path.into_inner();
     let query = format!("SELECT * FROM {} WHERE id = $1", form_name);

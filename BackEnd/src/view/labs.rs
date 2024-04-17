@@ -12,6 +12,7 @@ pub struct Schedule {
     end: String
 }
 
+/// This function is used to get the schedule of a lab on a specific date.
 pub async fn get_schedule(pool: web::Data<AppState>, path: web::Path<(String, String)>) -> HttpResponse {
     let (lab_name, date) = path.into_inner();
     let query = format!("SELECT schedule FROM {} WHERE today_date = '{}'", lab_name, date);
@@ -31,6 +32,7 @@ pub async fn get_schedule(pool: web::Data<AppState>, path: web::Path<(String, St
     }
 }
 
+/// This function is used to book a schedule for a lab on a specific date.
 #[post("/labs/book_schedule/{lab}/{date}")]
 pub async fn book_schedule(pool: web::Data<AppState>, path: web::Path<(String, String)>, schedule: web::Json<Schedule>, jwt: JwToken) -> HttpResponse {
     let (lab_name, date) = path.into_inner();
