@@ -24,6 +24,16 @@ pub struct ApprovalData {
     pub note: String
 }
 
+/// Configures the routes for the view module in the Actix web server.
+///
+/// This function is responsible for setting up the routes for the view module. It adds the following routes:
+/// - `/submit/{form_type}`: A POST route that handles form submission.
+/// - `/approval`: A POST route that handles form approval or rejection.
+/// - `/{form_name}/{form_id}`: A GET route that fetches a specific form.
+/// - `/profile`: A GET route that fetches the profile of the authenticated user.
+/// - `/edit`: A POST route that edits the profile of the authenticated user.
+/// - `/labs/get_schedule/{lab_name}/{Date}`: A GET route that fetches the schedule for a specific lab on a specific date.
+///
 pub fn view_config (cfg: &mut web::ServiceConfig) {
     cfg.service(
         web::scope("/v1")
@@ -37,6 +47,17 @@ pub fn view_config (cfg: &mut web::ServiceConfig) {
     );
 }
 
+/// Handles form submission.
+///
+/// This function is responsible for handling form submission. It takes the form type and form data as arguments, and inserts the form data into the database.
+///
+/// # Parameters
+///
+/// - `jwt`: A JSON Web Token (JWT) that contains the authenticated user's ID.
+/// - `form_type`: A string that specifies the type of form being submitted.
+/// - `form_data`: The form data to be inserted into the database.
+/// - `pool`: A shared state object that provides access to the database pool.
+///
 #[post("/submit/{form_type}")]
 pub async fn form_handler(jwt: JwToken, form_type: web::Path<String>, form_data: web::Json<Value>, pool: Data<AppState>) -> HttpResponse{
     println!("Inside for a while!");
@@ -65,6 +86,16 @@ pub async fn form_handler(jwt: JwToken, form_type: web::Path<String>, form_data:
     }
 }
 
+/// Handles form approval or rejection.
+///
+/// This function is responsible for handling form approval or rejection. It takes the approval data as an argument, and updates the form status in the database.
+///
+/// # Parameters
+///
+/// - `pool`: A shared state object that provides access to the database pool.
+/// - `jwt`: A JSON Web Token (JWT) that contains the authenticated user's ID.
+/// - `data`: The approval data to be used to update the form status.
+///
 #[post("/approval")]
 pub async fn accept_reject(pool: Data<AppState>, jwt: JwToken, data: web::Json<ApprovalData>) -> HttpResponse {
     let pool = &pool.pool;
@@ -130,6 +161,18 @@ pub async fn accept_reject(pool: Data<AppState>, jwt: JwToken, data: web::Json<A
         }
     }
 }
+
+/// Updates the `{form_name}_data` tables in the database accordingly.
+///
+/// This function is responsible for updating the `{form_name}_data` tables in the database. It removes the form ID from the `pending` array and appends it to the `previous` array for the receiver. It also removes the form ID from the `seeking` array and appends it to the `previous` array for the submitter.
+///
+/// # Parameters
+///
+/// - `data`: A reference to an `ApprovalData` object that contains the form ID, form type, decision, and note.
+/// - `pool`: A reference to a `PgPool` object that provides access to the database pool.
+/// - `receiver`: The ID of the receiver.
+/// - `submitter`: The ID of the submitter.
+///
 pub async fn add_to_previous (data: &ApprovalData, pool: &sqlx::PgPool, receiver: i32, submitter: i32) -> Result<(), Box<dyn Error>> {
     let query = format! ("UPDATE {}_data
     SET

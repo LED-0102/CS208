@@ -7,6 +7,8 @@ use sqlx::{FromRow, Type};
 pub struct Users {
     pub(crate) password: String,
 }
+
+///Represents the user table in the database
 #[derive(Serialize, Deserialize, FromRow)]
 pub struct UserDb {
     pub id: i32,
@@ -20,6 +22,8 @@ pub struct UserDb {
     pub contact_number: String,
     pub room: String
 }
+
+///This entity represents the list_orders of SS04 table
 #[derive(Debug, Serialize, Deserialize)]
 pub struct SS04Orders {
     pub supplier: String,
@@ -31,12 +35,22 @@ pub struct SS04Orders {
     pub unit_price: i32,
     pub total: i32,
 }
+
+///Represents the possible states of the form which are: `Pending`, if the form is not yet accepted/rejected by the receiver; `Accepted`, if the form is accepted by the receiver and `Rejected` if the form is rejected by the receiver
 #[derive(Debug, PartialEq, Eq, Type, Deserialize, Serialize)]
 pub enum State {
     Pending,
     Accepted,
     Rejected
 }
+
+///Represents the designation of the users that are going to use the website which are:
+///
+/// 1. `HOD`
+/// 2. `Office`
+/// 3. `Professor`
+/// 4. `Student`
+/// 5. `Staff`
 #[derive(Debug, PartialEq, Eq, Type, Deserialize, Serialize, Clone)]
 pub enum Desig {
     HOD,
@@ -45,6 +59,13 @@ pub enum Desig {
     Student,
     Office
 }
+
+///Represents the academic program of the `Student` users which are:
+///
+/// 1. `PhD`
+/// 2. `MTech`
+/// 3. `MS`
+/// 4. `BTech`
 #[derive(Debug, PartialEq, Eq, Type, Deserialize, Serialize, Clone)]
 pub enum Degree {
     PhD, 
@@ -52,6 +73,13 @@ pub enum Degree {
     MS, 
     BTech,
 }
+
+///Represents the possible departments in the college which are:
+/// 1. `CSE`
+/// 2. `CE`
+/// 3. `ME`
+/// 4. `MEMS`
+/// 5. `EE`
 #[derive(Debug, PartialEq, Eq, Type, Deserialize, Serialize, Clone)]
 pub enum Department {
     CSE,
@@ -60,38 +88,41 @@ pub enum Department {
     MEMS,
     EE
 }
+
+///Represents the SS04 form in the database
 #[derive(Debug, Serialize, Deserialize, FromRow)]
 pub struct SS04 {
     pub note: String,
     pub submitter: i32,
     pub receiver: i32,
-    pub date: String, // Assuming the date could be null
-    pub custodian: String, //
-    pub department: String,//
-    pub location: String,//
-    pub contact: String,//
-    pub designation: String,//
-    pub inventory_no: String,//
-    pub room_no: String,//
-    pub email: String,//
-    pub items_receiving_date: String, //
+    pub date: String,
+    pub custodian: String,
+    pub department: String,
+    pub location: String,
+    pub contact: String,
+    pub designation: String,
+    pub inventory_no: String,
+    pub room_no: String,
+    pub email: String,
+    pub items_receiving_date: String,
     pub list_orders: Vec<SS04Orders>,
     pub total_amount: i32,
     pub name_indenter: String,
-    pub sign_date_indenter: String, //
+    pub sign_date_indenter: String,
     pub name_head: String,
-    pub sign_date_head: String, // Assuming the date could be null
+    pub sign_date_head: String,
     pub issued_approved_name: String,
-    pub issued_approved_date: String, // Assuming the date could be null
+    pub issued_approved_date: String,
     pub items_received_name: String,
     pub items_received_date: String,
     pub items_issued_name: String,
-    pub items_issued_date: String, // Assuming the date could be null
+    pub items_issued_date: String,
     pub action_ledger_name: String,
-    pub action_ledger_date: String, // Assuming the date could be null
+    pub action_ledger_date: String,
     pub approval_status: State,
 }
 
+///Represents the MM04 form in the database
 #[derive(Debug, Serialize, Deserialize, FromRow)]
 pub struct MM04 {
     pub note: String,
@@ -110,17 +141,19 @@ pub struct MM04 {
     pub reason: String
 }
 
+///Represents the list_orders in SS01 form in the database
 #[derive(Debug, Serialize, Deserialize)]
 pub struct SS01Orders {
     pub si: i32,
     pub item_name: String,
     pub item_specification: String,
-    pub con_n_con: String, // Have to change it to ENUM
+    pub con_n_con: String,
     pub required_number: i32,
     pub issued: String,
     pub cost: i32
 }
 
+///Represents the SS01 form in the database
 #[derive(Debug, Serialize, Deserialize, FromRow)]
 pub struct SS01 {
     pub note: String,
@@ -151,6 +184,7 @@ pub struct SS01 {
     pub reason: String
 }
 
+///Represents the R1 form in the database
 #[derive(Debug, Serialize, Deserialize, FromRow)]
 pub struct R1 {
     pub note: String,
@@ -172,6 +206,7 @@ pub struct R1 {
     pub reason: String
 }
 
+///Represents the E01 form in the database
 #[derive(Debug, Serialize, Deserialize, FromRow)]
 pub struct E01 {
     pub note: String,
@@ -187,6 +222,7 @@ pub struct E01 {
     pub reason: String
 }
 
+///Represents the Furniture form in the database
 #[derive(Debug, Serialize, Deserialize, FromRow)]
 pub struct Furniture {
     pub note: String,
@@ -207,6 +243,7 @@ pub struct Furniture {
     pub reason: String
 }
 
+///Represents the Leave form in the database
 #[derive(Debug, Serialize, Deserialize, FromRow)]
 pub struct Leave {
     pub note: String,
@@ -220,6 +257,7 @@ pub struct Leave {
     pub reason: String
 }
 
+///It is used to fetch the seeking, pending or previous forms from the database
 #[derive(Debug, Serialize, Deserialize, FromRow)]
 pub struct Seeking {
     pub data: serde_json::Value

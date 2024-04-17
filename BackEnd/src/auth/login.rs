@@ -17,6 +17,11 @@ use crate::AppState;
 use crate::auth::jwt::{JwToken};
 use crate::db::structs::Users;
 
+///This function is used to login a user. It takes in the email and password of the user and checks if the password is correct.
+///
+/// # Errors
+///
+/// This function will return an error if the email is not found in the database or if the password is incorrect.
 pub async fn login (credentials: web::Json<Login>, state: web::Data<AppState>) -> HttpResponse {
     let password = &credentials.password;
     let mut todo: Vec<Users> = sqlx::query_as("SELECT password FROM users WHERE email = $1")

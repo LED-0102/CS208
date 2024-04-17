@@ -9,6 +9,10 @@ use login::login;
 use logout::logout;
 use register::register;
 
+///It lists all the routes of the auth module. There are 4 routes:
+/// 1. /register
+/// 2. /login
+/// 3. /logout
 pub fn auth_config (cfg: &mut web::ServiceConfig) {
     cfg.service(
         web::scope("/v1/auth")

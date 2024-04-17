@@ -20,6 +20,15 @@ pub struct ResData {
     approval_status: State
 }
 
+/// Fetches and returns pending forms for a user.
+///
+/// This function is responsible for fetching all forms and then for each form, it fetches the pending keys for the current user.
+/// It then fetches the form data for each pending key and stores it in a HashMap where the key is the form name and the value is a vector of form data.
+///
+/// # Parameters
+///
+/// - `fetch_type`: A string that specifies the type of fetch operation to perform. For eg. `Pending` to get forms received by the users and are not responded yet, `Seeking` to get forms which are sent by the user which are not responded yet, `Previous` to get the forms which are responded and the user is either the submitter or the receiver of the form.
+///
 pub async fn get_pending(app_state: web::Data<AppState>, jwt: JwToken, fetch_type: Path<String>) -> HttpResponse {
     let id = jwt.id;
     let fetch_type = fetch_type.into_inner();

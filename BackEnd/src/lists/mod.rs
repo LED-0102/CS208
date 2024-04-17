@@ -5,9 +5,10 @@ use sqlx::{Error};
 use crate::db::structs::{Student, Instrument, Receivers};
 
 use crate::AppState;
+use crate::auth::jwt::JwToken;
 use crate::lists::fetch_forms::get_pending;
 
-pub async fn get_students(app_state: Data<AppState>) -> impl Responder{
+pub async fn get_students(app_state: Data<AppState>, _: JwToken) -> impl Responder{
     match sqlx::query_as::<_, Student>(
         "SELECT roll_no, student_name, email_id, degree FROM students"
     )
@@ -19,7 +20,7 @@ pub async fn get_students(app_state: Data<AppState>) -> impl Responder{
     }
 }
 
-pub async fn get_inventory(app_state: Data<AppState>) -> impl Responder{
+pub async fn get_inventory(app_state: Data<AppState>, _: JwToken) -> impl Responder{
     match sqlx::query_as::<_, Instrument>(
         "SELECT * FROM inventory"
     )
@@ -30,8 +31,8 @@ pub async fn get_inventory(app_state: Data<AppState>) -> impl Responder{
         Err(_) => HttpResponse::NotFound().json("No Instruments Found!")
     }
 }
-
-pub async fn get_receiver(pool: Data<AppState>) -> HttpResponse {
+///This function is used to fetch all the possible receivers of the forms, so the form sender can choose who to send
+pub async fn get_receiver(pool: Data<AppState>, _: JwToken) -> HttpResponse {
     let todo: Result<Vec<Receivers>, Error> = sqlx::query_as("SELECT id, username, designation FROM users")
         .fetch_all(&pool.pool)
         .await;
@@ -48,6 +49,15 @@ pub async fn get_receiver(pool: Data<AppState>) -> HttpResponse {
     }
 
 }
+
+/// Configures the routes for the list module in the Actix web server.
+///
+/// This function is responsible for setting up the routes for the list module. It adds the following routes:
+/// - `/students`: A GET route that returns a list of all students.
+/// - `/inventory`: A GET route that returns a list of all items in the inventory.
+/// - `/receiver`: A GET route that returns a list of all possible receivers of the forms.
+/// - `/forms/{fetch_type}`: A GET route that returns a list of forms based on the fetch type.
+///
 pub fn list_config (cfg: &mut web::ServiceConfig) {
     cfg.service(
         web::scope("/list")

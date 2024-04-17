@@ -7,6 +7,7 @@ use jsonwebtoken::{encode, decode, Header, EncodingKey, DecodingKey, Validation}
 use chrono::{Utc};
 use sqlx::{FromRow, PgPool};
 
+///This is the structure of the JsonWebToken
 #[derive(Debug, Serialize, Deserialize)]
 pub struct JwToken {
     pub username: String,
@@ -22,15 +23,20 @@ pub struct AdminEmail {
     pub username: String
 }
 impl JwToken {
+    ///This function returns the key used to encode and decode the JWT
     pub fn get_key() -> String {
         let key: String = std::env::var("JWT_KEY").unwrap_or("secret".parse().unwrap());
         return key;
     }
+
+    ///This function encodes the JWT
     pub fn encode(self) -> String {
         let key = EncodingKey::from_secret(JwToken::get_key().as_ref());
         let token = encode(&Header::default(), &self, &key).unwrap();
         return token;
     }
+
+    ///This function creates a new JWT from the email
     pub async fn new(email: String, pool: &PgPool) -> Self {
         let todo: AdminEmail = sqlx::query_as("SELECT id, admin, username from users where email=$1")
             .bind(&email)
@@ -40,6 +46,8 @@ impl JwToken {
         let timestamp = Utc::now().checked_add_signed(chrono::Duration::try_minutes(360).unwrap()).expect("valid Timestamp").timestamp();
         return JwToken {username: todo.username, exp: timestamp as usize, email, is_admin: todo.admin, id: todo.id};
     }
+
+    ///This function decodes the JWT
     pub fn from_token(token: String) -> Result<Self, String>{
         let key = DecodingKey::from_secret(
             JwToken::get_key().as_ref()
@@ -57,10 +65,13 @@ impl JwToken {
         }
     }
 }
+
+///This implementation is used to get the JWT from the request
 impl FromRequest for JwToken {
     type Error = Error;
     type Future = Ready<Result<JwToken, Error>>;
 
+    ///This function is used to get the JWT from the request
     fn from_request(req: &HttpRequest, _payload: &mut Payload) -> Self::Future {
         match req.cookie("jwt") {
             Some(data) => {
