@@ -1465,7 +1465,7 @@ const MM04form=()=>{
     
           
           {/* <form> */}
-          <div className="flex items-center justify-between mb-4">
+          {/* <div className="flex items-center justify-between mb-4">
             
             <div className="w-1/2 pl-2">
               <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -1486,7 +1486,7 @@ const MM04form=()=>{
                 Name, Designation & Signature of Convenor
               </label>
               <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="name_convener" onChange = {handleChange} required/>
-          </div>
+          </div> */}
           
           {/* <div className="mb-4 lg:mb-0 lg:mr-4 lg:w-full">
           <select
