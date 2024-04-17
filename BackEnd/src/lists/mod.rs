@@ -17,7 +17,7 @@ pub async fn create_students(pool: web::Data<AppState>, student : web::Json<Stud
         Ok(row) => {
             match row.try_get::<Desig,_>(0){
                 Ok(designation) =>{
-                    if(designation != Desig::Office){
+                    if designation != Desig::Office{
                         return HttpResponse::Unauthorized().body("You Are Not Authorized to add students.");
                     }
                 },
