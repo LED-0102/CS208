@@ -5,12 +5,7 @@ mod view;
 mod ws;
 
 use actix_web::middleware::Logger;
-use actix_web::{
-    error, get, post,
-    web::{self, Json, ServiceConfig},
-    Result,
-    dev::Service,
-};
+use actix_web::{error, get, post, web::{self, Json, ServiceConfig}, Result, dev::Service, HttpResponse};
 use serde::{Deserialize, Serialize};
 use shuttle_actix_web::ShuttleActixWeb;
 use sqlx::{Executor, FromRow, PgPool};
@@ -65,7 +60,7 @@ async fn actix_web(
 
     let config = move |cfg: &mut ServiceConfig| {
         cfg.service(
-            web::scope("/")
+            web::scope("")
                 .wrap(Cors::default().allow_any_origin().allow_any_method().allow_any_header().supports_credentials())
                 .wrap(Logger::default())
                 .wrap_fn(|req, srv| {
@@ -80,7 +75,8 @@ async fn actix_web(
                 .configure(auth_config)
                 .configure(view_config)
                 .configure(list_config)
-                .configure(ws_config),
+                .configure(ws_config)
+                .route("/", web::get().to(|| async { HttpResponse::Ok().body("Hello WOld!") })),
         );
     };
 
