@@ -218,7 +218,8 @@ CREATE TABLE students (
     roll_no VARCHAR PRIMARY KEY,
     student_name VARCHAR,
     email_id VARCHAR,
-    degree degree_enum
+    batch VARCHAR,
+    degree VARCHAR
 );
 CREATE TABLE inventory (
     instrument_id VARCHAR PRIMARY KEY,

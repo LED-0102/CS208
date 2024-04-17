@@ -165,8 +165,8 @@ const E01 = () => {
               <table>
                 <tbody>
                 <tr>
-                  <td><label htmlFor="empId">Emp Id:</label></td>
-                  <td><input type="text" id="empId" name="empId" className="p-2 border-2 border-black" onChange={handleChange} /></td>
+                  <td><label htmlFor="employee_id">Emp Id:</label></td>
+                  <td><input type="text" id="employee_id" name="employee_id" className="p-2 border-2 border-black" onChange={handleChange} /></td>
                 </tr>
                 </tbody>
                 
