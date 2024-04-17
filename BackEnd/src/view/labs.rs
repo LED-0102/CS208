@@ -1,9 +1,9 @@
 use actix_web::{post, web, HttpResponse};
 use serde::{Deserialize, Serialize};
 use sqlx::{Column, Row, TypeInfo};
-use crate::{auth::jwt, AppState};
+use crate::{AppState};
 use crate::auth::jwt::JwToken;
-use serde_json::{json, Value};
+use serde_json::{Value};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Schedule {
@@ -34,7 +34,7 @@ pub async fn get_schedule(pool: web::Data<AppState>, path: web::Path<(String, St
 
 /// This function is used to book a schedule for a lab on a specific date.
 #[post("/labs/book_schedule/{lab}/{date}")]
-pub async fn book_schedule(pool: web::Data<AppState>, path: web::Path<(String, String)>, schedule: web::Json<Schedule>, jwt: JwToken) -> HttpResponse {
+pub async fn book_schedule(pool: web::Data<AppState>, path: web::Path<(String, String)>, schedule: web::Json<Schedule>, _jwt: JwToken) -> HttpResponse {
     let (lab_name, date) = path.into_inner();
     let check_query = format!("SELECT * FROM {} WHERE today_date = '{}'", lab_name, date);
     match sqlx::query(&check_query)
