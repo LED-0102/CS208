@@ -49,13 +49,6 @@ struct AppState {
 async fn actix_web(
     #[shuttle_shared_db::Postgres] pool: PgPool,
 ) -> ShuttleActixWeb<impl FnOnce(&mut ServiceConfig) + Send + Clone + 'static> {
-    // function body...
-}
-
-#[shuttle_runtime::main]
-async fn actix_web(
-    #[shuttle_shared_db::Postgres] pool: PgPool,
-) -> ShuttleActixWeb<impl FnOnce(&mut ServiceConfig) + Send + Clone + 'static> {
 
     let state = web::Data::new(AppState { pool });
 
