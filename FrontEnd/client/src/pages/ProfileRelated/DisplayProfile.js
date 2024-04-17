@@ -14,15 +14,14 @@ const DisplayProfile = () => {
         try {
             
       // Create a custom set of headers
-            const customHeaders = new Headers({
-              'Content-Type': 'application/json', // You may need to adjust the content type based on your request
-              'Cookie': localStorage.getItem('token'), // Include the retrieved cookie in the 'Cookie' header
-            });
-            const headersObject = Object.fromEntries(customHeaders.entries());
+            const token = localStorage.getItem('token');
+            console.log(token);
             const response = await fetch(`${globalUrl}/v1/profile`, {
                 method: 'GET',
-                credentials: 'include',  
-                headers: headersObject,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'token': token
+                }
               });
             
           const responseData = await response.json();
