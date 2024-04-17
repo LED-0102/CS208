@@ -43,7 +43,7 @@ impl JwToken {
             .fetch_one(pool)
             .await
             .map_err(|e| error::ErrorBadRequest(e.to_string())).unwrap();
-        let timestamp = Utc::now().checked_add_signed(chrono::Duration::try_minutes(360).unwrap()).expect("valid Timestamp").timestamp();
+        let timestamp = Utc::now().checked_add_signed(chrono::Duration::try_minutes(2880).unwrap()).expect("valid Timestamp").timestamp();
         return JwToken {username: todo.username, exp: timestamp as usize, email, is_admin: todo.admin, id: todo.id};
     }
 
