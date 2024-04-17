@@ -73,11 +73,9 @@ impl FromRequest for JwToken {
 
     ///This function is used to get the JWT from the request
     fn from_request(req: &HttpRequest, _payload: &mut Payload) -> Self::Future {
-        match req.cookie("jwt") {
+        match req.headers().get("token") {
             Some(data) => {
-                // println!("{}", data);
-                let raw_token = data.value().to_string();
-
+                let raw_token = data.to_str().unwrap().to_string();
                 let token_result = JwToken::from_token(raw_token);
                 match token_result {
                     Ok(token) => {
