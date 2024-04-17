@@ -1,5 +1,5 @@
 [package]
-name = "shutpostesting"
+name = "mems-office"
 version = "0.1.0"
 edition = "2021"
 
@@ -7,7 +7,10 @@ edition = "2021"
 actix-web = "4.3.1"
 serde = { version = "1.0.197", features = ["derive"]}
 actix-cors = "0.7.0"
+shuttle-actix-web = "0.43.0"
+shuttle-runtime = "0.43.0"
 sqlx = { version = "0.7.3", features = ["runtime-tokio-native-tls", "postgres"] }
+shuttle-shared-db = { version = "0.43.0", features = ["postgres", "sqlx"] }
 tokio = "1.26.0"
 futures = "0.3.30"
 jsonwebtoken = "9.2.0"

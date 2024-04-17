@@ -79,6 +79,12 @@ const MM04 =  () => {
         if(changedField === "amount_claimed"){
             newValue=parseInt(newValue);
         }
+        if(changedField === "amount"){
+            newValue=parseInt(newValue);
+        }
+        if(changedField === "amount_tax"){
+            newValue=parseInt(newValue);
+        }
         currData[changedField] = newValue;
         return {
             ...currData,
@@ -161,14 +167,14 @@ const MM04 =  () => {
             <p className="text-sm px-4">
             Certified that we, the members of the Purchase Committee are jointly and individually satisfied that the goods recommended for Purchase are <b>of the requisite specification and quality, priced reasonably at the prevailing market rates and the supplier recommended is reliable and competent to supply the goods in question, and it is not debarred by Department of Commerce or Ministry/ Department concerned. Accordingly, 
             we enclose the quotation no.
-            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="quotation_no" onChange = {handleChange} required/> 
+            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="quotation_no" onChange = {handleChange} value={formData.quotation_no} required/> 
             dated <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="date" onChange = {handleChange} required/> 
-            of M/s. <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="requester_name" onChange = {handleChange} required/> for placing Purchase Order.</b>
+            of M/s. <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="requester_name" onChange = {handleChange} value={formData.requester_name} required/> for placing Purchase Order.</b>
             </p> <br/>
             <p classname="text-sm px-4">The total financial implications will be `
-             <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="amount" onChange = {handleChange} required/><b>
-            (Inclusive of Tax @ )<input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="amount_tax" onChange = {handleChange} required/>
-    (In Words-) <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="amount_words" onChange = {handleChange} required/></b>
+             <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="amount" onChange = {handleChange}   required/><b>
+            (Inclusive of Tax @ )<input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="amount_tax" onChange = {handleChange}   required/>
+    (In Words-) <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="amount_words" onChange = {handleChange}  value={formData.amount_words} required/></b>
     </p>
           </div>
     
@@ -176,19 +182,19 @@ const MM04 =  () => {
     
           
           {/* <form> */}
-          <div className="flex items-center justify-between mb-4">
+          {/* <div className="flex items-center justify-between mb-4">
             
             <div className="w-1/2 pl-2">
               <label className="block text-gray-700 text-sm font-bold mb-2">
                 Name, Designation & Signature of Member 
               </label>
-              <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text"  name="name_member" onChange = {handleChange} required/>
+              <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text"  name="name_member" onChange = {handleChange}  value={formData.name_member} required/>
             </div>
             <div className="w-1/2 pl-2">
               <label className="block text-gray-700 text-sm font-bold mb-2">
                 Name, Designation & Signature of Member 
               </label>
-              <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="designation_member" onChange = {handleChange} required/>
+              <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="designation_member" onChange = {handleChange}  value={formData.designation_member} required/>
             </div>
           </div>
     
@@ -196,8 +202,8 @@ const MM04 =  () => {
           <label className="block text-gray-700 text-sm font-bold mb-2">
                 Name, Designation & Signature of Convenor
               </label>
-              <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="name_convener" onChange = {handleChange} required/>
-          </div>
+              <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="name_convener" onChange = {handleChange} value={formData.name_convener} required/>
+          </div> */}
           
           {/* <div className="mb-4 lg:mb-0 lg:mr-4 lg:w-full">
           <select

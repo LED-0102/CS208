@@ -563,7 +563,7 @@ impl Forms {
                         Ok(Forms::MM04(s))
                     }
                     Err(e) => {
-                        
+                        println!("{:?}", e);
                         Err(HttpResponse::BadRequest().body("Incompatible structure"))
                     }
                 }

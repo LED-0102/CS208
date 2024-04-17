@@ -40,7 +40,7 @@ pub async fn book_schedule(pool: web::Data<AppState>, path: web::Path<(String, S
         .await
     {
         Ok(res) => {
-            if(res.len() == 0){
+            if res.len() == 0 {
                 let initial_query = format!("INSERT INTO {} (today_date, schedule) VALUES ('{}', '[]')", lab_name, date);
                 println!("{}", initial_query);
                 match sqlx::query(&initial_query)
@@ -49,6 +49,7 @@ pub async fn book_schedule(pool: web::Data<AppState>, path: web::Path<(String, S
                 {
                     Ok(_) => {},
                     Err(e) => {
+                        println!("{:?}", e);
                         return HttpResponse::InternalServerError().body("Error entering initial value");
                     }
                 }

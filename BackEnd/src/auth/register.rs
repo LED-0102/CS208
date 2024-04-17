@@ -56,7 +56,7 @@ pub async fn insert(st: NewUserDesig, pool: &PgPool) -> Result<(), Box<dyn Error
         .bind(&st.department)
         .fetch_one(pool)
         .await?;
-    let id: i32 = todo.try_get("id")?;
+    let _id: i32 = todo.try_get("id")?;
     Ok(())
 }
 pub async fn register (new_user: web::Json<NewUser>, state: web::Data<AppState>) -> impl Responder {
