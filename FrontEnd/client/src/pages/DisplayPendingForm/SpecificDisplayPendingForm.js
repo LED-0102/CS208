@@ -28,6 +28,12 @@ const SpecificDisplayPendingForm = () => {
     case 'Furniture':
       formComponent=<Furnitureform formId={formId} formName={formName}/>;
       break;
+    case 'R1':
+      formComponent=<R1form formId={formId} formName={formName}/>;
+      break;
+    case 'E01':
+      formComponent=<E01form formId={formId} formName={formName}/>;
+      break;
     default:
       formComponent=<div>Unkmown Form</div>;
       break;
@@ -1958,6 +1964,329 @@ useEffect(() => {
     </div>
     </>
   );
+}
+
+const R1form = () => {
+
+  const { formName,formId } = useParams();
+  const [formData, setFormData] = useState({}); 
+
+  useEffect(() => {
+    const fetchData = async () => {
+        try {
+            const storedCookie = document.cookie;
+            console.log(storedCookie);
+      // Create a custom set of headers
+            const customHeaders = new Headers({
+              'Content-Type': 'application/json', // You may need to adjust the content type based on your request
+              'Cookie': storedCookie, // Include the retrieved cookie in the 'Cookie' header
+            });
+            const headersObject = Object.fromEntries(customHeaders.entries());
+  
+            //  const response = await fetch('https://jsonplaceholder.typicode.com/posts',{
+            const response = await fetch(`${globalUrl}/v1/${formName}/${formId}`, {
+                method: 'GET',
+                credentials: 'include',  // Include credentials (cookies) in the request
+                headers: headersObject,
+                // body: JSON.stringify(updatedFormData)
+              });
+            //   console.log(response)
+            // console.log("aadd",typeof(data))
+            // setPendingFormData(response.data);
+            // console.log("aadd",typeof(pendingFormData))
+            // console.log("aadd",pendingFormData)
+            // console.log("aadd++++",response)
+               // Parsing JSON response
+const responseData = await response.json();
+// console.log('Parsed JSON response:', typeof(responseData));
+console.log('Parsed JSON response:', (responseData));
+setFormData(responseData);
+// setTabledata(responseData.list_orders)
+            //   console.log()
+              if (response.statusCode === 401) {
+                console.log("Failed");
+              }
+            } catch (error) {
+              console.error("Error:", error);
+            }
+    };
+
+    fetchData();    
+    
+
+  return () => {
+
+  };
+}, []);
+
+console.log("formData++++",formData)
+const handleChange = (evt) => {
+const changedField = evt.target.name;
+let newValue = evt.target.value;
+
+setFormData((currData) => {
+if(changedField === "amount_claimed"){
+    newValue=parseInt(newValue);
+}
+currData[changedField] = newValue;
+return {
+    ...currData,
+};
+});
+};
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(`${globalUrl}/list/receiver`);
+      // const response = await axios.get(`https://randomuser.me/api/`);
+      // const datss=data
+      // console.log("aadd",typeof(response.data))
+      // console.log("aadd",typeof(data))
+      //setUserData(response.data);
+      // console.log("dats",response.data)
+      // console.log("dats++++++userData",userData)
+    } catch (error) {
+      console.log(error)
+    } finally {
+      // setLoading(false);
+    }
+  };
+
+  fetchData();
+  return () => {
+    
+  };
+}, []); 
+  
+return (
+  <div>
+    <div className="">
+      <div className="">
+      <h1 className='font-bold text-center text-3xl'>INDIAN INSTITUTE OF TECHNOLOGY INDORE</h1>
+      <h2 className='font-bold text-center text-xl'>GENERAL PAYMENT AGAINST DIRECT PURCHASE FORM (R & D)</h2>
+      <div className="h-1 r1Spline bg-black"></div>
+      <p className='text-md ml-3'>(Please use separate Form for TA-DA/Local Conveyance/General Advance settlement/Medical Expenses/ CPDA)</p>
+      <form>
+      <table>
+          <tbody>
+              <tr>
+                  <th>1. Purpose of the Expenditure</th>
+                  <td colSpan="5"><input type="text" name="purpose_of_expenditure"  id="_of_expenditure" defaultValue={formData.purpose_of_expenditure} onChange={handleChange} required /></td>
+              </tr>
+              <tr>
+                  <th><label htmlFor='name_of_applicant'>2. Name of the Applicant</label></th>
+                  <td><input type="text" name="name_of_applicant" id="name_of_applicant" onChange={handleChange} defaultValue={formData.name_of_applicant} required /></td>
+                  <th><label htmlFor='designation'>3. Designation</label></th>
+                  <td><input type="text" name="designation" id='designation' onChange={handleChange} defaultValue={formData.designation} required /></td>
+                  <th><label className='department'>4. Department</label></th>
+                  <td><input type="text" name="department" id='department' onChange={handleChange} defaultValue={formData.department} required /></td>
+              </tr>
+              {/* <tr>
+                  <th>5. Payment to be made in favor of</th>
+                  <td colSpan="5">
+                      <label htmlFor='payment_favour' >Party</label>
+                      <input type="checkbox" name="payment_favour" id='payment_favour' onChange={handleChange} required />
+                  </td>
+              </tr> */}
+              <tr>
+                  <th><label htmlFor='budget_head_expenditure'>6. Please specify the budget head for expenditure</label></th>
+                  <td colSpan="5">
+                      <select id="budget_head_expenditure" name="budget_head_expenditure" defaultValue={formData.budget_head_expenditure} onChange={handleChange}>
+                          <option value="RDF">RDF</option>
+                          <option value="DDF">DDF</option>
+                          <option value="Others">Others</option>
+                      </select>
+                  </td>
+              </tr>
+              <tr>
+                  <th><label htmlFor='project_sanction_no'>7. Project Sanction No.</label></th>
+                  <td><input type="text" name="project_sanction_no"  id='project_sanction_no' defaultValue={formData.project_sanction_no}  onChange={handleChange} /></td>
+                  <th><label htmlFor='expenditure_head'>8. Expenditure Head</label></th>
+                  <td colSpan="3">
+                      <select id="expenditure_head" name="expenditure_head" onChange={handleChange}>
+                          <option value="Equipment">Equipment</option>
+                          <option value="Consumable">Consumable</option>
+                          <option value="Contingency">Contingency</option>
+                          <option value="Other">Other</option>
+                      </select>
+                  </td>
+              </tr>
+              
+              <tr>
+                  <th><label htmlFor='amount_claimed'>9. Amount Claimed (Rs)</label></th>
+                  <td colSpan="5"><input type="number" name="amount_claimed" defaultValue={formData.amount_claimed} onChange={handleChange} required /></td>
+              </tr>
+              <tr>
+                  <th><label htmlFor='_name'>10. Name of Recommending Authority:</label></th>
+                  <td colSpan="5"><input type="text" name="recommending_authority_name" id="recommending_authority_name" defaultValue={formData.recommending_authority_name} onChange={handleChange} required /></td>
+              </tr>
+          </tbody>
+      </table>
+
+      <div>
+          <p><strong>Note:</strong></p>
+          <ol>
+              <li>1. If the expenses from other, kindly specify in others.</li>
+              <li>2. Form to be sent to Central Store for stock entry in the asset register in order to avoid time lag.</li>
+              <li>3. The consumables purchased also to be entered in the stock register.</li>
+              <li>4. Certified GEM report is mandatory for the purchase of goods/items.</li>
+              <li>5. Invoice must be certified by the project Investigator.</li>
+          </ol>
+      </div>
+
+
+         
+          
+
+  </form>
+  </div>
+    </div>
+  </div>
+)
+}
+
+const E01form = () => {
+
+  const { formName,formId } = useParams();
+  const [formData, setFormData] = useState({}); 
+
+  useEffect(() => {
+    const fetchData = async () => {
+        try {
+            const storedCookie = document.cookie;
+            console.log(storedCookie);
+      // Create a custom set of headers
+            const customHeaders = new Headers({
+              'Content-Type': 'application/json', // You may need to adjust the content type based on your request
+              'Cookie': storedCookie, // Include the retrieved cookie in the 'Cookie' header
+            });
+            const headersObject = Object.fromEntries(customHeaders.entries());
+  
+            //  const response = await fetch('https://jsonplaceholder.typicode.com/posts',{
+            const response = await fetch(`${globalUrl}/v1/${formName}/${formId}`, {
+                method: 'GET',
+                credentials: 'include',  // Include credentials (cookies) in the request
+                headers: headersObject,
+                // body: JSON.stringify(updatedFormData)
+              });
+            //   console.log(response)
+            // console.log("aadd",typeof(data))
+            // setPendingFormData(response.data);
+            // console.log("aadd",typeof(pendingFormData))
+            // console.log("aadd",pendingFormData)
+            // console.log("aadd++++",response)
+               // Parsing JSON response
+const responseData = await response.json();
+// console.log('Parsed JSON response:', typeof(responseData));
+console.log('Parsed JSON response:', (responseData));
+setFormData(responseData);
+// setTabledata(responseData.list_orders)
+            //   console.log()
+              if (response.statusCode === 401) {
+                console.log("Failed");
+              }
+            } catch (error) {
+              console.error("Error:", error);
+            }
+    };
+
+    fetchData();    
+    
+
+  return () => {
+
+  };
+}, []);
+
+console.log("formData++++",formData)
+const handleChange = (evt) => {
+const changedField = evt.target.name;
+let newValue = evt.target.value;
+
+setFormData((currData) => {
+if(changedField === "amount_claimed"){
+    newValue=parseInt(newValue);
+}
+currData[changedField] = newValue;
+return {
+    ...currData,
+};
+});
+};
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(`${globalUrl}/list/receiver`);
+      // const response = await axios.get(`https://randomuser.me/api/`);
+      // const datss=data
+      // console.log("aadd",typeof(response.data))
+      // console.log("aadd",typeof(data))
+      //setUserData(response.data);
+      // console.log("dats",response.data)
+      // console.log("dats++++++userData",userData)
+    } catch (error) {
+      console.log(error)
+    } finally {
+      // setLoading(false);
+    }
+  };
+
+  fetchData();
+  return () => {
+    
+  };
+}, []); 
+  
+return (
+
+  <div className="border-2 border-black h-full">
+      <h1 className='text-center font-bold text-3xl'>Indian Institute of Technology Indore - Estate Section</h1>
+      <p className='text-center font-bold mt-4 text-lg'>Civil/Electrical/Air Conditioning Work Requisition Form (E: 01)</p>
+      <p className='text-center'>(For regular maintenance, do not use this form; instead use ticket generation service)</p>
+      <form action="#">
+          <div className="mb-4">
+            <p className='text-center'><span className='font-bold'>Requisition submitted by: </span> [must be an employee (other than project employee) of the Institute]</p>
+            <table>
+              <tbody>
+              <tr>
+                <td><label htmlFor="employee_id">Emp Id:</label></td>
+                <td><input type="text" id="employee_id" name="employee_id" className="p-2 border-2 border-black" defaultValue={formData.employee_id} onChange={handleChange} /></td>
+              </tr>
+              </tbody>
+              
+            </table>
+          </div>
+          <div className="mb-4 mx-2">
+              <label htmlFor="reason">Provide Description</label>
+              <input type="text" id="reason" name="reason" className="p-2 border-2 border-black" defaultValue={formData.reason} onChange={handleChange} />
+          </div>
+          
+          
+
+          <div className="mb-4">
+            
+            <table>
+              <tbody>
+              <tr>
+                <td><label htmlFor="hod_name">HOD Name:</label></td>
+                <td><input type="text" id="hod_name" name="hod_name" className="p-2 border-2 border-black" defaultValue={formData.hod_name} onChange={handleChange} /></td>
+                <td><label htmlFor="hod_signature_date">HOD Signature Date:</label></td>
+                <td><input type="date" id="hod_signature_date" name="hod_signature_date" className="p-2 border-2 border-black" defaultValue={formData.hod_signature_date} onChange={handleChange} /></td>
+              </tr>
+              
+              <tr>
+                <td><label htmlFor="jr_name">JR Name:</label></td>
+                <td><input type="text" id="jr_name" name="jr_name" className="p-2 border-2 border-black" defaultValue={formData.jr_name} onChange={handleChange} /></td>
+                <td><label htmlFor="jr_signature_date">JR Signature Date:</label></td>
+                <td><input type="date" id="jr_signature_date" name="jr_signature_date" className="p-2 border-2 border-black" defaultValue={formData.jr_signature_date} onChange={handleChange} /></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          
+      </form>
+  </div>
+)
 }
 
 // export default SpecificDisplayPendingForm
