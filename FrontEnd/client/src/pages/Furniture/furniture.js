@@ -8,11 +8,13 @@ import { useNavigate } from "react-router-dom";
 import globalUrl from "../../components/url";
 // import {data} from "./data"
 import SearchUserComp from "../../components/Search/search";
-
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 
 const FurnitureRequirementForm = () => {
-
+  const navigate=useNavigate();
   const [info,setInfo] = useState({})
   useEffect(() => {
     const fetchData = async () => {
@@ -33,9 +35,9 @@ const FurnitureRequirementForm = () => {
           const responseData = await response.json();
           console.log('Parsed JSON response:', (responseData));
           setInfo(responseData)
-              if (response.statusCode === 401) {
-                console.log("Failed");
-              }
+          if (response.statusCode === 401) {
+            console.log("Failed");
+          }
             } catch (error) {
               console.error("Error:", error);
             }
@@ -96,7 +98,9 @@ useEffect(() => {
       "Student",
       ];
       
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e,
+      onSuccessRedirect,
+      onFailureRedirect) => {
         e.preventDefault();
 
         const dataToBeSub={...formData};
@@ -121,8 +125,18 @@ useEffect(() => {
                 body: JSON.stringify(dataToBeSub)
             });
             console.log(response)
-            if (response.statusCode === 401) {
-                console.log("Failed");
+            if (response.status === 200) {
+              toast.success('Data submitted successfully', {
+                onClose: () => onSuccessRedirect() // Redirect to success page after toast is fully closed
+              });
+            } else if (response.status === 401 || response.status === 400 ) {
+              toast.error('Failed to submit data', {
+                onClose: () => onFailureRedirect() // Redirect to failure page after toast is fully closed
+              });
+            }else{
+              toast.error('Failed to submit data', {
+                onClose: () => onFailureRedirect() // Redirect to failure page after toast is fully closed
+              });
             }
             } catch (error) {
             console.error("Error:", error);
@@ -188,6 +202,14 @@ useEffect(() => {
     }));
     console.log(formData)
   }, [info]);
+
+  const handleSuccessRedirect = () => {
+    navigate("/");
+  };
+
+  const handleFailureRedirect = () => {
+    navigate("/Furniture");
+  };
 
   return (
     <>
@@ -369,7 +391,8 @@ useEffect(() => {
 
           </div>
         <b><h4 classname="block text-black-900 font-bold increased-font-size">To,<br/>Furniture Committee</h4></b>
-      <button onClick={(e) => handleSubmit(e)} className='text-white bg-black'>Submit</button>
+      <button onClick={(e) => handleSubmit(e, handleSuccessRedirect, handleFailureRedirect)} className='text-white bg-black'>Submit</button>
+      <ToastContainer  />
    </> </div>  </form>
       
     </div>
