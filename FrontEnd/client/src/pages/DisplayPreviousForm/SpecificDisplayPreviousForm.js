@@ -242,7 +242,7 @@ const handleChangeTable = (event, index, key) => {
       // Create a custom set of headers
             const customHeaders = new Headers({
               'Content-Type': 'application/json', // You may need to adjust the content type based on your request
-              'Cookie': storedCookie, // Include the retrieved cookie in the 'Cookie' header
+              'Cookie':localStorage.getItem('token'), // Include the retrieved cookie in the 'Cookie' header
             });
             const headersObject = Object.fromEntries(customHeaders.entries());
   
@@ -768,7 +768,7 @@ const SS01form = () => {
           // Create a custom set of headers
                 const customHeaders = new Headers({
                   'Content-Type': 'application/json', // You may need to adjust the content type based on your request
-                  'Cookie': storedCookie, // Include the retrieved cookie in the 'Cookie' header
+                  'Cookie': localStorage.getItem('token'),// Include the retrieved cookie in the 'Cookie' header
                 });
                 const headersObject = Object.fromEntries(customHeaders.entries());
       
@@ -1408,7 +1408,7 @@ const MM04form=()=>{
         // Create a custom set of headers
               const customHeaders = new Headers({
                 'Content-Type': 'application/json', // You may need to adjust the content type based on your request
-                'Cookie': storedCookie, // Include the retrieved cookie in the 'Cookie' header
+                'Cookie': localStorage.getItem('token'), // Include the retrieved cookie in the 'Cookie' header
               });
               const headersObject = Object.fromEntries(customHeaders.entries());
     
@@ -2010,7 +2010,7 @@ const R1form = () => {
       // Create a custom set of headers
             const customHeaders = new Headers({
               'Content-Type': 'application/json', // You may need to adjust the content type based on your request
-              'Cookie': storedCookie, // Include the retrieved cookie in the 'Cookie' header
+              'Cookie': localStorage.getItem('token'),// Include the retrieved cookie in the 'Cookie' header
             });
             const headersObject = Object.fromEntries(customHeaders.entries());
   
@@ -2189,7 +2189,7 @@ const E01form = () => {
       // Create a custom set of headers
             const customHeaders = new Headers({
               'Content-Type': 'application/json', // You may need to adjust the content type based on your request
-              'Cookie': storedCookie, // Include the retrieved cookie in the 'Cookie' header
+              'Cookie': localStorage.getItem('token'), // Include the retrieved cookie in the 'Cookie' header
             });
             const headersObject = Object.fromEntries(customHeaders.entries());
   
