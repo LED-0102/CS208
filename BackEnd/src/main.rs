@@ -16,6 +16,7 @@ use crate::view::view_config;
 use actix_cors::Cors;
 use std::fs::File;
 use std::io::Read;
+use dotenv;
 
 ///This struct stores the database connection pool, which can be used by rest of the server
 #[derive(Clone)]
@@ -71,6 +72,7 @@ async fn execute_queries_from_file(pool: &PgPool, filename: &str) -> Result<(), 
 async fn actix_web(
     #[shuttle_shared_db::Postgres] pool: PgPool,
 ) -> ShuttleActixWeb<impl FnOnce(&mut ServiceConfig) + Send + Clone + 'static> {
+    dotenv::dotenv().ok();
     match execute_queries_from_file(&pool, "./schema.sql").await {
         Ok(_) => {}
         Err(e) => {
