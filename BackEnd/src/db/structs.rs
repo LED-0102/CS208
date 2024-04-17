@@ -225,12 +225,13 @@ pub struct Seeking {
     pub data: serde_json::Value
 }
 
-#[derive(Serialize, FromRow)]
+#[derive(Deserialize, Debug, Serialize, FromRow)]
 pub struct Student {
     pub roll_no: String,
     pub student_name: String,
     pub email_id: String,
-    pub degree: Degree
+    pub batch: String,
+    pub degree: String
 }
 
 #[derive(Serialize, FromRow)]
