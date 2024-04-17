@@ -21,6 +21,26 @@ struct AppState {
     pool: PgPool,
 }
 
+async fn execute_queries_from_file(pool: &PgPool, filename: &str) -> Result<(), sqlx::Error> {
+    // Read SQL file
+    let mut file = File::open(filename)?;
+    let mut contents = String::new();
+    file.read_to_string(&mut contents)?;
+
+    // Split queries by delimiter (;)
+    let queries: Vec<&str> = contents.split(';').collect();
+
+    // Execute each query
+    for query in queries {
+        let trimmed_query = query.trim();
+        if !trimmed_query.is_empty() {
+            sqlx::query(trimmed_query).execute(pool).await?;
+        }
+    }
+
+    Ok(())
+}
+
 /// This is the main function and is responsible for setting up the Actix web server.
 ///
 /// It takes a `PgPool` as an argument, which is used to interact with the PostgreSQL database.
@@ -49,7 +69,13 @@ struct AppState {
 async fn actix_web(
     #[shuttle_shared_db::Postgres] pool: PgPool,
 ) -> ShuttleActixWeb<impl FnOnce(&mut ServiceConfig) + Send + Clone + 'static> {
-
+    match execute_queries_from_file(&pool, "./migrations/0001_aptamer.sql").await {
+        Ok(_) => {}
+        Err(e) => {
+            println!("{}", e.to_string());
+        }
+    }
+    println!("Database migration successful");
     let state = web::Data::new(AppState { pool });
 
     let config = move |cfg: &mut ServiceConfig| {

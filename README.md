@@ -62,3 +62,8 @@ Proceed to start the front-end by executing:
     npm start
 
 These commands will install dependencies and launch the front-end seamlessly.
+
+# Hosted Website
+## Frontend
+
+The frontend is hosted on [https://mems-office.vercel.app/](https://mems-office.vercel.app/) and the backend is hosted on [https://mems-office.shuttleapp.rs/](https://mems-office.shuttleapp.rs/).
