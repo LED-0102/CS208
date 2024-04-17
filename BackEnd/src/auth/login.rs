@@ -44,7 +44,7 @@ pub async fn login (credentials: web::Json<Login>, state: web::Data<AppState>) -
             let response = LoginResponse{token: raw_token.clone()};
             let body = serde_json::to_string(&response).unwrap();
             println!("{body}");
-            let furl = std::env::var("FRONTEND_URL").unwrap();
+            let furl = std::env::var("FRONTEND_URL").unwrap_or("http://localhost:3000".parse().unwrap());
             let mut cookie = Cookie::new("jwt", raw_token);
             cookie.set_http_only(true); // Set HttpOnly attribute
             cookie.set_secure(false); // Set Secure attribute
