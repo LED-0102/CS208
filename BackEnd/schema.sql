@@ -231,7 +231,7 @@ CREATE TABLE Energy_and_Sensor_Lab (
     today_date VARCHAR,
     schedule jsonb
 );
-CREATE TABLE Advanced_Functional_Materials_Lab (
+CREATE TABLE Advanced_Functional_Materials_Research_Group_Lab (
     id SERIAL PRIMARY KEY,
     today_date VARCHAR,
     schedule jsonb
@@ -291,7 +291,7 @@ CREATE TABLE Welding_Engineering_Lab (
     today_date VARCHAR,
     schedule jsonb
 );
-CREATE TABLE Materials_Joining_Mechanical_Testing_Lab (
+CREATE TABLE Materials_Joining_and_Mechanical_Testing_Lab (
     id SERIAL PRIMARY KEY,
     today_date VARCHAR,
     schedule jsonb
@@ -311,7 +311,7 @@ CREATE TABLE Foundry_Engineering_Lab (
     today_date VARCHAR,
     schedule jsonb
 );
-CREATE TABLE Solidification_Nanomaterials_Lab (
+CREATE TABLE Solidification_and_Nanomaterials_Lab (
     id SERIAL PRIMARY KEY,
     today_date VARCHAR,
     schedule jsonb
@@ -321,17 +321,17 @@ CREATE TABLE Solid_State_Ionics_Lab (
     today_date VARCHAR,
     schedule jsonb
 );
-CREATE TABLE Microstructure_Texture_Lab (
+CREATE TABLE Micro_Structure_and_Texture_Lab (
     id SERIAL PRIMARY KEY,
     today_date VARCHAR,
     schedule jsonb
 );
-CREATE TABLE Advanced_Mechanical_Physical_Metallurgy_Lab (
+CREATE TABLE Advanced_Mechanical_and_Physical_Metallurgy_Lab (
     id SERIAL PRIMARY KEY,
     today_date VARCHAR,
     schedule jsonb
 );
-CREATE TABLE Integrated_Computational_Materials_Science_Engineering_Lab (
+CREATE TABLE Integrated_Computational_Materials_Science_and_Engineering_Lab (
     id SERIAL PRIMARY KEY,
     today_date VARCHAR,
     schedule jsonb
