@@ -147,14 +147,14 @@ const Leave_Student = () => {
               type="date"
               name="date"
               placeholder="First Name Last Name"
-              className="w-full border rounded-md p-2" onChange = {handleChange} required
+              className="w-full border rounded-md p-2" onChange = {handleChange} value={formData.date} required
             />
           </div>
           <div className="mb-4">
             <label htmlFor="name" className="block font-medium">
              <b> Leave Reason</b>
             </label>
-            <textarea  name="leave_reason" className="w-full border rounded-md p-2" rows="4" cols="50" onChange = {handleChange} required>
+            <textarea  name="leave_reason" className="w-full border rounded-md p-2" rows="4" cols="50" onChange = {handleChange} value={formData.leave_reason} required>
 
             </textarea>
           </div>
@@ -166,7 +166,7 @@ const Leave_Student = () => {
               type="date"
               name="start_date"
               placeholder="leave start date"
-              className="w-full border rounded-md p-2" onChange = {handleChange} required
+              className="w-full border rounded-md p-2" onChange = {handleChange} value={formData.start_date} required
             />
           </div>
           <div className="mb-4">
@@ -177,7 +177,7 @@ const Leave_Student = () => {
               type="date"
               name="end_date"
               placeholder="leave end date"
-              className="w-full border rounded-md p-2" onChange = {handleChange} required
+              className="w-full border rounded-md p-2" onChange = {handleChange} value={formData.end_date} required
             />
           </div>
 
