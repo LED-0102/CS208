@@ -17,7 +17,7 @@ use crate::AppState;
 use crate::auth::jwt::{JwToken};
 use crate::db::structs::Users;
 
-///This function is used to login a user. It takes in the email and password of the user and checks if the password is correct.
+///This function is used to log in a user. It takes in the email and password of the user and checks if the password is correct.
 ///
 /// # Errors
 ///
@@ -44,6 +44,7 @@ pub async fn login (credentials: web::Json<Login>, state: web::Data<AppState>) -
             let response = LoginResponse{token: raw_token.clone()};
             let body = serde_json::to_string(&response).unwrap();
             println!("{body}");
+            let furl = std::env::var("FRONTEND_URL").unwrap();
             let mut cookie = Cookie::new("jwt", raw_token);
             cookie.set_http_only(true); // Set HttpOnly attribute
             cookie.set_secure(false); // Set Secure attribute
@@ -51,7 +52,7 @@ pub async fn login (credentials: web::Json<Login>, state: web::Data<AppState>) -
             cookie.set_path("/");
             HttpResponse::Ok()
                 .cookie(cookie)
-                .append_header(("Access-Control-Allow-Origin", "http://localhost:3000"))
+                .append_header(("Access-Control-Allow-Origin", furl.as_str()))
                 .append_header(("Access-Control-Allow-Credentials", "true"))
                 .body(token_clone)
         },
