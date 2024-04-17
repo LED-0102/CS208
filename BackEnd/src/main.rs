@@ -71,7 +71,7 @@ async fn execute_queries_from_file(pool: &PgPool, filename: &str) -> Result<(), 
 async fn actix_web(
     #[shuttle_shared_db::Postgres] pool: PgPool,
 ) -> ShuttleActixWeb<impl FnOnce(&mut ServiceConfig) + Send + Clone + 'static> {
-    match execute_queries_from_file(&pool, "./migrations/0001_aptamer.sql").await {
+    match execute_queries_from_file(&pool, "./schema.sql").await {
         Ok(_) => {}
         Err(e) => {
             println!("{}", e.to_string());
