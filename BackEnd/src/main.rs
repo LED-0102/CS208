@@ -1,8 +1,8 @@
-mod auth;
-mod db;
-mod lists;
-mod view;
-mod ws;
+pub mod auth;
+pub mod db;
+pub mod lists;
+pub mod view;
+pub mod ws;
 
 use actix_web::middleware::Logger;
 use actix_web::{web::{self, ServiceConfig}, dev::Service, HttpResponse};
