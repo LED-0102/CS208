@@ -46,6 +46,7 @@ pub async fn login (credentials: web::Json<Login>, state: web::Data<AppState>) -
             println!("{body}");
             dotenv::dotenv().ok();
             let furl = std::env::var("FRONTEND_URL").unwrap_or("http://localhost:3000".parse().unwrap());
+            println!("{furl}");
             let mut cookie = Cookie::new("jwt", raw_token);
             cookie.set_http_only(true); // Set HttpOnly attribute
             cookie.set_secure(false); // Set Secure attribute
