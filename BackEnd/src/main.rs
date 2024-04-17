@@ -5,7 +5,7 @@ mod view;
 mod ws;
 
 use actix_web::middleware::Logger;
-use actix_web::{error, get, post, web::{self, Json, ServiceConfig}, Result, dev::Service, HttpResponse};
+use actix_web::{web::{self, ServiceConfig}, dev::Service, HttpResponse};
 use serde::{Deserialize, Serialize};
 use shuttle_actix_web::ShuttleActixWeb;
 use sqlx::{Executor, FromRow, PgPool};
@@ -14,38 +14,7 @@ use crate::ws::ws_config;
 use crate::lists::list_config;
 use crate::view::view_config;
 use actix_cors::Cors;
-// #[actix_web::main]
-// async fn main() -> std::io::Result<()> {
-//     let database_url = "postgresql://darshil:password@localhost:5432/mems".to_string();
-//     let pool = PgPool::connect(&database_url).await.expect("Failed to create pool");
-//     let app_state = AppState{
-//         pool
-//     };
-//     HttpServer::new(move || {
-//         App::new()
-//             .wrap(Cors::default().allow_any_origin().allow_any_method().allow_any_header().supports_credentials())
-//             .wrap_fn(|req, srv| {
-//                 println!("{} {}", req.method(), req.uri());
-//                 let future = srv.call(req);
-//                 async {
-//                     let result = future.await?;
-//                     Ok(result)
-//                 }
-//             })
-//             .configure(auth_config)
-//             .configure(view_config)
-//             .configure(ws_config)
-//             .configure(list_config)
-//             .route(
-//                 "/",
-//                 web::get().to(|| async { HttpResponse::Ok().body("/") }),
-//             )
-//             .app_data(web::Data::new(app_state.clone()))
-//     })
-//         .bind(("127.0.0.1", 8080))?
-//         .run()
-//         .await
-// }
+
 #[derive(Clone)]
 struct AppState {
     pool: PgPool,

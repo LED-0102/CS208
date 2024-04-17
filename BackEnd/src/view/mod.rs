@@ -70,7 +70,6 @@ pub async fn accept_reject(pool: Data<AppState>, jwt: JwToken, data: web::Json<A
     let pool = &pool.pool;
     let res = verify_receiver(pool, data.form_id, &data.form_type, jwt.id).await;
     let mut submitter: i32 = 0;
-    println!("Chalo thik");
     match res {
         Ok(s) => {
             submitter = s.1;
@@ -83,7 +82,6 @@ pub async fn accept_reject(pool: Data<AppState>, jwt: JwToken, data: web::Json<A
             return HttpResponse::BadRequest().body(e);
         }
     }
-    println!("double thik");
     let query = format! ("UPDATE {} SET note = $1 WHERE id = $2", &data.form_type);
     match sqlx::query(&query)
         .bind(&data.note)
@@ -96,7 +94,6 @@ pub async fn accept_reject(pool: Data<AppState>, jwt: JwToken, data: web::Json<A
             return HttpResponse::BadRequest().body(e.to_string());
         }
     }
-    println!("Triple thik");
     if data.decision {
         let q = format!("UPDATE {} SET approval_status = 'Accepted' WHERE id = $1", &data.form_type);
         let q = sqlx::query(&q)
@@ -123,7 +120,6 @@ pub async fn accept_reject(pool: Data<AppState>, jwt: JwToken, data: web::Json<A
             }
         }
     }
-    println!("Quadruple thik");
     match add_to_previous(&data, pool, jwt.id, submitter).await {
         Ok(_) => {
             HttpResponse::Ok().finish()

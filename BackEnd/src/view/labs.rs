@@ -2,8 +2,7 @@ use actix_web::{post, web, HttpResponse};
 use serde::{Deserialize, Serialize};
 use sqlx::{Column, Row, TypeInfo};
 use crate::AppState;
-use crate::auth::jwt::JwToken;
-use serde_json::{json, Value};
+use serde_json::Value;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Schedule {
@@ -40,7 +39,7 @@ pub async fn book_schedule(pool: web::Data<AppState>, path: web::Path<(String, S
         .await
     {
         Ok(res) => {
-            if(res.len() == 0){
+            if res.len() == 0 {
                 let initial_query = format!("INSERT INTO {} (today_date, schedule) VALUES ('{}', '[]')", lab_name, date);
                 println!("{}", initial_query);
                 match sqlx::query(&initial_query)
@@ -49,6 +48,7 @@ pub async fn book_schedule(pool: web::Data<AppState>, path: web::Path<(String, S
                 {
                     Ok(_) => {},
                     Err(e) => {
+                        println!("{:?}", e);
                         return HttpResponse::InternalServerError().body("Error entering initial value");
                     }
                 }

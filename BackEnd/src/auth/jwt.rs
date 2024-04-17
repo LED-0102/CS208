@@ -62,10 +62,6 @@ impl FromRequest for JwToken {
     type Future = Ready<Result<JwToken, Error>>;
 
     fn from_request(req: &HttpRequest, _payload: &mut Payload) -> Self::Future {
-        // let res = req.cookies().unwrap();
-        // println!("{:?}", res);
-        // let hed = req.headers();
-        // println!("{:?}", hed);
         match req.cookie("jwt") {
             Some(data) => {
                 // println!("{}", data);

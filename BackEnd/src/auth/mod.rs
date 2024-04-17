@@ -1,4 +1,4 @@
-use actix_web::{HttpResponse, web};
+use actix_web::web;
 use serde::{Deserialize, Serialize};
 
 pub mod login;
@@ -8,7 +8,6 @@ pub mod jwt;
 use login::login;
 use logout::logout;
 use register::register;
-use jwt::JwToken;
 
 pub fn auth_config (cfg: &mut web::ServiceConfig) {
     cfg.service(
