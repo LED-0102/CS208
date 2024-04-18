@@ -29,6 +29,7 @@ import DisplayProfile from './pages/ProfileRelated/DisplayProfile';
 import { useState,useEffect } from 'react';
 import BookLab from './pages/lab/BookLab';
 import CompleteBookLab from './pages/lab/CompleteBookLab';
+import ShowBookLab from './pages/lab/ShowBookLab';
 
 function App() {
 
@@ -65,6 +66,7 @@ function App() {
           <Route exact path="/booklab" element={ <BookLab /> } />
           <Route exact path="/Forms" element={ <Forms /> } />
           <Route exact path="/login" element={ <Login setAuthenticated={setAuthenticated} /> } />
+          <Route exact path="/showbooklab/:labName" element={ <ShowBookLab /> } />
           <Route exact path="/completeprofile" element={ <CompleteProfile /> } />
           <Route exact path="/displayprofile" element={ <DisplayProfile /> } />
           <Route exact path="/signup" element={ <SignUp/> } />

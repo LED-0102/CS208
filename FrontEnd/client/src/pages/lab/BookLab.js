@@ -22,6 +22,7 @@ const BookLab = () => {
       headers: headersObject,
     });
     console.log(labSchedule);
+    navigate(`/showbooklab/${labName}`)
   }
 
   const proceedBook = (labname) =>{

@@ -51,7 +51,6 @@ const LoginSignup = () => {
       const response = await axios.post(`${globalUrl}/v1/auth/register`, post, {
           withCredentials: true,
       });
-  
       if (response.headers['set-cookie']){
           console.log("Inside");
           const cookieValue = response.headers['set-cookie'][0];
@@ -87,7 +86,7 @@ const deleteCookie = () => {
         <div className="flex flex-col justify-center p-8 md:p-14">
           <span className="mb-3 text-4xl font-bold">Welcome back</span>
           <span className="font-light text-gray-400 mb-8">
-            Welcom back! Please enter your details
+            Welcome back! Please enter your details
           </span>
           <div className="py-4">
             <span className="mb-2 text-md">Username</span>

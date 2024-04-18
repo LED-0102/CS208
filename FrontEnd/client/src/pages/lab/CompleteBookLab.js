@@ -14,38 +14,38 @@ const CompleteBookLab = () => {
   const [labNamea, setLabNamea] = useState('');
   const {labName}=useParams();
 
-  useEffect(() => {
-    const fetchData = async () => {
-        try {
-            
-      // Create a custom set of headers
-            const customHeaders = new Headers({
-              'Content-Type': 'application/json', // You may need to adjust the content type based on your request
-              'Cookie': localStorage.getItem('token'), // Include the retrieved cookie in the 'Cookie' header
-            });
-            const headersObject = Object.fromEntries(customHeaders.entries());
-            const response = await fetch(`${globalUrl}/v1/profile`, {
-                method: 'GET',
-                credentials: 'include',  
-                headers: headersObject,
-              });
-            
-          const responseData = await response.json();
-          console.log('Parsed JSON response:', (responseData));
-          setInfo(responseData)
-              if (response.statusCode === 401) {
-                console.log("Failed");
-              }
-            } catch (error) {
-              console.error("Error:", error);
-            }
-    };
 
-    fetchData();
-},[]);
 
 useEffect(() => {
-  console.log("information", info);
+  const fetchData = async () => {
+      try {
+          
+    // Create a custom set of headers
+          const token = localStorage.getItem('token');
+          const response = await fetch(`${globalUrl}/v1/profile`, {
+              method: 'GET',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'token': token
+              }
+            });
+          
+        const responseData = await response.json();
+        console.log('Parsed JSON response:', (responseData));
+        setInfo(responseData)
+            if (response.statusCode === 401) {
+              console.log("Failed");
+            }
+          } catch (error) {
+            console.error("Error:", error);
+          }
+  };
+  fetchData();
+},[]); 
+
+
+useEffect(() => {
+console.log("information", info);
 }, [info]);
 
   // Function to handle form submission
