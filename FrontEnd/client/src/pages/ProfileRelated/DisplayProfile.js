@@ -16,6 +16,7 @@ const DisplayProfile = () => {
       // Create a custom set of headers
             const token = localStorage.getItem('token');
             console.log(token);
+            console.log("Token not found?");
             const response = await fetch(`${globalUrl}/v1/profile`, {
                 method: 'GET',
                 headers: {

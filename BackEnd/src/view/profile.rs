@@ -13,6 +13,7 @@ pub struct EditUserInfo {
 
 /// This function is used to get the profile of the user.
 pub async fn get_profile (jwt: JwToken, app_state: web::Data<AppState>) -> HttpResponse{
+    println!("Inside get_profile");
     let id = jwt.id;
     let mut resp = match sqlx::query_as("SELECT * from users where id = $1")
         .bind(id)
