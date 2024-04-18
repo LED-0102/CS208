@@ -12,8 +12,6 @@ const DisplayProfile = () => {
   useEffect(() => {
     const fetchData = async () => {
         try {
-            
-      // Create a custom set of headers
             const token = localStorage.getItem('token');
             console.log(token);
             console.log("Token not found?");
@@ -25,18 +23,18 @@ const DisplayProfile = () => {
                 }
               });
             
-          const responseData = await response.json();
-          console.log('Parsed JSON response:', (responseData));
-          setInfo(responseData)
-              if (response.statusCode === 401) {
-                console.log("Failed");
-              }
-            } catch (error) {
-              console.error("Error:", error);
-            }
+            const responseData = await response.json();
+            console.log('Parsed JSON response:', (responseData));
+            setInfo(responseData)
+                if (response.statusCode === 401) {
+                  console.log("Failed");
+                }
+        } catch (error) {
+          console.error("Error:", error);
+        }
     };
 
-    fetchData();
+    fetchData().then(r => console.log("Data fetched"));
 },[]); 
 
 
