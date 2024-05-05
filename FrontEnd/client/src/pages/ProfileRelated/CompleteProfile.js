@@ -21,18 +21,17 @@ const CompleteProfile = () => {
     console.log(formData);
     try {
       
-      const customHeaders = new Headers({
-        'Content-Type': 'application/json', // You may need to adjust the content type based on your request
-        'Cookie': localStorage.getItem('token'),
-      });
-      const headersObject = Object.fromEntries(customHeaders.entries());
+      const token = localStorage.getItem('token');
+      console.log("Token submit SS01: ", token);
       const response = await fetch(`${globalUrl}/v1/edit`, {
         method: 'POST',
-        credentials: 'include',  // Include credentials (cookies) in the request
-        headers: headersObject,
+        headers: {
+          'Content-Type': 'application/json',
+          'token': token
+        },
         body: JSON.stringify(formData)
       });
-      console.log(headersObject)
+      // console.log(headersObject)
       console.log(response)
       if (response.statusCode === 401) {
         console.log("Failed");
