@@ -52,17 +52,16 @@ const handleSaveProfile = async () => {
       contact_number: `${info.contact_number}`
     }
     console.log(editinginfo)
-    const customHeaders = new Headers({
-      'Content-Type': 'application/json', // You may need to adjust the content type based on your request
-      'Cookie': localStorage.getItem('token'), // Include the retrieved cookie in the 'Cookie' header
-    });
-    const headersObject = Object.fromEntries(customHeaders.entries());
-    console.log(headersObject)
+    const token = localStorage.getItem('token');
+    console.log(token);
+    console.log("Token not found?");
     const response = await fetch(`${globalUrl}/v1/edit`, {
       method: 'POST',
-      credentials: 'include',
-      headers: headersObject,
-      body: JSON.stringify(editinginfo), // Sending updated profile information
+      headers: {
+        'Content-Type': 'application/json',
+        'token': token
+      },
+      body: JSON.stringify(editinginfo)
     });
     if (response.ok) {
       // If the request is successful, update the state or show a success message
