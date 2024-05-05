@@ -78,16 +78,19 @@ const ShowBookLab = () => {
   const fetchBookings = async (date) => {
     const labInReq = labName.replace(/[\s-]/g, "_");
     try {
+      const token=localStorage.getItem('token')
       const customHeaders = new Headers({
         'Content-Type': 'application/json', 
-        'Cookie': localStorage.getItem('token'), 
+        'token': token, 
       });
+      const formattedDate = date.replace(/-/g, '_');
       const headersObject = Object.fromEntries(customHeaders.entries());
-      const response = await fetch(`${globalUrl}/v1/labs/get_schedule/${labInReq}/${date}`, {
+      const response = await fetch(`${globalUrl}/v1/labs/get_schedule/${labInReq}/${formattedDate}`, {
         method: 'GET',
         credentials: 'include',
         headers: headersObject
       });
+      console.log(`${globalUrl}/v1/labs/get_schedule/${labInReq}/${formattedDate}`)
       const data = await response.json();
       setBookings(data);
     } catch (error) {
@@ -125,8 +128,8 @@ const ShowBookLab = () => {
         <LabBooking
           key={index}
           name={booking.name}
-          startTime={booking.startTime}
-          endTime={booking.endTime}
+          startTime={booking.start}
+          endTime={booking.end}
         />
       ))}
     </div>
