@@ -23,15 +23,12 @@ const SS04form = () => {
         try {
             
       // Create a custom set of headers
-            const customHeaders = new Headers({
-              'Content-Type': 'application/json', // You may need to adjust the content type based on your request
-              'Cookie': localStorage.getItem('token'), // Include the retrieved cookie in the 'Cookie' header
-            });
-            const headersObject = Object.fromEntries(customHeaders.entries());
+            const token = localStorage.getItem('token');
             const response = await fetch(`${globalUrl}/v1/profile`, {
                 method: 'GET',
-                credentials: 'include',  
-                headers: headersObject,
+                headers: {
+                  'token': token
+                },
               });
             
           const responseData = await response.json();
@@ -211,24 +208,18 @@ useEffect(() => {
 
     try {
 
-      const storedCookie = document.cookie;
-      console.log(storedCookie);
-      // Create a custom set of headers
-      const customHeaders = new Headers({
-        'Content-Type': 'application/json', // You may need to adjust the content type based on your request
-        'Cookie': localStorage.getItem('token'),
-        //'Cookie': storedCookie, // Include the retrieved cookie in the 'Cookie' header
-      });
-      const headersObject = Object.fromEntries(customHeaders.entries());
+      const token = localStorage.getItem('token');
+      console.log("Token submit SS04: ", token);
       // const response = await fetch('https://jsonplaceholder.typicode.com/posts',{
       const response = await fetch(`${globalUrl}/v1/submit/SS04`, {
         method: 'POST',
-        credentials: 'include',  // Include credentials (cookies) in the request
-        headers: headersObject,
+        headers: {
+          'Content-Type': 'application/json',
+          'token': token
+        },
         body: JSON.stringify(updatedFormData)
       });
-      console.log(headersObject)
-      console.log(response)
+      // console.log(response.json());
 
       if (response.status === 200) {
         toast.success('Data submitted successfully', {
@@ -252,12 +243,22 @@ useEffect(() => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${globalUrl}/list/receiver`);
+        const token = localStorage.getItem('token');
+        console.log("Token receiver: ", token);
+        const response = await fetch(`${globalUrl}/list/receiver`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'token': token
+          }
+        });
+        const responseData = await response.json();
+
         // const response = await axios.get(`https://randomuser.me/api/`);
         // const datss=data
         // console.log("aadd",typeof(response.data))
         // console.log("aadd",typeof(data))
-        setUserData(response.data);
+        setUserData(responseData);
         // console.log("dats",response.data)
         // console.log("dats++++++userData",userData)
       } catch (error) {
@@ -267,7 +268,7 @@ useEffect(() => {
       }
     };
 
-    fetchData();
+    fetchData().then(r => console.log("Fetched and set"));
 
 
     return () => {
