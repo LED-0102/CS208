@@ -2472,12 +2472,13 @@ setFormData(responseData);
             <label htmlFor="name" className="block font-medium">
               <b> Date</b>
             </label>
-            <input
+            {/* <input
               type="date"
               name="date"
               placeholder="First Name Last Name"
               className="w-full border rounded-md p-2" onChange={handleChange} value={formData.date} required
-            />
+            /> */}
+              <span>{formData.date}</span>
           </div>
           <div className="mb-4">
             <label htmlFor="name" className="block font-medium">

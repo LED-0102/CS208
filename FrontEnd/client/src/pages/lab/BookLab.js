@@ -44,7 +44,6 @@ const BookLab = () => {
 
   // Assuming you have an array of labs with name and location
   const labs = [
-    { name: 'Advanced Functional Materials Research Group Lab', location: '1 D 104' },
     { name: 'Materials and Thin Film Devices Lab', location: '1 D 206 B' },
     { name: 'FESEM-EBSD-EDS Lab', location: '1 D 206 A' },
     { name: 'Energy and Sensor Lab', location: '1 D 204' },
@@ -66,7 +65,8 @@ const BookLab = () => {
     { name: 'Mirco Structure and Texture Lab', location: '1 B 502' },
     { name: 'Advanced Mechanical and Physical Metallurgy Lab', location: '1A 104 A' },
     { name: 'Integrated Computational Materials science and Engineering Lab', location: '1 B 502' },
-    { name: 'High Performance Computing Facility', location: '' }
+    { name: 'High Performance Computing Facility', location: '' },
+    { name: 'Advanced Functional Materials Research Group Lab', location: '1 D 104' }
   ];
 
   return (
