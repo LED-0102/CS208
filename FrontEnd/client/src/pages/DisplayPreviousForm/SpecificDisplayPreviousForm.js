@@ -35,7 +35,7 @@ const SpecificDisplayPreviousForm = () => {
       formComponent=<E01form formId={formId} formName={formName}/>;
       break;
     case 'Leave':
-      formComponent=<E01form formId={formId} formName={formName}/>;
+      formComponent=<LeaveForm formId={formId} formName={formName}/>;
       break;
     default:
       formComponent=<div>Unkmown Form</div>;
