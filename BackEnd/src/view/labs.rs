@@ -55,8 +55,8 @@ pub async fn book_schedule(pool: web::Data<AppState>, path: web::Path<(String, S
                 }
             }
         },
-        Err(_) => {
-            return HttpResponse::InternalServerError().body("Error entering initial value2");
+        Err(e) => {
+            return HttpResponse::InternalServerError().body(e.to_string());
         }
     }
     let insert_query = format!("UPDATE {}
