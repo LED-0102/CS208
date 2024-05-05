@@ -66,9 +66,11 @@ const handleSaveProfile = async () => {
     if (response.ok) {
       // If the request is successful, update the state or show a success message
       console.log('Profile information saved successfully!');
+      setIsEditing(false)
       // You may want to update any local state here if needed
     } else {
       console.error('Failed to save profile information');
+      setIsEditing(false)
       // Handle error scenarios, show error messages, etc.
     }
   } catch (error) {
