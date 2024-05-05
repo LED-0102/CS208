@@ -358,8 +358,8 @@ useEffect(() => {
               <span className='mx-auto'>(To be prepared in duplicate. One copy will be forwarded to Finance, and one held with Store Office.)</span>
             </span>
             {/* <div className='flex w-full px-4 py-2  border-4 border-red-300'> */}
-            <div className='flex w-full px-4 py-2  '>
-              <div className='flex-col w-1/2 px-12'>
+            <div className='flex flex-col  md:flex-row lg:flex-row xl:flex-row 2xl:flex-row w-full px-4 py-2  '>
+              <div className=' w-1/2 px-12'>
                 <table>
                   <tbody>
                     <tr>
@@ -390,7 +390,7 @@ useEffect(() => {
                 </table>
 
               </div>
-              <div className='flex-col w-1/2 px-12'>
+              <div className=' w-1/2 px-12'>
                 <table>
                   <thead>
                     <tr>

@@ -307,8 +307,8 @@ const SS01form = () => {
                         <div className="w-11/12 border border-black  light-bg mx-auto">
                             {/* //custodian section  */}
                             <div className="  px-4 py-2   ">
-                                <div className="flex flex-row  justify-center  py-2 w-full ">
-                                    <div className="flex-col  px-20">
+                                <div className="flex flex-col  md:flex-row lg:flex-row xl:flex-row 2xl:flex-row justify-center  py-2 w-full ">
+                                    <div className="  px-20">
                                         <table className="">
                                             <tbody>
                                                 <tr>
@@ -370,7 +370,7 @@ const SS01form = () => {
                                             </tbody>
                                         </table>
                                     </div>
-                                    <div className="flex-col px-20">
+                                    <div className=" px-20">
                                         <table>
                                             <thead>
                                                 <tr>
