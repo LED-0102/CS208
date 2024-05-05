@@ -72,9 +72,10 @@ console.log("information", info);
             start: `${startTime}`,
             end : `${endTime}`
         }
+        const token=localStorage.getItem('token')
         const customHeaders = new Headers({
           'Content-Type': 'application/json', // You may need to adjust the content type based on your request
-          'Cookie': localStorage.getItem('token'), // Include the retrieved cookie in the 'Cookie' header
+          'token': token, // Include the retrieved cookie in the 'Cookie' header
         });
         const headersObject = Object.fromEntries(customHeaders.entries());
         const response = await fetch(`${globalUrl}/v1/labs/book_schedule/${labInReq}/${dateSetInReq}`, {

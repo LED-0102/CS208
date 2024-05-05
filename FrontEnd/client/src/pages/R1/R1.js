@@ -15,9 +15,10 @@ const R1 = () => {
         try {
             
       // Create a custom set of headers
+      const token = localStorage.getItem('token');
             const customHeaders = new Headers({
               'Content-Type': 'application/json', // You may need to adjust the content type based on your request
-              'Cookie': localStorage.getItem('token'), // Include the retrieved cookie in the 'Cookie' header
+              'token': token, // Include the retrieved cookie in the 'Cookie' header
             });
             const headersObject = Object.fromEntries(customHeaders.entries());
             const response = await fetch(`${globalUrl}/v1/profile`, {
@@ -108,12 +109,11 @@ useEffect(() => {
 
         try {
     
-            const storedCookie = document.cookie;
-            console.log(storedCookie);
+            const token = localStorage.getItem('token');
         // Create a custom set of headers
             const customHeaders = new Headers({
                 'Content-Type': 'application/json', // You may need to adjust the content type based on your request
-                'Cookie': storedCookie, // Include the retrieved cookie in the 'Cookie' header
+                'token': token, // Include the retrieved cookie in the 'Cookie' header
             });
             const headersObject = Object.fromEntries(customHeaders.entries());
             const response = await fetch(`${globalUrl}/v1/submit/R1`, {
@@ -171,11 +171,27 @@ useEffect(() => {
       };
 
 
-    useEffect(() => {
+      useEffect(() => {
         const fetchData = async () => {
           try {
-            const response = await axios.get(`${globalUrl}/list/receiver`);
-            setUserData(response.data);
+            const token = localStorage.getItem('token');
+            console.log("Token receiver: ", token);
+            const response = await fetch(`${globalUrl}/list/receiver`, {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                'token': token
+              }
+            });
+            const responseData = await response.json();
+    
+            // const response = await axios.get(`https://randomuser.me/api/`);
+            // const datss=data
+            // console.log("aadd",typeof(response.data))
+            // console.log("aadd",typeof(data))
+            setUserData(responseData);
+            // console.log("dats",response.data)
+            // console.log("dats++++++userData",userData)
           } catch (error) {
             setError(error);
           } finally {
@@ -183,13 +199,13 @@ useEffect(() => {
           }
         };
     
-        fetchData();
-        
-  
-    return () => {
-      
-    };
-  }, []); 
+        fetchData().then(r => console.log("Fetched and set"));
+    
+    
+        return () => {
+    
+        };
+      }, []);
 
   useEffect(() => {
     console.log("information", info);
