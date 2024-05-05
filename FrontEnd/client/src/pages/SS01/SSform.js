@@ -64,37 +64,36 @@ const SS01form = () => {
         reason:""
     });
 
-    
-  const [info,setInfo] = useState({})
-  useEffect(() => {
-    const fetchData = async () => {
-        try {
-            
-      // Create a custom set of headers
-            const customHeaders = new Headers({
-              'Content-Type': 'application/json', // You may need to adjust the content type based on your request
-              'Cookie': localStorage.getItem('token'), // Include the retrieved cookie in the 'Cookie' header
-            });
-            const headersObject = Object.fromEntries(customHeaders.entries());
-            const response = await fetch(`${globalUrl}/v1/profile`, {
-                method: 'GET',
-                credentials: 'include',  
-                headers: headersObject,
-              });
-            
-          const responseData = await response.json();
-          console.log('Parsed JSON response:', (responseData));
-          setInfo(responseData)
-              if (response.statusCode === 401) {
-                console.log("Failed");
-              }
-            } catch (error) {
-              console.error("Error:", error);
-            }
-    };
+ 
+    const [info,setInfo] = useState({})
+    useEffect(() => {
+      const fetchData = async () => {
+          try {
+              
+        // Create a custom set of headers
+              const token = localStorage.getItem('token');
+              const response = await fetch(`${globalUrl}/v1/profile`, {
+                  method: 'GET',
+                  headers: {
+                    
+                    'token': token
 
-    fetchData();
-},[]); 
+                  },
+                });
+              
+            const responseData = await response.json();
+            console.log('Parsed JSON response:', (responseData));
+            setInfo(responseData)
+                if (response.statusCode === 401) {
+                  console.log("Failed");
+                }
+              } catch (error) {
+                console.error("Error:", error);
+              }
+      };
+  
+      fetchData();
+  },[]); 
 
 
     const handleUserSelect = (userId, userName) => {
@@ -206,21 +205,18 @@ const SS01form = () => {
 
         try {
 
-            const storedCookie = document.cookie;
-            console.log(storedCookie);
-            // Create a custom set of headers
-            const customHeaders = new Headers({
-                'Content-Type': 'application/json', // You may need to adjust the content type based on your request
-                'Cookie': localStorage.getItem('token'), // Include the retrieved cookie in the 'Cookie' header
-            });
-            const headersObject = Object.fromEntries(customHeaders.entries());
+         
+      const token = localStorage.getItem('token');
+      console.log("Token submit SS01: ", token);
             // const response = await fetch('https://jsonplaceholder.typicode.com/posts',{
             const response = await fetch(`${globalUrl}/v1/submit/SS01`, {
                 method: 'POST',
-                credentials: 'include',  // Include credentials (cookies) in the request
-                headers: headersObject,
+                headers: {
+                  'Content-Type': 'application/json',
+                  'token': token
+                },
                 body: JSON.stringify(updatedFormData)
-            });
+              });
             console.log(response)
          
       if (response.status === 200) {
@@ -243,29 +239,39 @@ const SS01form = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            try {
-                const response = await axios.get(`${globalUrl}/list/receiver`);
-                // const response = await axios.get(`https://randomuser.me/api/`);
-                // const datss=data
-                // console.log("aadd",typeof(response.data))
-                // console.log("aadd",typeof(data))
-                setUserData(response.data);
-                // console.log("dats",response.data)
-                // console.log("dats++++++userData",userData)
-            } catch (error) {
-                setError(error);
-            } finally {
-                // setLoading(false);
-            }
+          try {
+            const token = localStorage.getItem('token');
+            console.log("Token receiver: ", token);
+            const response = await fetch(`${globalUrl}/list/receiver`, {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                'token': token
+              }
+            });
+            const responseData = await response.json();
+    
+            // const response = await axios.get(`https://randomuser.me/api/`);
+            // const datss=data
+            // console.log("aadd",typeof(response.data))
+            // console.log("aadd",typeof(data))
+            setUserData(responseData);
+            // console.log("dats",response.data)
+            // console.log("dats++++++userData",userData)
+          } catch (error) {
+            setError(error);
+          } finally {
+            // setLoading(false);
+          }
         };
-
-        fetchData();
-
-
+    
+        fetchData().then(r => console.log("Fetched and set"));
+    
+    
         return () => {
-
+    
         };
-    }, []);
+      }, []);
 
     const handleSuccessRedirect = () => {
         navigate("/");

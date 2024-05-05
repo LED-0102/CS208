@@ -107,19 +107,15 @@ const MM04 =  () => {
 
         try {
     
-            const storedCookie = document.cookie;
-            console.log(storedCookie);
-        // Create a custom set of headers
-            const customHeaders = new Headers({
-                'Content-Type': 'application/json', // You may need to adjust the content type based on your request
-                'Cookie': localStorage.getItem('token'),// Include the retrieved cookie in the 'Cookie' header
-            });
-            const headersObject = Object.fromEntries(customHeaders.entries());
+          const token = localStorage.getItem('token');
+          console.log("Token submit SS01: ", token);
             const response = await fetch(`${globalUrl}/v1/submit/MM04`, {
-                method: 'POST',
-                credentials: 'include',  // Include credentials (cookies) in the request
-                headers: headersObject,
-                body: JSON.stringify(dataToBeSub)
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'token': token
+              },
+              body: JSON.stringify(dataToBeSub)
             });
             console.log(response)
             if (response.status === 200) {
@@ -144,24 +140,40 @@ const MM04 =  () => {
 
 
     useEffect(() => {
-        const fetchData = async () => {
-          try {
-            const response = await axios.get(`${globalUrl}/list/receiver`);
-            setUserData(response.data);
-          } catch (error) {
-            setError(error);
-          } finally {
-            // setLoading(false);
-          }
-        };
-    
-        fetchData();
-        
+      const fetchData = async () => {
+        try {
+          const token = localStorage.getItem('token');
+          console.log("Token receiver: ", token);
+          const response = await fetch(`${globalUrl}/list/receiver`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'token': token
+            }
+          });
+          const responseData = await response.json();
   
-    return () => {
-      
-    };
-  }, []); 
+          // const response = await axios.get(`https://randomuser.me/api/`);
+          // const datss=data
+          // console.log("aadd",typeof(response.data))
+          // console.log("aadd",typeof(data))
+          setUserData(responseData);
+          // console.log("dats",response.data)
+          // console.log("dats++++++userData",userData)
+        } catch (error) {
+          setError(error);
+        } finally {
+          // setLoading(false);
+        }
+      };
+  
+      fetchData().then(r => console.log("Fetched and set"));
+  
+  
+      return () => {
+  
+      };
+    }, []);
 
   const handleSuccessRedirect = () => {
     navigate("/");

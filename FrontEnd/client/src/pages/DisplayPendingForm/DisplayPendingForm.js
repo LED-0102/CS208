@@ -38,19 +38,14 @@ const DisplayPendingForm = () => {
  
       try {
 
-        const storedCookie = document.cookie;
-        console.log(storedCookie);
-  // Create a custom set of headers
-        const customHeaders = new Headers({
-          'Content-Type': 'application/json', // You may need to adjust the content type based on your request
-          'Cookie': storedCookie, // Include the retrieved cookie in the 'Cookie' header
-        });
-        const headersObject = Object.fromEntries(customHeaders.entries());
-        // const response = await fetch('https://jsonplaceholder.typicode.com/posts',{
+        const token = localStorage.getItem('token');
+        console.log("Token submit SS01: ", token);
         const response = await fetch(`${globalUrl}/v1/approval`, {
           method: 'POST',
-          credentials: 'include',  // Include credentials (cookies) in the request
-          headers: headersObject,
+          headers: {
+            'Content-Type': 'application/json',
+            'token': token
+          },
           body: JSON.stringify(dataToSend)
         });
         console.log(response)
@@ -80,21 +75,14 @@ const DisplayPendingForm = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const storedCookie = document.cookie;
-                console.log(storedCookie);
-          // Create a custom set of headers
-                const customHeaders = new Headers({
-                  'Content-Type': 'application/json', // You may need to adjust the content type based on your request
-                  'Cookie': localStorage.getItem('token'),// Include the retrieved cookie in the 'Cookie' header
-                });
-                const headersObject = Object.fromEntries(customHeaders.entries());
-      
-                //  const response = await fetch('https://jsonplaceholder.typicode.com/posts',{
+              const token = localStorage.getItem('token');
+              console.log("Token submit SS01: ", token);
                 const response = await fetch(`${globalUrl}/list/forms/pending`, {
-                    method: 'GET',
-                    credentials: 'include',  // Include credentials (cookies) in the request
-                    headers: headersObject,
-                    // body: JSON.stringify(updatedFormData)
+                  method: 'GET',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'token': token
+                  }
                   });
                 //   console.log(response)
                 // console.log("aadd",typeof(data))
@@ -124,7 +112,7 @@ const DisplayPendingForm = () => {
         };
     }, []);
 
-    console.log("++++++",pendingFormData)
+    console.log("pendinfformdata++++++",pendingFormData)
 
     // const handleItemClick = (id) => {
     //     // Perform navigation when item is clicked, for example:

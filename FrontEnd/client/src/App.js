@@ -30,6 +30,7 @@ import { useState,useEffect } from 'react';
 import BookLab from './pages/lab/BookLab';
 import CompleteBookLab from './pages/lab/CompleteBookLab';
 import ShowBookLab from './pages/lab/ShowBookLab';
+import LabDate from './pages/lab/LabDate';
 
 function App() {
 

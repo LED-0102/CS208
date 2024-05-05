@@ -13,7 +13,7 @@ const BookLab = () => {
     console.log(`${globalUrl}/v1/labs/get_schedule/${labInReq}/${dateInReq}`)
     const customHeaders = new Headers({
       'Content-Type': 'application/json',
-      'Cookie': localStorage.getItem('token'),
+      'token': localStorage.getItem('token')
     });
     const headersObject = Object.fromEntries(customHeaders.entries());
     const labSchedule = await fetch(`${globalUrl}/v1/labs/get_schedule/${labInReq}/${dateInReq}`, {
@@ -22,7 +22,7 @@ const BookLab = () => {
       headers: headersObject,
     });
     console.log(labSchedule);
-    navigate(`/showbooklab/${labName}`)
+    navigate(`/showbooklab/${labInReq}`)
   }
 
   const proceedBook = (labname) =>{

@@ -11,6 +11,7 @@ const CompleteBookLab = () => {
   const [date, setDate] = useState('');
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
+  const [bookDate, setBookDate] = useState('');
   const [labNamea, setLabNamea] = useState('');
   const {labName}=useParams();
 
@@ -62,7 +63,9 @@ console.log("information", info);
     const d=new Date();
     //const dateInReq = `${d.getFullYear()}_${d.getMonth()+1}_${d.getDate()}`;
     const dateInReq = `${d.getFullYear()}_${(d.getMonth() + 1).toString().padStart(2, '0')}_${d.getDate().toString().padStart(2, '0')}`;
-
+      console.log(bookDate)
+      const dateSetInReq=(`${bookDate}`).replace(/-/g, '_')
+      console.log(dateSetInReq)
     try {
         const bookinginfo={
             name: `${info.username}`,
@@ -74,14 +77,14 @@ console.log("information", info);
           'Cookie': localStorage.getItem('token'), // Include the retrieved cookie in the 'Cookie' header
         });
         const headersObject = Object.fromEntries(customHeaders.entries());
-        const response = await fetch(`${globalUrl}/v1/labs/book_schedule/${labInReq}/${dateInReq}`, {
+        const response = await fetch(`${globalUrl}/v1/labs/book_schedule/${labInReq}/${dateSetInReq}`, {
           method: 'POST',
           credentials: 'include',
           headers: headersObject,
           body: JSON.stringify(bookinginfo), // Sending updated profile information
         });
         console.log("JSON string",JSON.stringify(bookinginfo))
-        console.log(`${globalUrl}/v1/labs/book_schedule/${labInReq}/${dateInReq}`)
+        console.log(`${globalUrl}/v1/labs/book_schedule/${labInReq}/${dateSetInReq}`)
         if (response.status === 200) {
           toast.success('Booking successfully', {
             onClose: () => onSuccessRedirect() // Redirect to success page after toast is fully closed
@@ -129,6 +132,17 @@ console.log("information", info);
             id="endTime"
             value={endTime}
             onChange={(e) => setEndTime(e.target.value)}
+            className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="bookDate" className="block text-sm font-medium text-gray-700">Book Date</label>
+          <input
+            type="date"
+            id="bookDate"
+            value={bookDate}
+            onChange={(e) => setBookDate(e.target.value)}
             className="mt-1 p-2 border border-gray-300 rounded-md w-full"
             required
           />

@@ -233,33 +233,19 @@ const handleChangeTable = (event, index, key) => {
 //       console.error("Error:", error);
 //     }
   };
-
+         
   useEffect(() => {
     const fetchData = async () => {
         try {
-            const storedCookie = document.cookie;
-            console.log(storedCookie);
-      // Create a custom set of headers
-            const customHeaders = new Headers({
-              'Content-Type': 'application/json', // You may need to adjust the content type based on your request
-              'Cookie': localStorage.getItem('token'), // Include the retrieved cookie in the 'Cookie' header
-            });
-            const headersObject = Object.fromEntries(customHeaders.entries());
-  
-            //  const response = await fetch('https://jsonplaceholder.typicode.com/posts',{
+          const token = localStorage.getItem('token');
+          console.log("Token submit SS01: ", token);
             const response = await fetch(`${globalUrl}/v1/${formName}/${formId}`, {
-                method: 'GET',
-                credentials: 'include',  // Include credentials (cookies) in the request
-                headers: headersObject,
-                // body: JSON.stringify(updatedFormData)
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                'token': token
+              }
               });
-            //   console.log(response)
-            // console.log("aadd",typeof(data))
-            // setPendingFormData(response.data);
-            // console.log("aadd",typeof(pendingFormData))
-            // console.log("aadd",pendingFormData)
-            // console.log("aadd++++",response)
-               // Parsing JSON response
 const responseData = await response.json();
 // console.log('Parsed JSON response:', typeof(responseData));
 console.log('Parsed JSON response:', (responseData));
@@ -284,31 +270,41 @@ setTabledata(responseData.list_orders)
 
 console.log("formData++++",formData)
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`${globalUrl}/list/receiver`);
-        // const response = await axios.get(`https://randomuser.me/api/`);
-        // const datss=data
-        // console.log("aadd",typeof(response.data))
-        // console.log("aadd",typeof(data))
-        setUserData(response.data);
-        // console.log("dats",response.data)
-        // console.log("dats++++++userData",userData)
-      } catch (error) {
-        setError(error);
-      } finally {
-        // setLoading(false);
-      }
-    };
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      console.log("Token receiver: ", token);
+      const response = await fetch(`${globalUrl}/list/receiver`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'token': token
+        }
+      });
+      const responseData = await response.json();
 
-    fetchData();
+      // const response = await axios.get(`https://randomuser.me/api/`);
+      // const datss=data
+      // console.log("aadd",typeof(response.data))
+      // console.log("aadd",typeof(data))
+      setUserData(responseData);
+      // console.log("dats",response.data)
+      // console.log("dats++++++userData",userData)
+    } catch (error) {
+      setError(error);
+    } finally {
+      // setLoading(false);
+    }
+  };
 
-  
-    return () => {
-      
-    };
-  }, []); 
+  fetchData().then(r => console.log("Fetched and set"));
+
+
+  return () => {
+
+  };
+}, []);
 
 
 
@@ -761,21 +757,15 @@ const SS01form = () => {
   useEffect(() => {
     const fetchData = async () => {
         try {
-            const storedCookie = document.cookie;
-            console.log(storedCookie);
-      // Create a custom set of headers
-            const customHeaders = new Headers({
-              'Content-Type': 'application/json', // You may need to adjust the content type based on your request
-              'Cookie': localStorage.getItem('token'), // Include the retrieved cookie in the 'Cookie' header
-            });
-            const headersObject = Object.fromEntries(customHeaders.entries());
-  
-            //  const response = await fetch('https://jsonplaceholder.typicode.com/posts',{
+               
+          const token = localStorage.getItem('token');
+          console.log("Token submit SS01: ", token);
             const response = await fetch(`${globalUrl}/v1/${formName}/${formId}`, {
-                method: 'GET',
-                credentials: 'include',  // Include credentials (cookies) in the request
-                headers: headersObject,
-                // body: JSON.stringify(updatedFormData)
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                'token': token
+              }
               });
             //   console.log(response)
             // console.log("aadd",typeof(data))
@@ -1372,21 +1362,14 @@ const MM04form=()=>{
     useEffect(() => {
       const fetchData = async () => {
           try {
-              const storedCookie = document.cookie;
-              console.log(storedCookie);
-        // Create a custom set of headers
-              const customHeaders = new Headers({
-                'Content-Type': 'application/json', // You may need to adjust the content type based on your request
-                'Cookie': localStorage.getItem('token'),// Include the retrieved cookie in the 'Cookie' header
-              });
-              const headersObject = Object.fromEntries(customHeaders.entries());
-    
-              //  const response = await fetch('https://jsonplaceholder.typicode.com/posts',{
+            const token = localStorage.getItem('token');
+            console.log("Token submit SS01: ", token);
               const response = await fetch(`${globalUrl}/v1/${formName}/${formId}`, {
-                  method: 'GET',
-                  credentials: 'include',  // Include credentials (cookies) in the request
-                  headers: headersObject,
-                  // body: JSON.stringify(updatedFormData)
+                method: 'GET',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'token': token
+                }
                 });
               //   console.log(response)
               // console.log("aadd",typeof(data))
@@ -1662,29 +1645,15 @@ useEffect(() => {
     useEffect(() => {
       const fetchData = async () => {
           try {
-              const storedCookie = document.cookie;
-              console.log(storedCookie);
-        // Create a custom set of headers
-              const customHeaders = new Headers({
-                'Content-Type': 'application/json', // You may need to adjust the content type based on your request
-                'Cookie': localStorage.getItem('token'), // Include the retrieved cookie in the 'Cookie' header
-              });
-              const headersObject = Object.fromEntries(customHeaders.entries());
-    
-              //  const response = await fetch('https://jsonplaceholder.typicode.com/posts',{
+            const token = localStorage.getItem('token');
+            console.log("Token submit SS01: ", token);
               const response = await fetch(`${globalUrl}/v1/${formName}/${formId}`, {
-                  method: 'GET',
-                  credentials: 'include',  // Include credentials (cookies) in the request
-                  headers: headersObject,
-                  // body: JSON.stringify(updatedFormData)
+                method: 'GET',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'token': token
+                }
                 });
-              //   console.log(response)
-              // console.log("aadd",typeof(data))
-              // setPendingFormData(response.data);
-              // console.log("aadd",typeof(pendingFormData))
-              // console.log("aadd",pendingFormData)
-              // console.log("aadd++++",response)
-                 // Parsing JSON response
   const responseData = await response.json();
   // console.log('Parsed JSON response:', typeof(responseData));
   console.log('Parsed JSON response:', (responseData));
