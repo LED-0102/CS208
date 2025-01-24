@@ -6,7 +6,7 @@ This project is dedicated to managing requests and approvals for various forms, 
 
 ## Form Management
 
-Efficiency and digitization are at the core of this project's approach to form requests and approvals within the MEMES Office. This project handles two type of foms, Leave Form and Budget Forms.
+Efficiency and digitization are at the core of this project's approach to form requests and approvals within the MEMS Office. This project handles two type of foms, Leave Form and Budget Forms.
 
 ### Budget Forms
 
